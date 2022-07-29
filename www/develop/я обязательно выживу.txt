@@ -1,0 +1,30 @@
+6. Отсих уже идет разработка, нужно создать простейший крад. В Laravel основные файлы располагаются в директориях:
+Контроллеры: App/Http/Controllers
+Модели: App/Models
+Конфиги: configs
+Миграции: /database/migrations
+Шаблоны blade: /resources/views
+Скрипты: /resources/js
+Стили: /resources/scss
+Маршруты: /routes/ (web.php - приложение, api.php - апи)
+В папке с миграциями увидишь миграцию на пользователей, сделай там, вместо name - f_name, m_name, l_name и добавь еще каких-нибудь любых полей, просто для заполнения
+Чтобы миграции выполнились: php artisan migrate
+Модель пользлователя, скорее всего уже будет создана у тебя, если нет, то: php artisan make:model Users/User
+Создастся папка Users и там будет модель
+Чтобы создать контроллер: php artisan make:controller Users/UserController
+Из контроллера возвращать страницу: return view('template.path.name')
+Делать редирект: return redirect()->rout('route.name')
+В web.php можешь использовать Route::resource('name',Controller::class);
+Тогда лара сама сделает основные крадовские маршруты
+Итого тебе нужно, чтобы (в скобках методы):
+по index выводился список пользователей(GET),
+по create выводилась форма создания(GET),
+по store проходило создание пользователя(POST)
+по edit выводилась форма редактирования(GET)
+по update проходило редактирование(PATCH)
+по delete происходило удаление(DELETE)
+
+php artisan make:controller UsersController --resource --model=User
+php artisan route:list //посмотреть пути
+php artisan db:seed   //заполнить бд
+{UserFactory.php and DatabaseSeeder}
