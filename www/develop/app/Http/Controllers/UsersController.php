@@ -12,10 +12,17 @@ class UsersController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($page = 1)
     {
-        $users = User::get();
-        return view('users', compact('users'));
+      if ($page == 1)
+      {
+        $count = 0;
+      } else {
+        $count = ($page-1)*25;
+      } //возможно это костыль, но мне нравится
+        $valuePages = ceil(User::get()->count()/25);
+        $users = User::where('id','>',$count)->paginate(25);
+        return view('users', compact('users','valuePages'));
     }
 
     /**
@@ -36,10 +43,33 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-      User::create($request->only(['nickname','first_name','last_name',
+      $frd = $request->validate([
+        'nickname' => 'required',
+        'gender' => 'required',
+        'age' => 'required',
+        'last_name' => 'required',
+        'first_name' => 'required',
+        'middle_name' => 'required',
+        'description' => 'required',
+        'email' => 'required',
+        'password' => 'required',
+      ]);
+      $user = new User();
+      $user->setNickname($frd['nickname']);
+      $user->setGender($frd['gender']);
+      $user->setAge($frd['age']);
+      $user->setLast_name($frd['last_name']);
+      $user->setFirst_name($frd['first_name']);
+      $user->setMiddle_name($frd['middle_name']);
+      $user->setDescription($frd['description']);
+      $user->setEmail($frd['email']);
+      $user->setPassword($frd['password']);
+      /*User::create($request->only(['nickname','first_name','last_name',
                                     'middle_name','gender','description',
                                     'email','password','age']));
-      return redirect()->route('users.index');
+      */
+      $user->save();
+      return redirect()->route('users.show', $user);
     }
 
     /**
@@ -65,14 +95,14 @@ class UsersController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specifed resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\User  $user
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
-    {
+    { //пусть стандартный будет как пример висеть
         $user->update($request->only(['nickname','first_name','last_name',
                                       'middle_name','gender','description',
                                       'email','password','age']));
