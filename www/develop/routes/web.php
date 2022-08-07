@@ -18,6 +18,7 @@ Route::get('list/{page}', [UsersController::class, 'index']);
 //ладно тут я запутался
 Route::post('/hide/{id}', [UsersController::class, 'hide'])->name('users.hide');
 
+Route::get('/search/', [UsersController::class, 'search'])->name('users.search');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

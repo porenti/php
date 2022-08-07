@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Gender;
 use Illuminate\Http\Request;
 //use Illuminate\Support\Arr;
 
@@ -23,11 +24,41 @@ class UsersController extends Controller
       } //возможно это костыль, но мне нравится
         $valuePages = ceil(User::get()->count()/25);
         $users = User::where('hide',0)->paginate(25);
-        //я не понимаю почему у меня поменяла ссылки пагинация....
+        //я не понимаю почему у меня поменяла ссылки пагинации....
+        $genders = Gender::get();
+
+        //var_dump($genders);
         //return $users;
-        return view('users', compact('users','valuePages'));
+        return view('users', compact('users','valuePages','genders'));
     }
 
+    public function search(Request $request){//$fio, $age , $gender){
+      $data = $request->only(['fio','age','gender']);
+      //поиск работает если введены все параметры, исключения буду обрабатывать завтра
+      $full_name = explode(" ", $data['fio']);
+
+      $l_name = $full_name[0];
+      //try {
+      $f_name = $full_name[1];
+      $m_name = $full_name[2];
+    //} catch(Exception $e) {
+    /*} finally {
+        $f_name = '';
+        $m_name = '';
+    }*/
+      $age = $data['age'];
+      $gender = $data['gender'];
+      $users = User::where(function($query) use ($l_name, $f_name, $m_name, $age, $gender){
+          $query->orWhere('first_name', $f_name)
+                ->orWhere('last_name', $l_name)
+                ->orWhere('middle_name', $m_name)
+                ->where('age', $age)
+                ->where('gender_id', $gender);
+
+      })->get();
+      //var_dump($users);
+      return view('users', compact('users'));
+    }
     /**
      * Show the form for creating a new resource.
      *

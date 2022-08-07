@@ -1,10 +1,39 @@
 @extends('layouts.maintemple')
-
 @section('ti')
 Пользователи
 @endsection
 
 @section('content')
+
+@if(isset($genders))
+<div class="container mb-3">
+  <form method="GET"
+    action="{{  route('users.search')  }}">
+    <div class="row">
+      <div class="col">
+        <input type="text" class="form-control" placeholder="ФИО" name = "fio">
+      </div>
+      <div class="col">
+        <input type="text" class="form-control" placeholder="Возраст" name = "age">
+      </div>
+      <div class="col">
+      <select class="form-select" name="gender" aria-label="Default select example">
+        <option selected>Гендер</option>
+        @foreach($genders as $gender)
+          <option value="{{$gender->gender_id}}">{{$gender->short_name}}</option>
+        @endforeach
+      </select>
+      </div>
+      <div class="col">
+        <button type="submit" class="btn btn-secondary">Поиск</button>
+      </div>
+    </div>
+  </form>
+</div>
+@endif
+
+
+
 <a href="{{ route('users.create') }}" class="btn btn-secondary">Добавить</a>
 <table class="table" style="color: white">
   <thead>
@@ -44,6 +73,7 @@
   @endforeach
   </tbody>
 </table>
+@if(isset($valuePages))
 <div class="container">
   <nav aria-label="Page navigation example">
     <ul class="pagination">
@@ -53,4 +83,5 @@
     </ul>
   </nav>
 </div>
+@endif
 @endsection

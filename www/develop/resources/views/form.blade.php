@@ -83,7 +83,7 @@
     <div style="text-align: center">
     <button type="submit" class="btn btn-secondary">Создать</a>
     </div>
-  @endif>
+  @endif
 
 </form>
 @endsection
