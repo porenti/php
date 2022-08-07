@@ -1,17 +1,17 @@
 @extends('layouts.maintemple')
 
-@section('ti', "Пользователь ".$user->nickname)
+@section('ti', "Пользователь ".$user->getNickname())
 
 @section('content')
 <div class="card" style="color:black">
   <div class="card-header">
-    {{$user->last_name." ".$user->first_name." ".$user->middle_name}}
+    {{$user->getLast_name()." ".$user->getFirst_name()." ".$user->getMiddle_name()}}
   </div>
   <div class="card-body">
     <blockquote class="blockquote mb-0">
-      <p>{{$user->description}}</p>
-      <footer style="color:gray">Возраст: {{$user->age}}. Гендер: {{$user->gender}}</footer>
-      <footer class="blockquote-footer mt-2">{{$user->email}}</footer>
+      <p>{{$user->getDescription()}}</p>
+      <footer style="color:gray">Возраст: {{$user->getAge()}}. Гендер: {{$user->getGender()}}</footer>
+      <footer class="blockquote-footer mt-2">{{$user->getEmail()}}</footer>
     </blockquote>
   </div>
 </div>

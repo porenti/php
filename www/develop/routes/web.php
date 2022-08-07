@@ -7,22 +7,16 @@ use Illuminate\Support\Facades\Route;
 VIEWS.PY
 */
 //
-Route::redirect('/',"list/1");
-
-Route::get('/fq', function () {
-    return view('fq'); //чо ваще можно сделать чтоб интересно бьыло...
-});
+Route::redirect('/',"list/1")->name('main');
 
 Route::get('/home', function () {
     return view('home');
 });
 
-Route::get('/fq/{id}', function ($id) {
-    return "id: ".$id; //
-});
-
 Route::resource('list/users', UsersController::class);
 Route::get('list/{page}', [UsersController::class, 'index']);
+//ладно тут я запутался
+Route::post('/hide/{id}', [UsersController::class, 'hide'])->name('users.hide');
 
 
 Route::get('/dashboard', function () {

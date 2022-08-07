@@ -24,9 +24,11 @@ class User extends Authenticatable
         'first_name',
         'last_name',
         'middle_name',
-        'gender',
+        'gender_id',
         'description',
         'email',
+        'hide',
+        'hide_time',
         'password',
         'age',
     ];
@@ -50,6 +52,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function gender(){
+      return $this->belongsTo(Gender::class);
+    }
     public function setNickname($nickname){
       $this->nickname = $nickname;
     }
@@ -61,7 +66,7 @@ class User extends Authenticatable
       $this->gender = $gender;
     }
     public function getGender(){
-      return $this->gender;
+      return $this->gender->short_name;
     }
 
     public function setAge($age){
@@ -111,5 +116,10 @@ class User extends Authenticatable
     } //защищенность - это мое второе имя, первое - плохая
     public function getPassword(){
       return $this->password;
+    }
+    public function hidden(){
+      $this->hide = TRUE;
+      $this->hide_time = now();
+      $this->save();
     }
 }

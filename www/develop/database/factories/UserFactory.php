@@ -22,11 +22,13 @@ class UserFactory extends Factory
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),
             'middle_name' => fake()->name(),
-            'gender' => fake()->name(),
+            'gender_id' => rand(1,10),
             'description' => fake()->name(),
             'age' => 18,
             'email' => fake()->safeEmail(),
             'email_verified_at' => now(),
+            'hide_time' => now(),
+            'hide' => False,
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
         ];

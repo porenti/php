@@ -13,55 +13,55 @@
   <div class="input-group mb-3 row">
     <label for="exampleFormControlInput1" class="form-label">Ник</label>
     <input type="text" class="form-control" placeholder="nickname" name="nickname"
-                  value="{{ isset($user) ? $user->nickname : null }}">
+                  value="{{ isset($user) ? $user->getNickname() : null }}">
   </div>
 
   <div class="input-group mb-3 row">
     <label for="exampleFormControlInput1" class="form-label">Имя</label>
     <input type="text" class="form-control" placeholder="first_name" name="first_name"
-                  value="{{ isset($user) ? $user->first_name : null }}">
+                  value="{{ isset($user) ? $user->getFirst_name() : null }}">
   </div>
 
   <div class="input-group mb-3 row">
     <label for="exampleFormControlInput1" class="form-label">Фамилия</label>
     <input type="text" class="form-control" placeholder="last_name"  name="last_name"
-                  value="{{ isset($user) ? $user->last_name : null }}">
+                  value="{{ isset($user) ? $user->getLast_name() : null }}">
   </div>
 
   <div class="input-group mb-3 row">
     <label for="exampleFormControlInput1" class="form-label">Отчество</label>
     <input type="text" class="form-control" placeholder="middle_name" name="middle_name"
-                  value="{{ isset($user) ? $user->middle_name : null }}">
+                  value="{{ isset($user) ? $user->getMiddle_name() : null }}">
   </div>
 
   <div class="input-group mb-3 row">
     <label for="exampleFormControlInput1" class="form-label">Гендер</label>
     <input type="text" class="form-control" placeholder="gender" name="gender"
-                  value="{{ isset($user) ? $user->gender : null }}">
+                  value="{{ isset($user) ? $user->getGender() : null }}">
   </div>
 
   <div class="input-group mb-3 row">
     <label for="exampleFormControlInput1" class="form-label">Описание</label>
     <input type="text" class="form-control" placeholder="description" name="description"
-                  value="{{ isset($user) ? $user->description : null }}">
+                  value="{{ isset($user) ? $user->getDescription() : null }}">
   </div>
 
   <div class="input-group mb-3 row">
-    <label for="exampleFormControlInput1" class="form-label">Имя</label>
+    <label for="exampleFormControlInput1" class="form-label">Почта</label>
     <input type="text" class="form-control" placeholder="email" name="email"
-                  value="{{ isset($user) ? $user->email : null }}">
+                  value="{{ isset($user) ? $user->getEmail() : null }}">
   </div>
 
   <div class="input-group mb-3 row">
     <label for="exampleFormControlInput1" class="form-label">Пароль</label>
     <input type="password" class="form-control" placeholder="password" name="password"
-                  value="{{ isset($user) ? $user->password : null }}">
+                  value="{{ isset($user) ? $user->getPassword() : null }}">
   </div>
 
   <div class="input-group mb-3 row">
     <label for="exampleFormControlInput1" class="form-label">Возраст</label>
     <input type="text" class="form-control" placeholder="age" name="age"
-                  value="{{ isset($user) ? $user->age : null }}">
+                  value="{{ isset($user) ? $user->getAge() : null }}">
   </div>
   @if(isset($user))
     <div style="text-align: center">

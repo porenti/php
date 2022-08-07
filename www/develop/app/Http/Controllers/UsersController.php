@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+//use Illuminate\Support\Arr;
 
 class UsersController extends Controller
 {
@@ -21,7 +22,9 @@ class UsersController extends Controller
         $count = ($page-1)*25;
       } //возможно это костыль, но мне нравится
         $valuePages = ceil(User::get()->count()/25);
-        $users = User::where('id','>',$count)->paginate(25);
+        $users = User::where('hide',0)->paginate(25);
+        //я не понимаю почему у меня поменяла ссылки пагинация....
+        //return $users;
         return view('users', compact('users','valuePages'));
     }
 
@@ -93,6 +96,17 @@ class UsersController extends Controller
     {
         return view("form", compact("user"));
     }
+
+    public function hide($id)
+     {
+       $users = User::where('id',$id)->get();
+       //var_dump($user);
+       foreach ($users as $user){
+         $user->hidden();
+       }
+       //return get_class($user);
+       return redirect()->route('users.index');
+     }
 
     /**
      * Update the specifed resource in storage.
