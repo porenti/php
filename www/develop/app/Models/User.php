@@ -3,7 +3,9 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -47,79 +49,150 @@ class User extends Authenticatable
      * The attributes that should be cast.
      *
      * @var array<string, string>
+     *
+     *
+     * @kozlov: теперь, вместо 1 и 0, будут приходить true, false у hide
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'hide' => 'boolean'
     ];
 
-    public function gender(){
-      return $this->belongsTo(Gender::class);
-    }
-    public function setNickname($nickname){
-      $this->nickname = $nickname;
-    }
-    public function getNickname(){
-      return $this->nickname;
-    }
-
-    public function setGender($gender){
-      $this->gender = $gender;
-    }
-    public function getGender(){
-      return $this->gender->short_name;
+    /**
+     * @return BelongsTo
+     * @kozlov: всегда указываем возвращаемый тип, php не такой нетипизированный
+     */
+    public function gender():BelongsTo
+    {
+        return $this->belongsTo(Gender::class);
     }
 
-    public function setAge($age){
-      $this->age = $age;
-    }
-    public function getAge(){
-      return $this->age;
+    public function setNickname($nickname)
+    {
+        $this->nickname = $nickname;
     }
 
-    public function setLast_name($last_name){
-      $this->last_name = $last_name;
-    }
-    public function getLast_name(){
-      return $this->last_name;
+    public function getNickname()
+    {
+        return $this->nickname;
     }
 
-    public function setFirst_name($first_name){
-      $this->first_name = $first_name;
-    }
-    public function getFirst_name(){
-      return $this->first_name;
+    public function setGender($gender)
+    {
+        $this->gender = $gender;
     }
 
-    public function setMiddle_name($middle_name){
-      $this->middle_name = $middle_name;
-    }
-    public function getMiddle_name(){
-      return $this->middle_name;
+    public function getGender()
+    {
+        return $this->gender->short_name;
     }
 
-    public function setDescription($description){
-      $this->description = $description;
-    }
-    public function getDescription(){
-      return $this->description;
+    public function setAge($age)
+    {
+        $this->age = $age;
     }
 
-    public function setEmail($email){
-      $this->email = $email;
-    }
-    public function getEmail(){
-      return $this->email;
+    public function getAge()
+    {
+        return $this->age;
     }
 
-    public function setPassword($password){
-      $this->password = $password;
+    public function setLast_name($last_name)
+    {
+        $this->last_name = $last_name;
+    }
+
+    public function getLast_name()
+    {
+        return $this->last_name;
+    }
+
+    public function setFirst_name($first_name)
+    {
+        $this->first_name = $first_name;
+    }
+
+    /**
+     * @return mixed
+     * @deprecated
+     * Нмикогда так не называем функции, ТОЛЬКО camelCase
+     */
+    public function getFirst_name()
+    {
+        return $this->first_name;
+    }
+
+    /**
+     * @return string
+     * Тобишь вот так
+     */
+    public function getFirstName(): string
+    {
+        return $this->first_name;
+    }
+
+    public function setMiddle_name($middle_name)
+    {
+        $this->middle_name = $middle_name;
+    }
+
+    public function getMiddle_name()
+    {
+        return $this->middle_name;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    public function getDescription()
+    {
+        return $this->description;
+    }
+
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function setPassword($password)
+    {
+        $this->password = $password;
     } //защищенность - это мое второе имя, первое - плохая
-    public function getPassword(){
-      return $this->password;
+
+    public function getPassword()
+    {
+        return $this->password;
     }
-    public function hidden(){
-      $this->hide = TRUE;
-      $this->hide_time = now();
-      $this->save();
+
+    public function hidden()
+    {
+        $this->hide = TRUE;
+        $this->hide_time = now();
+        $this->save();
+    }
+
+
+    public function scopeFilterHide(Builder $query): Builder
+    {
+        return $query->where('hide', false);
+    }
+
+    /**
+     * @param Builder $query
+     * @param array $frd
+     * @return Builder
+     *
+     * @kozlov: вместо нового метода в контроллере, нужно просто использовать 1 функцию
+     */
+    public function scopeFilter(Builder $query, array $frd): Builder
+    {
+
     }
 }
