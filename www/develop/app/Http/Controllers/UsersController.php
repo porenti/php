@@ -2,39 +2,57 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Gender;
+use Artesaos\SEOTools\Facades\SEOMeta;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\View;
 
 //use Illuminate\Support\Arr;
 
 class UsersController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request, $page = 1)
+
+    public function __construct()
     {
-        $frd = $request->all();
+        $genders = Gender::pluck('short_name', 'id')->toArray();
 
-
-        $users = User::filter($frd)->filterHide()->paginate(25);
-        //я не понимаю почему у меня поменяла ссылки пагинации....
-
-        /**
-         * @kozlov: никогда не делаем primary key вида: tableName_id
-         * И так понятно, что id гендера, стараемся называть минималистичнее
-         *
-         */
-        $genders = Gender::pluck('short_name', 'gender_id')->toArray();
-
-        //var_dump($genders);
-        //return $users;
-        return view('users', compact('users', 'genders'));
+        View::share('genders', $genders);
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     */
+    public function index(Request $request)
+    {
+
+        SEOMeta::setTitle('Пользователи');
+
+        $frd = $request->all();
+
+        $users = User::query()
+            ->with([
+                'gender'
+            ])
+            ->filter($frd)
+            ->filterHide()
+            ->orderByDesc('id')
+            ->paginate(25);
+
+
+        return view('users', compact('frd', 'users'));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
+     *
+     * @deprecated
+     */
     public function search(Request $request)
     {//$fio, $age , $gender){
         $data = $request->only(['fio', 'age', 'gender']);
@@ -65,26 +83,24 @@ class UsersController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function create()
     {
-        return view('form');
+        SEOMeta::setTitle('Создание пользователя');
+
+        return view('users.create');
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
         $frd = $request->validate([
             'nickname' => 'required',
-            'gender' => 'required',
+            'gender_id' => 'required',
             'age' => 'required',
             'last_name' => 'required',
             'first_name' => 'required',
@@ -95,20 +111,43 @@ class UsersController extends Controller
         ]);
         $user = new User();
         $user->setNickname($frd['nickname']);
-        $user->setGender($frd['gender']);
+        $user->setGenderId($frd['gender_id']);
         $user->setAge($frd['age']);
-        $user->setLast_name($frd['last_name']);
-        $user->setFirst_name($frd['first_name']);
-        $user->setMiddle_name($frd['middle_name']);
+        $user->setLastName($frd['last_name']);
+        $user->setFirstName($frd['first_name']);
+        $user->setMiddleName($frd['middle_name']);
         $user->setDescription($frd['description']);
         $user->setEmail($frd['email']);
-        $user->setPassword($frd['password']);
-        /*User::create($request->only(['nickname','first_name','last_name',
-                                      'middle_name','gender','description',
-                                      'email','password','age']));
-        */
+        $user->setPassword(Hash::make($frd['password']));
+        $user->setHide(false);
+
+
         $user->save();
+
         return redirect()->route('users.show', $user);
+    }
+
+
+    public function rolesEdit(User $user)
+    {
+        $roles = Role::query()
+            ->select([
+                'name', 'id', 'display_name'
+            ])
+            ->get();
+
+
+        return \view('users.roles-edit', compact('roles', 'user'));
+    }
+
+    public function rolesUpdate(Request $request, User $user)
+    {
+
+        $roles = $request->input('roles');
+
+        $user->roles()->sync($roles);
+
+        return redirect()->back();
     }
 
     /**
@@ -119,7 +158,9 @@ class UsersController extends Controller
      */
     public function show(User $user)
     {
-        return view("show", compact('user'));
+        SEOMeta::setTitle('Просмотр - ' . $user->getNickname());
+
+        return view('show', compact('user'));
     }
 
     /**
@@ -130,7 +171,9 @@ class UsersController extends Controller
      */
     public function edit(User $user)
     {
-        return view("form", compact("user"));
+        SEOMeta::setTitle('Редактирование - ' . $user->getNickname());
+
+        return view('users.edit', compact('user'));
     }
 
     public function hide($id)
@@ -152,11 +195,35 @@ class UsersController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, User $user)
-    { //пусть стандартный будет как пример висеть
-        $user->update($request->only(['nickname', 'first_name', 'last_name',
-            'middle_name', 'gender', 'description',
-            'email', 'password', 'age']));
-        return redirect()->route('users.index');
+    {
+
+        $frd = $request->validate([
+            'nickname' => 'required',
+            'gender_id' => 'required',
+            'age' => 'required',
+            'last_name' => 'required',
+            'first_name' => 'required',
+            'middle_name' => 'required',
+            'description' => 'required',
+            'email' => 'required',
+        ]);
+
+
+        $user->setNickname($frd['nickname']);
+        $user->setGenderId($frd['gender_id']);
+        $user->setAge($frd['age']);
+        $user->setLastName($frd['last_name']);
+        $user->setFirstName($frd['first_name']);
+        $user->setMiddleName($frd['middle_name']);
+        $user->setDescription($frd['description']);
+        $user->setEmail($frd['email']);
+        $user->setHide(false);
+
+
+        $user->save();
+
+
+        return redirect()->back();
     }
 
     /**
@@ -168,6 +235,7 @@ class UsersController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
+
         return redirect()->route('users.index');
     }
 }

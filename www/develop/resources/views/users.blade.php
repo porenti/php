@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * Комментарии для подсказок
  * @var \Illuminate\Pagination\LengthAwarePaginator $users
@@ -9,38 +8,42 @@
 ?>
 
 @extends('layouts.maintemple')
-@section('ti')
-    Пользователи
-@endsection
 
 @section('content')
 
-    @if(isset($genders))
-        <div class="container mb-3">
-            <form method="GET"
-                  action="{{  route('users.search')  }}">
-                <div class="row">
-                    <div class="col">
-                        <input type="text" class="form-control" placeholder="ФИО" name="fio">
-                    </div>
-                    <div class="col">
-                        <input type="text" class="form-control" placeholder="Возраст" name="age">
-                    </div>
-                    <div class="col">
+    <div class="container mb-3">
+        <form method="GET"
+              action="{{  route('users.index')  }}">
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <input type="text" class="form-control" placeholder="ФИО" value="{{ $frd['fio'] ?? null }}"
+                           name="fio">
+                </div>
+                <div class="col-lg-2">
+                    <input type="number" class="form-control" value="{{ $frd['age'] ?? null }}" placeholder="Возраст"
+                           name="age">
+                </div>
+                @if(isset($genders))
+
+                    <div class="col-lg-2">
                         <select class="form-select" name="gender" aria-label="Default select example">
-                            <option selected>Гендер</option>
-                            @foreach($genders as $name => $id)
-                                <option value="{{ $id }}">{{ $name }}</option>
+                            @foreach($genders as  $id=> $name)
+                                <option {{ (isset($frd['gender']) && $frd['gender'] === $name) ? 'selected' : null }}
+                                        value="{{ $id }}">{{ $name }}</option>
                             @endforeach
                         </select>
                     </div>
-                    <div class="col">
-                        <button type="submit" class="btn btn-secondary">Поиск</button>
-                    </div>
+                @endif
+
+                <div class="col-lg-1">
+                    <a type="submit" href="{{ route('users.index') }}" class="btn btn-secondary">Сбросить</a>
                 </div>
-            </form>
-        </div>
-    @endif
+                <div class="col-lg-1">
+                    <button type="submit" class="btn btn-secondary">Поиск</button>
+                </div>
+            </div>
+        </form>
+    </div>
 
 
 
@@ -64,11 +67,11 @@
             <tr>
                 <th scope="row"><a href="{{ route('users.show', $user) }}">{{$user->id}}</a></th>
                 <td>{{$user->getNickname()}}</td>
-                <td>{{$user->getGender()}}</td>
+                <td>{{$user->getGenderShortName()}}</td>
                 <td>{{$user->getAge()}}</td>
-                <td>{{$user->getLast_name()}}</td>  <!-- ничего страшного что я имя и фамилию перепутал же... -->
-                <td>{{$user->getFirst_name()}}</td>
-                <td>{{$user->getMiddle_name()}}</td>
+                <td>{{$user->getLastName()}}</td>  <!-- ничего страшного что я имя и фамилию перепутал же... -->
+                <td>{{$user->getFirstName()}}</td>
+                <td>{{$user->getMiddleName()}}</td>
                 <td>{{$user->getDescription()}}</td>
                 <td><a class="btn btn-secondary" href="{{ route('users.edit', $user) }}"> Править </a>
                 </td>
@@ -86,7 +89,7 @@
     </table>
     @if(isset($users))
         <div class="container">
-            {!! $user->appends($frd ?? [])->render() !!}
+            {!! $users->appends($frd ?? [])->render() !!}
         </div>
     @endif
 @endsection
