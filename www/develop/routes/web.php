@@ -7,14 +7,26 @@ use Illuminate\Support\Facades\Route;
 VIEWS.PY
 */
 //
-Route::redirect('/',"list/1")->name('main');
+Route::redirect('/', 'users')->name('main');
 
 Route::get('/home', function () {
     return view('home');
 });
 
-Route::resource('list/users', UsersController::class);
-Route::get('list/{page}', [UsersController::class, 'index']);
+Route::middleware('auth')->group(function () {
+
+    Route::post('users/{user}/roles-update', [UsersController::class, 'rolesUpdate'])->name('users.roles-update');
+
+    Route::get('users/{user}/roles-edit', [UsersController::class, 'rolesEdit'])->name('users.roles-edit');
+
+
+    Route::resource('users', UsersController::class);
+
+
+
+});
+
+
 //ладно тут я запутался
 Route::post('/hide/{id}', [UsersController::class, 'hide'])->name('users.hide');
 
@@ -24,4 +36,4 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth'])->name('dashboard');
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

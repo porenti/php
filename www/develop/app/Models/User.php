@@ -3,12 +3,74 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Auth\Events\Login;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Laratrust\Traits\LaratrustUserTrait;
 
+/**
+ * App\Models\User
+ *
+ * @property int $id
+ * @property string $nickname
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $middle_name
+ * @property int $gender_id
+ * @property string $description
+ * @property int $age
+ * @property bool $hide
+ * @property string $hide_time
+ * @property string $email
+ * @property \Illuminate\Support\Carbon|null $email_verified_at
+ * @property string $password
+ * @property string|null $remember_token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Gender $gender
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Permission[] $permissions
+ * @property-read int|null $permissions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Role[] $roles
+ * @property-read int|null $roles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
+ * @property-read int|null $tokens_count
+ * @method static \Database\Factories\UserFactory factory(...$parameters)
+ * @method static Builder|User filter(array $frd)
+ * @method static Builder|User filterFio(string $fioString)
+ * @method static Builder|User filterHide()
+ * @method static Builder|User newModelQuery()
+ * @method static Builder|User newQuery()
+ * @method static Builder|User orWherePermissionIs($permission = '')
+ * @method static Builder|User orWhereRoleIs($role = '', $team = null)
+ * @method static Builder|User query()
+ * @method static Builder|User whereAge($value)
+ * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereDescription($value)
+ * @method static Builder|User whereDoesntHavePermission()
+ * @method static Builder|User whereDoesntHaveRole()
+ * @method static Builder|User whereEmail($value)
+ * @method static Builder|User whereEmailVerifiedAt($value)
+ * @method static Builder|User whereFirstName($value)
+ * @method static Builder|User whereGenderId($value)
+ * @method static Builder|User whereHide($value)
+ * @method static Builder|User whereHideTime($value)
+ * @method static Builder|User whereId($value)
+ * @method static Builder|User whereLastName($value)
+ * @method static Builder|User whereMiddleName($value)
+ * @method static Builder|User whereNickname($value)
+ * @method static Builder|User wherePassword($value)
+ * @method static Builder|User wherePermissionIs($permission = '', $boolean = 'and')
+ * @method static Builder|User whereRememberToken($value)
+ * @method static Builder|User whereRoleIs($role = '', $team = null, $boolean = 'and')
+ * @method static Builder|User whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable
 {
     use LaratrustUserTrait;
@@ -16,6 +78,8 @@ class User extends Authenticatable
 
     /**
      * The attributes that are mass assignable.
+     *
+     * ЧТО ПОЛУЧАТЬ
      *
      * @var array<int, string>
      */
@@ -36,6 +100,8 @@ class User extends Authenticatable
     /**
      * The attributes that should be hidden for serialization.
      *
+     * ЧТО НЕ ПОЛУЧАТЬ
+     *
      * @var array<int, string>
      */
     protected $hidden = [
@@ -47,79 +113,236 @@ class User extends Authenticatable
      * The attributes that should be cast.
      *
      * @var array<string, string>
+     *
+     *КАК ПОЛУЧАТЬ?
+     * @kozlov: теперь, вместо 1 и 0, будут приходить true, false у hide
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'hide' => 'boolean',
     ];
 
-    public function gender(){
-      return $this->belongsTo(Gender::class);
-    }
-    public function setNickname($nickname){
-      $this->nickname = $nickname;
-    }
-    public function getNickname(){
-      return $this->nickname;
-    }
-
-    public function setGender($gender){
-      $this->gender = $gender;
-    }
-    public function getGender(){
-      return $this->gender->short_name;
+    /**
+     * @return BelongsTo
+     * @kozlov: всегда указываем возвращаемый тип, php не такой нетипизированный
+     */
+    public function gender(): BelongsTo
+    {
+        return $this->belongsTo(Gender::class);
     }
 
-    public function setAge($age){
-      $this->age = $age;
-    }
-    public function getAge(){
-      return $this->age;
-    }
-
-    public function setLast_name($last_name){
-      $this->last_name = $last_name;
-    }
-    public function getLast_name(){
-      return $this->last_name;
+    /**
+     * @return Gender
+     */
+    public function getGender(): Gender
+    {
+        return $this->gender;
     }
 
-    public function setFirst_name($first_name){
-      $this->first_name = $first_name;
-    }
-    public function getFirst_name(){
-      return $this->first_name;
-    }
-
-    public function setMiddle_name($middle_name){
-      $this->middle_name = $middle_name;
-    }
-    public function getMiddle_name(){
-      return $this->middle_name;
+    /**
+     * @return string|null
+     */
+    public function getGenderShortName(): ?string
+    {
+        return $this->getGender()?->short_name;
     }
 
-    public function setDescription($description){
-      $this->description = $description;
-    }
-    public function getDescription(){
-      return $this->description;
+    public function getGenderName(): ?string
+    {
+        return $this->getGender()?->name;
     }
 
-    public function setEmail($email){
-      $this->email = $email;
-    }
-    public function getEmail(){
-      return $this->email;
+    public function setNickname($nickname)
+    {
+        $this->nickname = $nickname;
     }
 
-    public function setPassword($password){
-      $this->password = $password;
+    public function getNickname(): string
+    {
+        return $this->nickname;
+    }
+
+    public function setGender($gender): void
+    {
+        $this->gender = $gender;
+    }
+
+    /**
+     * @param bool $hide
+     */
+    public function setHide(bool $hide): void
+    {
+        $this->hide = $hide;
+    }
+
+
+    /**
+     * @param int $gender_id
+     */
+    public function setGenderId(int $gender_id): void
+    {
+        $this->gender_id = $gender_id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getGenderId(): int
+    {
+        return $this->gender_id;
+    }
+
+
+    public function setAge($age): void
+    {
+        $this->age = $age;
+    }
+
+    public function getAge(): int
+    {
+        return $this->age;
+    }
+
+    public function setLastName($last_name): void
+    {
+        $this->last_name = $last_name;
+    }
+
+    public function getLastName(): string
+    {
+        return $this->last_name;
+    }
+
+    public function setFirstName($first_name)
+    {
+        $this->first_name = $first_name;
+    }
+
+
+    /**
+     * @return mixed
+     * Нмикогда так не называем функции, ТОЛЬКО camelCase
+     */
+    public function getFirstName()
+    {
+        return $this->first_name;
+    }
+
+
+    public function setMiddleName($middle_name)
+    {
+        $this->middle_name = $middle_name;
+    }
+
+    public function getMiddleName(): string
+    {
+        return $this->middle_name;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setEmail($email)
+    {
+        $this->email = $email;
+    }
+
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    public function setPassword($password)
+    {
+        $this->password = $password;
     } //защищенность - это мое второе имя, первое - плохая
-    public function getPassword(){
-      return $this->password;
+
+    public function getPassword()
+    {
+        return $this->password;
     }
-    public function hidden(){
-      $this->hide = TRUE;
-      $this->hide_time = now();
-      $this->save();
+
+    public function hidden()
+    {
+        $this->hide = TRUE;
+        $this->hide_time = now();
+        $this->save();
+    }
+
+    /**
+     * @param Builder $query
+     * @param string $fioString
+     * @return Builder
+     */
+    public function scopeFilterFio(Builder $query, string $fioString): Builder
+    {
+
+        $names = explode(' ', $fioString);
+
+        foreach ($names as $nameValue) {
+
+            $query->where(static function (Builder $query) use ($nameValue): Builder {
+                return $query
+                    ->orWhere('first_name', 'like', '%' . $nameValue . '%')
+                    ->orWhere('last_name', 'like', '%' . $nameValue . '%')
+                    ->orWhere('middle_name', 'like', '%' . $nameValue . '%');
+
+            });
+        }
+
+        return $query;
+    }
+
+    public function scopeFilterHide(Builder $query): Builder
+    {
+        return $query->where('hide', false);
+    }
+
+    /**
+     * @param Builder|User $query
+     * @param array $frd
+     * @return Builder
+     *
+     * @kozlov: вместо нового метода в контроллере, нужно просто использовать 1 функцию
+     */
+    public function scopeFilter(Builder $query, array $frd): Builder
+    {
+
+
+        foreach ($frd as $key => $value) {
+            if (null == $value) {
+                continue;
+            }
+
+            switch ($key) {
+                case 'age':
+                    {
+
+                        $query->where('age', $value);
+                    }
+                    break;
+                case 'fio':
+                    {
+                        $query->filterFio($value);
+                    }
+                    break;
+                case 'gender':
+                    {
+                        $query->where('gender_id', $value);
+                    }
+                    break;
+            }
+
+        }
+
+
+        return $query;
     }
 }

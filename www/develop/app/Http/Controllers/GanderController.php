@@ -15,7 +15,7 @@ class GanderController extends Controller
     public function index()
     {
         $genders = Gender::all();
-        return $genders
+        return $genders;
     }
 
     /**
