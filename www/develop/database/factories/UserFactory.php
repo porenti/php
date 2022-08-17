@@ -22,7 +22,7 @@ class UserFactory extends Factory
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),
             'middle_name' => fake()->name(),
-            'gender_id' => rand(1,10),
+            'gender_id' => rand(1,2),
             'description' => fake()->name(),
             'age' => 18,
             'email' => fake()->safeEmail(),

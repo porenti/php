@@ -12,10 +12,12 @@
                 </li>
 
                 @if(auth()->user()->hasRole('admin'))
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{route('users.create')}}">Создать</a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('users.create')}}">Создать</a>
+                </li>
+
                 @endif
+
 
             </ul>
         </div>

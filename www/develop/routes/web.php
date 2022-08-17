@@ -13,6 +13,7 @@ Route::get('/home', function () {
     return view('home');
 });
 
+
 Route::middleware('auth')->group(function () {
 
     Route::post('users/{user}/roles-update', [UsersController::class, 'rolesUpdate'])->name('users.roles-update');
@@ -21,7 +22,6 @@ Route::middleware('auth')->group(function () {
 
 
     Route::resource('users', UsersController::class);
-
 
 
 });

@@ -196,7 +196,13 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-
+        /*dd($request->only(['nickname','first_name','last_name',
+                                      'middle_name','gender_id','description',
+                                      'email','age']));*/
+        /*$frd = $request->only(['nickname','first_name','last_name',
+                                      'middle_name','gender_id','description',
+                                      'email','age']);
+                                          */
         $frd = $request->validate([
             'nickname' => 'required',
             'gender_id' => 'required',
@@ -221,9 +227,9 @@ class UsersController extends Controller
 
 
         $user->save();
-
-
-        return redirect()->back();
+        //все работало, просто редиректило на страницу не давая изменений и соответсвенно новые данные только на эту страницу не прилетали, а на остальном сайте работали
+        return view("show", compact('user'));
+        //return redirect()->back();
     }
 
     /**
