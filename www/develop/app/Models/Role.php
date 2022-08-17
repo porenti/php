@@ -29,4 +29,9 @@ use Laratrust\Models\LaratrustRole;
 class Role extends LaratrustRole
 {
     public $guarded = [];
+    /*
+    public function chekPerm()
+    {
+      return $this->belongsToMane(Permission::class);
+    }*/
 }

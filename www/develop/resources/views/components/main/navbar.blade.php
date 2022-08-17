@@ -15,6 +15,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('users.create')}}">Создать</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('roles.index')}}">Роли</a>
+                </li>
 
                 @endif
 
