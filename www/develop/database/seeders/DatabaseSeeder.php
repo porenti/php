@@ -14,9 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(100)->create(); //заполнить пользователей
 
         $this->call(GenderSeeder::class);
         $this->call(LaratrustSeeder::class); //заполнить роли
+        \App\Models\User::factory(100)->create(); //заполнить пользователей
     }
 }

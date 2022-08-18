@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\RoleController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,6 +14,7 @@ Route::get('/home', function () {
     return view('home');
 });
 
+
 Route::middleware('auth')->group(function () {
 
     Route::post('users/{user}/roles-update', [UsersController::class, 'rolesUpdate'])->name('users.roles-update');
@@ -22,7 +24,11 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('users', UsersController::class);
 
+    Route::get('/roles-perm', [RoleController::class, 'chekRolePermission'])->name('roles-perm');
 
+    Route::post('/roles-update-perm/{role}', [RoleController::class, 'updatePerm'])->name('roles-update-perm');
+    Route::get('/roles', [RoleController::class, 'index'])->name('roles');
+    Route::resource('roles', RoleController::class);
 
 });
 

@@ -43,7 +43,7 @@ class UsersController extends Controller
             ->orderByDesc('id')
             ->paginate(25);
 
-
+        //dd($users->total());
         return view('users', compact('frd', 'users'));
     }
 
@@ -54,20 +54,13 @@ class UsersController extends Controller
      * @deprecated
      */
     public function search(Request $request)
-    {//$fio, $age , $gender){
+    {
         $data = $request->only(['fio', 'age', 'gender']);
-        //поиск работает если введены все параметры, исключения буду обрабатывать завтра
         $full_name = explode(" ", $data['fio']);
 
         $l_name = $full_name[0];
-        //try {
         $f_name = $full_name[1];
         $m_name = $full_name[2];
-        //} catch(Exception $e) {
-        /*} finally {
-            $f_name = '';
-            $m_name = '';
-        }*/
         $age = $data['age'];
         $gender = $data['gender'];
         $users = User::where(function ($query) use ($l_name, $f_name, $m_name, $age, $gender) {
@@ -196,7 +189,13 @@ class UsersController extends Controller
      */
     public function update(Request $request, User $user)
     {
-
+        /*dd($request->only(['nickname','first_name','last_name',
+                                      'middle_name','gender_id','description',
+                                      'email','age']));*/
+        /*$frd = $request->only(['nickname','first_name','last_name',
+                                      'middle_name','gender_id','description',
+                                      'email','age']);
+                                          */
         $frd = $request->validate([
             'nickname' => 'required',
             'gender_id' => 'required',
@@ -221,9 +220,9 @@ class UsersController extends Controller
 
 
         $user->save();
-
-
-        return redirect()->back();
+        //все работало, просто редиректило на страницу не давая изменений и соответсвенно новые данные только на эту страницу не прилетали, а на остальном сайте работали
+        return view("show", compact('user'));
+        //return redirect()->back();
     }
 
     /**
