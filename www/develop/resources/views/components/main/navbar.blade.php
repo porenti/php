@@ -18,9 +18,7 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('roles.index')}}">Роли</a>
                 </li>
-
                 @endif
-
 
             </ul>
         </div>

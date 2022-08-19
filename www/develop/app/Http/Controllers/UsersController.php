@@ -47,6 +47,19 @@ class UsersController extends Controller
         return view('users', compact('frd', 'users'));
     }
 
+    public function swapPasswordPage(Request $request, User $user)
+    {
+      //dd($request);
+      return view('users.swap-password', compact('user'));
+    }
+
+    public function updatePassword(Request $request, User $user)
+    {
+      $frd = $request['password'];
+      $user->setPassword(Hash::make($frd));
+      $user->save();
+      return view('show', compact('user'));
+    }
     /**
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View

@@ -14,12 +14,19 @@ Route::get('/home', function () {
     return view('home');
 });
 
+Route::get('/primer', function () {
+    return view('welcome');
+});
 
 Route::middleware('auth')->group(function () {
 
     Route::post('users/{user}/roles-update', [UsersController::class, 'rolesUpdate'])->name('users.roles-update');
 
     Route::get('users/{user}/roles-edit', [UsersController::class, 'rolesEdit'])->name('users.roles-edit');
+
+    Route::get('users/{user}/swap-password', [UsersController::class, 'swapPasswordPage'])->name('users.swapPasswordPage');
+
+    Route::post('users/{user}/updatePassword', [UsersController::class, 'updatePassword'])->name('users.updatePassword');
 
 
     Route::resource('users', UsersController::class);
