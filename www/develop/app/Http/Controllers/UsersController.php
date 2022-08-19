@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Images\Image;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Gender;
@@ -49,17 +50,18 @@ class UsersController extends Controller
 
     public function swapPasswordPage(Request $request, User $user)
     {
-      //dd($request);
-      return view('users.swap-password', compact('user'));
+        //dd($request);
+        return view('users.swap-password', compact('user'));
     }
 
     public function updatePassword(Request $request, User $user)
     {
-      $frd = $request['password'];
-      $user->setPassword(Hash::make($frd));
-      $user->save();
-      return view('show', compact('user'));
+        $frd = $request['password'];
+        $user->setPassword(Hash::make($frd));
+        $user->save();
+        return view('show', compact('user'));
     }
+
     /**
      * @param Request $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
@@ -170,45 +172,39 @@ class UsersController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\User $user
-     * @return \Illuminate\Http\Response
+     * @param User $user
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function edit(User $user)
     {
         SEOMeta::setTitle('Редактирование - ' . $user->getNickname());
+        $image = $user->getImages()->last();
 
-        return view('users.edit', compact('user'));
+
+        return view('users.edit', compact('user', 'image'));
     }
 
-    public function hide($id)
+    public function hide(User $user)
     {
-        $users = User::where('id', $id)->get();
+//        $users = User::where('id', $id)->get();
         //var_dump($user);
-        foreach ($users as $user) {
-            $user->hidden();
-        }
+//        foreach ($users as $user) {
+//            $user->hidden();
+//        }
+
+        $user->hidden();
         //return get_class($user);
         return redirect()->route('users.index');
     }
 
     /**
-     * Update the specifed resource in storage.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @param \App\Models\User $user
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param User $user
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function update(Request $request, User $user)
     {
-        /*dd($request->only(['nickname','first_name','last_name',
-                                      'middle_name','gender_id','description',
-                                      'email','age']));*/
-        /*$frd = $request->only(['nickname','first_name','last_name',
-                                      'middle_name','gender_id','description',
-                                      'email','age']);
-                                          */
+
         $frd = $request->validate([
             'nickname' => 'required',
             'gender_id' => 'required',
@@ -233,8 +229,15 @@ class UsersController extends Controller
 
 
         $user->save();
+
+
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $user->putImage($avatar, $user);
+        }
+
         //все работало, просто редиректило на страницу не давая изменений и соответсвенно новые данные только на эту страницу не прилетали, а на остальном сайте работали
-        return view("show", compact('user'));
+        return redirect()->route('users.edit', $user);
         //return redirect()->back();
     }
 

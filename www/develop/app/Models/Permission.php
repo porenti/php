@@ -29,4 +29,55 @@ use Laratrust\Models\LaratrustPermission;
 class Permission extends LaratrustPermission
 {
     public $guarded = [];
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDisplayName(): ?string
+    {
+        return $this->display_name;
+    }
+
+    /**
+     * @param string|null $display_name
+     */
+    public function setDisplayName(?string $display_name): void
+    {
+        $this->display_name = $display_name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    /**
+     * @param string|null $description
+     */
+    public function setDescription(?string $description): void
+    {
+        $this->description = $description;
+    }
+
+
+
 }

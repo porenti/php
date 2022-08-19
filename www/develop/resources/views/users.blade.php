@@ -87,17 +87,11 @@
         @endforeach
         </tbody>
     </table>
+
     @if(isset($users))
-    <div>
-      <nav aria-label="Page navigation example">
-        <ul class="pagination">
+        @include('components.pagination',[
+            'paginator' => $users
+        ])
+    @endif
 
-          @for ($i = 1; $i <= ceil($users->total()/25); $i++)
-            <li class="page-item"><a class="page-link" href="{{'users?page='.$i}}">{{$i}}</a></li>
-          @endfor
-
-        </ul>
-      </nav>
-    </div>
-  @endif
 @endsection
