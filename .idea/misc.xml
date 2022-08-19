@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/www/develop/database/migrations/2014_10_12_000000_create_users_table.php" />
+    <file url="file://$PROJECT_DIR$/www/develop/database/migrations/2014_10_12_100000_create_password_resets_table.php" />
+    <file url="file://$PROJECT_DIR$/www/develop/database/migrations/2019_08_19_000000_create_failed_jobs_table.php" />
+    <file url="file://$PROJECT_DIR$/www/develop/database/migrations/2019_12_14_000001_create_personal_access_tokens_table.php" />
+    <file url="file://$PROJECT_DIR$/www/develop/database/migrations/2022_08_03_060656_laratrust_setup_tables.php" />
+    <file url="file://$PROJECT_DIR$/www/develop/database/migrations/2022_08_06_074418_create_genders_table.php" />
+    <file url="file://$PROJECT_DIR$/www/develop/database/migrations/2022_08_08_110222_delete_gender_id_from_genders.php" />
+    <file url="file://$PROJECT_DIR$/www/develop/database/migrations/2022_08_08_110628_change_gender_column_in_users_table.php" />
+    <file url="file://$PROJECT_DIR$/www/develop/database/migrations/2022_08_08_122144_change_hide_time_in_users.php" />
+  </component>
+</project>

@@ -22,6 +22,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Gender whereShortName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Gender whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property int $gender_id
+ * @method static \Illuminate\Database\Eloquent\Builder|Gender whereGenderId($value)
  */
 class Gender extends Model
 {

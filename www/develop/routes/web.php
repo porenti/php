@@ -20,28 +20,35 @@ Route::get('/primer', function () {
 
 Route::middleware('auth')->group(function () {
 
-    Route::post('users/{user}/roles-update', [UsersController::class, 'rolesUpdate'])->name('users.roles-update');
+    Route::middleware('role:admin|moder')->group(function () {
 
-    Route::get('users/{user}/roles-edit', [UsersController::class, 'rolesEdit'])->name('users.roles-edit');
+        Route::post('users/{user}/roles-update', [UsersController::class, 'rolesUpdate'])->name('users.roles-update');
 
-    Route::get('users/{user}/swap-password', [UsersController::class, 'swapPasswordPage'])->name('users.swapPasswordPage');
+        Route::get('users/{user}/roles-edit', [UsersController::class, 'rolesEdit'])->name('users.roles-edit');
 
-    Route::post('users/{user}/updatePassword', [UsersController::class, 'updatePassword'])->name('users.updatePassword');
+        Route::get('users/{user}/swap-password', [UsersController::class, 'swapPasswordPage'])->name('users.swapPasswordPage');
 
+        Route::post('users/{user}/updatePassword', [UsersController::class, 'updatePassword'])->name('users.updatePassword');
 
-    Route::resource('users', UsersController::class);
+        Route::resource('users', UsersController::class);
 
-    Route::get('/roles-perm', [RoleController::class, 'chekRolePermission'])->name('roles-perm');
+        Route::get('/roles-perm', [RoleController::class, 'chekRolePermission'])->name('roles-perm');
 
-    Route::post('/roles-update-perm/{role}', [RoleController::class, 'updatePerm'])->name('roles-update-perm');
-    Route::get('/roles', [RoleController::class, 'index'])->name('roles');
-    Route::resource('roles', RoleController::class);
+        Route::post('/roles-update-perm/{role}', [RoleController::class, 'updatePerm'])->name('roles-update-perm');
+
+        Route::get('roles/{role}/permissions', [RoleController::class, 'permissions'])->name('roles.permissions');
+
+        Route::patch('roles/{role}/permissions/update', [RoleController::class, 'permissionsUpdate'])->name('roles.permissions.update');
+
+        Route::resource('roles', RoleController::class);
+
+    });
 
 });
 
 
 //ладно тут я запутался
-Route::post('/hide/{id}', [UsersController::class, 'hide'])->name('users.hide');
+Route::post('/hide/{user}', [UsersController::class, 'hide'])->name('users.hide');
 
 Route::get('/search/', [UsersController::class, 'search'])->name('users.search');
 
