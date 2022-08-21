@@ -19,7 +19,13 @@
                     <a class="nav-link" href="{{route('roles.index')}}">Роли</a>
                 </li>
                 @endif
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('products.index')}}">Товары</a>
+                </li>
 
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('categories.index')}}">Категории</a>
+                </li>
             </ul>
         </div>
     </div>

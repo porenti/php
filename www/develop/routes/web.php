@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,11 +22,11 @@ Route::get('/primer', function () {
 
 Route::middleware('auth')->group(function () {
 
+
+    Route::resource('products', ProductController::class);
+    Route::resource('categories', CategoryController::class);
+
     Route::middleware('role:admin|moder')->group(function () {
-
-        Route::post('users/{user}/roles-update', [UsersController::class, 'rolesUpdate'])->name('users.roles-update');
-
-        Route::get('users/{user}/roles-edit', [UsersController::class, 'rolesEdit'])->name('users.roles-edit');
 
         Route::get('users/{user}/swap-password', [UsersController::class, 'swapPasswordPage'])->name('users.swapPasswordPage');
 
@@ -35,6 +37,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/roles-perm', [RoleController::class, 'chekRolePermission'])->name('roles-perm');
 
         Route::post('/roles-update-perm/{role}', [RoleController::class, 'updatePerm'])->name('roles-update-perm');
+
 
         Route::get('roles/{role}/permissions', [RoleController::class, 'permissions'])->name('roles.permissions');
 
@@ -47,7 +50,12 @@ Route::middleware('auth')->group(function () {
 });
 
 
-//ладно тут я запутался
+
+
+Route::post('users/{user}/roles-update', [UsersController::class, 'rolesUpdate'])->name('users.roles-update');
+
+Route::get('users/{user}/roles-edit', [UsersController::class, 'rolesEdit'])->name('users.roles-edit');
+
 Route::post('/hide/{user}', [UsersController::class, 'hide'])->name('users.hide');
 
 Route::get('/search/', [UsersController::class, 'search'])->name('users.search');

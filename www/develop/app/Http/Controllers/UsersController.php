@@ -181,19 +181,16 @@ class UsersController extends Controller
         $image = $user->getImages()->last();
 
 
+
+
         return view('users.edit', compact('user', 'image'));
     }
 
     public function hide(User $user)
     {
-//        $users = User::where('id', $id)->get();
-        //var_dump($user);
-//        foreach ($users as $user) {
-//            $user->hidden();
-//        }
 
         $user->hidden();
-        //return get_class($user);
+
         return redirect()->route('users.index');
     }
 
