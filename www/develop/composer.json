@@ -8,10 +8,12 @@
         "php": "^8.0.2",
         "artesaos/seotools": "^0.22.1",
         "guzzlehttp/guzzle": "^7.2",
+        "intervention/image": "^2.7",
         "laravel/framework": "^9.19",
         "laravel/sanctum": "^2.14.1",
         "laravel/tinker": "^2.7",
         "laravel/ui": "^3.4",
+        "laravelcollective/html": "^6.3",
         "mmerian/doctrine-timestamp": "^1.0",
         "santigarcor/laratrust": "^7.1"
     },

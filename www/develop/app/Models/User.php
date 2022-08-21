@@ -3,12 +3,17 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Interfaces\Images\Imagable;
+use App\Models\Images\Image;
+use App\Traits\Relations\Images\HasImages;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laravel\Sanctum\HasApiTokens;
 use Laratrust\Traits\LaratrustUserTrait;
 
@@ -71,10 +76,11 @@ use Laratrust\Traits\LaratrustUserTrait;
  * @method static Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class User extends Authenticatable
+class User extends Authenticatable implements Imagable
 {
     use LaratrustUserTrait;
     use HasApiTokens, HasFactory, Notifiable;
+    use HasImages;
 
     /**
      * The attributes that are mass assignable.
@@ -121,6 +127,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'hide' => 'boolean',
     ];
+
 
     /**
      * @return BelongsTo
@@ -344,5 +351,13 @@ class User extends Authenticatable
 
 
         return $query;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPathForImages(): string
+    {
+        return 'users/' . $this->getKey() . '/images';
     }
 }
