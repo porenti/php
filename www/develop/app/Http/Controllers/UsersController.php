@@ -180,12 +180,17 @@ class UsersController extends Controller
         SEOMeta::setTitle('Редактирование - ' . $user->getNickname());
         $image = $user->getImages()->last();
 
+
+
+
         return view('users.edit', compact('user', 'image'));
     }
 
     public function hide(User $user)
     {
+
         $user->hidden();
+
         return redirect()->route('users.index');
     }
 

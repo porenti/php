@@ -22,6 +22,7 @@ Route::get('/primer', function () {
 
 Route::middleware('auth')->group(function () {
 
+
     Route::resource('products', ProductController::class);
     Route::resource('categories', CategoryController::class);
 
@@ -37,6 +38,7 @@ Route::middleware('auth')->group(function () {
 
         Route::post('/roles-update-perm/{role}', [RoleController::class, 'updatePerm'])->name('roles-update-perm');
 
+
         Route::get('roles/{role}/permissions', [RoleController::class, 'permissions'])->name('roles.permissions');
 
         Route::patch('roles/{role}/permissions/update', [RoleController::class, 'permissionsUpdate'])->name('roles.permissions.update');
@@ -49,9 +51,11 @@ Route::middleware('auth')->group(function () {
 
 
 
+
 Route::post('users/{user}/roles-update', [UsersController::class, 'rolesUpdate'])->name('users.roles-update');
 
 Route::get('users/{user}/roles-edit', [UsersController::class, 'rolesEdit'])->name('users.roles-edit');
+
 Route::post('/hide/{user}', [UsersController::class, 'hide'])->name('users.hide');
 
 Route::get('/search/', [UsersController::class, 'search'])->name('users.search');

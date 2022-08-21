@@ -14,9 +14,11 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
+
         $frd = $request->all();
         $roles = Role::filter($frd)->with('permissions')->paginate(20);
         $permissions = Permission::pluck('id', 'display_name');
+
 
 
 

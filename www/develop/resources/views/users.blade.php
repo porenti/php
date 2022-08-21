@@ -90,8 +90,10 @@
 
     @if(isset($users))
         @include('components.pagination',[
+
             'paginator' => $users,
             'paginatorValue' => 25,
+
         ])
     @endif
 
