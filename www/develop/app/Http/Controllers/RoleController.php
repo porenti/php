@@ -15,10 +15,20 @@ class RoleController extends Controller
      */
     public function index(Request $request)
     {
+<<<<<<< Updated upstream
         $roles = Role::get();
         $all_perms = Permission::select(['display_name','id'])->get();
         //$perms = Permission::get();
         return view('roles.roles-main', compact('roles','all_perms'));//,'perms'));
+=======
+        $frd = $request->all();
+        $roles = Role::filter($frd)->with('permissions')->paginate(20);
+        $permissions = Permission::pluck('id', 'display_name');
+
+
+
+        return view('roles.index', compact('roles', 'permissions'));//,'perms'));
+>>>>>>> Stashed changes
     }
 
     public function chekRolePermission(Request $request)

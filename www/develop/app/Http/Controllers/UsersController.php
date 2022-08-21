@@ -178,18 +178,28 @@ class UsersController extends Controller
     public function edit(User $user)
     {
         SEOMeta::setTitle('Редактирование - ' . $user->getNickname());
+<<<<<<< Updated upstream
 
         return view('users.edit', compact('user'));
+=======
+        $image = $user->getImages()->last();
+
+        return view('users.edit', compact('user', 'image'));
+>>>>>>> Stashed changes
     }
 
     public function hide($id)
     {
+<<<<<<< Updated upstream
         $users = User::where('id', $id)->get();
         //var_dump($user);
         foreach ($users as $user) {
             $user->hidden();
         }
         //return get_class($user);
+=======
+        $user->hidden();
+>>>>>>> Stashed changes
         return redirect()->route('users.index');
     }
 

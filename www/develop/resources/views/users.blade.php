@@ -88,6 +88,7 @@
         </tbody>
     </table>
     @if(isset($users))
+<<<<<<< Updated upstream
     <div>
       <nav aria-label="Page navigation example">
         <ul class="pagination">
@@ -95,6 +96,13 @@
           @for ($i = 1; $i <= ceil($users->total()/25); $i++)
             <li class="page-item"><a class="page-link" href="{{'users?page='.$i}}">{{$i}}</a></li>
           @endfor
+=======
+        @include('components.pagination',[
+            'paginator' => $users,
+            'paginatorValue' => 25,
+        ])
+    @endif
+>>>>>>> Stashed changes
 
         </ul>
       </nav>
