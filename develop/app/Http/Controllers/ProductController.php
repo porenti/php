@@ -12,7 +12,6 @@ class ProductController extends Controller
 {
 
 
-
     /**
      * Display a listing of the resource.
      *
@@ -22,13 +21,12 @@ class ProductController extends Controller
     {
         SEOMeta::setTitle('Товары');
         $frd = $request->all();
-        $categories = Category::select(['name','id'])->get();
+        $categories = Category::pluck('name', 'id');
         $products = Product::query()
-                  ->with(['category'])
-                  ->filter($frd)
-                  ->FilterDeleted()
-                  ->paginate(12);
-        return view('products.index', compact('products','categories','frd'));
+            ->with(['category'])
+            ->filter($frd)
+            ->paginate(12);
+        return view('products.index', compact('products', 'categories', 'frd'));
     }
 
     /**
@@ -46,32 +44,37 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-      $frd = $request->validate([
-        'name' => 'required',
-        'description' => 'required',
-        'price' => 'required',
-        'category_id' => 'required',
-      ]);
-      $product = new Product();
-      $product->setName($frd['name']);
-      $product->setDescription($frd['description']);
-      $product->setPrice((float)$frd['price']);
-      $product->setCategoryId($frd['category_id']);
-      $product->save();
-
-      return redirect()->route('products.index');
+        $frd = $request->validate([
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'category_id' => 'required',
+            'priceWithDiscount' => 'required',
+        ]);
+        $product = new Product();
+        $product->setName($frd['name']);
+        $product->setDescription($frd['description']);
+        $product->setPrice((float)$frd['price']);
+        $product->setCategoryId($frd['category_id']);
+        $product->setPriceWithDiscount($frd['priceWithDiscount']);
+        $product->save();
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $product->putImage($avatar, $product);
+        }
+        return redirect()->route('products.index');
 
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
     public function show(Product $product)
@@ -84,47 +87,52 @@ class ProductController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
     public function edit(Product $product)
     {
         SEOMeta::setTitle('Редактирование - ' . $product->getName());
         $categories = Category::select('name', 'id')->get();
-
-        return view('products.edit', compact('product','categories'));
+        $image = $product->getImages()->last();
+        return view('products.edit', compact('image','product', 'categories'));
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Product  $product
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Product $product)
     {
 
         $frd = $request->validate([
-          'name' => 'required',
-          'description' => 'required',
-          'price' => 'required',
-          'category_id' => 'required',
+            'name' => 'required',
+            'description' => 'required',
+            'price' => 'required',
+            'category_id' => 'required',
+            'priceWithDiscount' => 'required',
         ]);
         $product->setName($frd['name']);
         $product->setDescription($frd['description']);
         $product->setPrice((float)$frd['price']);
         $product->setCategoryId($frd['category_id']);
+        $product->setPriceWithDiscount($frd['priceWithDiscount']);
         $product->save();
 
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $product->putImage($avatar, $product);
+        }
         return redirect()->route('products.index');
-
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Product  $product
+     * @param \App\Models\Product $product
      * @return \Illuminate\Http\Response
      */
     public function destroy(Product $product)

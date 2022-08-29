@@ -3,7 +3,17 @@
 @section('content')
 
     <div class="container">
-        {{ Form::model($product,['url' => route('products.update', $product), 'method' => 'PATCH']) }}
+        {{ Form::open(['url' => route('products.store')]) }}
+
+        <div class="row">
+            <div class="col-12">
+                <label>
+                    Картинка
+                    <input type="file" class="form-control" name="avatar">
+                </label>
+            </div>
+        </div>
+
         @include('products.forms.form')
 
         <select name="category_id" class="form-control mb-3 mt-3">
@@ -15,7 +25,7 @@
         <div class="row my-1">
             <div class="col-12">
                 <button class="btn btn-success">
-                    Сохранить
+                    Создать
                 </button>
             </div>
         </div>

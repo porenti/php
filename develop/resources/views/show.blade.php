@@ -31,7 +31,7 @@
                 @method("DELETE")
                 <button class="btn btn-danger" type="submit"> Удалить</button>
             </form>
-            @if(auth()->user()->getKey() === $user->getKey() or auth()->user()->hasPermission('users-update'))
+            @if(auth()->check() ?? auth()->user()->getKey() === $user->getKey() ?? auth()->user()->hasPermission('users-update'))
               <!-- {{ auth()->user() }} {{ $user }} -->
               <a class="btn btn-success" href="{{route('users.swapPasswordPage', $user)}}">Смена пароля</a>
             @endif

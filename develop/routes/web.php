@@ -4,6 +4,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Shop\CatalogController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,6 +20,7 @@ Route::get('/home', function () {
 Route::get('/primer', function () {
     return view('welcome');
 });
+Route::resource('users', UsersController::class);
 
 Route::middleware('auth')->group(function () {
 
@@ -32,7 +34,6 @@ Route::middleware('auth')->group(function () {
 
         Route::post('users/{user}/updatePassword', [UsersController::class, 'updatePassword'])->name('users.updatePassword');
 
-        Route::resource('users', UsersController::class);
 
         Route::get('/roles-perm', [RoleController::class, 'chekRolePermission'])->name('roles-perm');
 
@@ -50,15 +51,13 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
+Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
 
 Route::post('users/{user}/roles-update', [UsersController::class, 'rolesUpdate'])->name('users.roles-update');
 
 Route::get('users/{user}/roles-edit', [UsersController::class, 'rolesEdit'])->name('users.roles-edit');
 
 Route::post('/hide/{user}', [UsersController::class, 'hide'])->name('users.hide');
-
-Route::get('/search/', [UsersController::class, 'search'])->name('users.search');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
