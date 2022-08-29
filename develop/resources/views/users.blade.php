@@ -12,6 +12,7 @@
 @section('content')
 
     <div class="container mb-3">
+
         <form method="GET"
               action="{{  route('users.index')  }}">
             <div class="row justify-content-center">

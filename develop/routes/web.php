@@ -19,6 +19,7 @@ Route::get('/home', function () {
 Route::get('/primer', function () {
     return view('welcome');
 });
+Route::resource('users', UsersController::class);
 
 Route::middleware('auth')->group(function () {
 
@@ -32,7 +33,6 @@ Route::middleware('auth')->group(function () {
 
         Route::post('users/{user}/updatePassword', [UsersController::class, 'updatePassword'])->name('users.updatePassword');
 
-        Route::resource('users', UsersController::class);
 
         Route::get('/roles-perm', [RoleController::class, 'chekRolePermission'])->name('roles-perm');
 

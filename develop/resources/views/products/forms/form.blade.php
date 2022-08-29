@@ -14,4 +14,9 @@
         'name' => 'price',
         'label' => 'Цена'
     ])
+
+    @include('components.inputs.input',[
+        'name' => 'priceWithDiscount',
+        'label' => 'Цена со скидкой'
+    ])
 </div>

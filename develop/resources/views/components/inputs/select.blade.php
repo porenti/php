@@ -2,7 +2,6 @@
 
 $id = $id ?? random_int(111, 999);
 $multiple = $multiple ?? false;
-
 ?>
 
 
@@ -15,7 +14,6 @@ $multiple = $multiple ?? false;
 
     @endisset
     <select class="form-control"
-            style="height: 12rem"
             {{ $multiple ? 'multiple' : null }}
             name="{{ $name }}"
             id="{{ $id }}">
