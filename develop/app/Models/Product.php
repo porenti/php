@@ -2,16 +2,20 @@
 
 namespace App\Models;
 
+use App\Traits\Relations\Images\HasImages;
+use App\Interfaces\Images\Imagable;
+use App\Models\Images\Image;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Product extends Model
+class Product extends Model implements Imagable
 {
     use HasFactory;
     use SoftDeletes;
+    use HasImages;
 
     protected $fillable = [
         'name',
@@ -114,5 +118,10 @@ class Product extends Model
     public function scopeFilterDeleted(Builder $query): Builder
     {
       return $query->where('deleted_at', null);
+    }
+
+    public function getPathForImages(): string
+    {
+        return 'catalog' . '/images';
     }
 }

@@ -63,7 +63,10 @@ class ProductController extends Controller
         $product->setCategoryId($frd['category_id']);
         $product->setPriceWithDiscount($frd['priceWithDiscount']);
         $product->save();
-
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $product->putImage($avatar, $product);
+        }
         return redirect()->route('products.index');
 
     }
@@ -91,8 +94,8 @@ class ProductController extends Controller
     {
         SEOMeta::setTitle('Редактирование - ' . $product->getName());
         $categories = Category::select('name', 'id')->get();
-
-        return view('products.edit', compact('product', 'categories'));
+        $image = $product->getImages()->last();
+        return view('products.edit', compact('image','product', 'categories'));
     }
 
     /**
@@ -119,8 +122,11 @@ class ProductController extends Controller
         $product->setPriceWithDiscount($frd['priceWithDiscount']);
         $product->save();
 
+        if ($request->hasFile('avatar')) {
+            $avatar = $request->file('avatar');
+            $product->putImage($avatar, $product);
+        }
         return redirect()->route('products.index');
-
     }
 
     /**

@@ -4,6 +4,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\Shop\CatalogController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,15 +51,13 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
+Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
 
 Route::post('users/{user}/roles-update', [UsersController::class, 'rolesUpdate'])->name('users.roles-update');
 
 Route::get('users/{user}/roles-edit', [UsersController::class, 'rolesEdit'])->name('users.roles-edit');
 
 Route::post('/hide/{user}', [UsersController::class, 'hide'])->name('users.hide');
-
-Route::get('/search/', [UsersController::class, 'search'])->name('users.search');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

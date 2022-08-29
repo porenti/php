@@ -4,6 +4,16 @@
 
     <div class="container">
         {{ Form::open(['url' => route('products.store')]) }}
+
+        <div class="row">
+            <div class="col-12">
+                <label>
+                    Картинка
+                    <input type="file" class="form-control" name="avatar">
+                </label>
+            </div>
+        </div>
+
         @include('products.forms.form')
 
         <select name="category_id" class="form-control mb-3 mt-3">
