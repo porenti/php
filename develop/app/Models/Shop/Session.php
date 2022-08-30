@@ -6,6 +6,9 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Support\Collection;
 
 /**
  * App\Models\Shop\Session
@@ -32,18 +35,57 @@ class Session extends Model
 {
     use HasFactory;
 
+
     protected $fillable = [
         'name',
         'user_id',
         'expired_at',
     ];
 
+
+    public function notCanceledCarts(): HasMany
+    {
+        return $this->carts()->filterNotCanceled();
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function notCanceledLastCart(): HasMany
+    {
+        return $this->notCanceledCarts()->latest('id')->take(1);
+    }
+
+    /**
+     * @return Cart|null
+     */
+    public function getNotCanceledLastCart(): ?Cart
+    {
+        return $this->notCanceledLastCart->first();
+    }
+
+    /**
+     * @return HasMany
+     */
+    public function carts(): HasMany
+    {
+        return $this->hasMany(Cart::class);
+    }
+
+    /**
+     * @return Collection
+     */
+    public function getCarts(): Collection
+    {
+        return $this->carts;
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function getUser(): User
+    public function getUser(): ?User
     {
         return $this->user;
     }
@@ -65,9 +107,9 @@ class Session extends Model
     }
 
     /**
-     * @return int
+     * @return int|null
      */
-    public function getUserId(): int
+    public function getUserId(): ?int
     {
         return $this->user_id;
     }

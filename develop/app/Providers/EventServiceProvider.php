@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Events\ImageUploaded;
 use App\Listeners\CreateImage;
+use App\Models\Shop\Cart;
 use App\Models\User;
+use App\Observers\CartObserver;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -34,6 +36,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+
+        Cart::observe(CartObserver::class);
     }
 
     /**

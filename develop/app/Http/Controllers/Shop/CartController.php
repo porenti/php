@@ -9,12 +9,23 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
         SEOMeta::setTitle('Корзина');
     }
 
-    public function update(Request $request, Product $product){
-        dd($product);
+    public function update(Request $request, Product $product)
+    {
+
+
+        $productId = $request->input('product_id');
+        $cartItemId = $request->input('cart_item_id');
+
+
+        $quantity = $request->input('quantity') ?? 1;
+
+
+
         return redirect()->route('catalog.index');
     }
 }

@@ -41,6 +41,8 @@ class PurchaseDetail extends Model
 {
     use HasFactory;
 
+    public $timestamps = false;
+
     protected $fillable = [
         'user_id',
         'delivery_id',
@@ -56,6 +58,7 @@ class PurchaseDetail extends Model
     {
         return $this->belongsTo(User::class);
     }
+
     public function getUser(): User
     {
         return $this->user;
@@ -65,6 +68,7 @@ class PurchaseDetail extends Model
     {
         return $this->belongsTo(Address::class);
     }
+
     public function getAddress(): Address
     {
         return $this->address;
@@ -74,6 +78,7 @@ class PurchaseDetail extends Model
     {
         return $this->belongsTo(Delivery::class);
     }
+
     public function getDelivery(): Delivery
     {
         return $this->delivery;
@@ -83,6 +88,7 @@ class PurchaseDetail extends Model
     {
         return $this->belongsTo(PaymentMethod::class);
     }
+
     public function getPaymentMethod(): PaymentMethod
     {
         return $this->paymentMethod;

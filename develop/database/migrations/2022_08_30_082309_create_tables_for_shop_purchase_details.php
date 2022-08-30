@@ -15,14 +15,14 @@ return new class extends Migration
     {
         Schema::create('purchase_details', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->references('id')->on('users')->nullable();
-            $table->foreignId('delivery_id')->references('id')->on('deliveries')->nullable();
-            $table->foreignId('address_id')->references('id')->on('addresses')->nullable();
+            $table->foreignId('user_id')->nullable()->references('id')->on('users');
+            $table->foreignId('delivery_id')->nullable()->references('id')->on('deliveries');
+            $table->foreignId('address_id')->nullable()->references('id')->on('addresses');
             $table->foreignId('payment_method_id')->references('id')->on('payment_methods');
-            $table->integer('subtotal_amount');
-            $table->integer('total_amount');
-            $table->integer('total_sale');
-            $table->integer('delivery_price');
+            $table->integer('subtotal_amount')->default(0);
+            $table->integer('total_amount')->default(0);
+            $table->integer('total_sale')->default(0);
+            $table->integer('delivery_price')->default(0);
         });
     }
 

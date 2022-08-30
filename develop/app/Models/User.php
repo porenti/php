@@ -280,7 +280,7 @@ class User extends Authenticatable implements Imagable
 
     public function hidden()
     {
-        $this->hide = TRUE;
+        $this->hide = true;
         $this->hide_time = now();
         $this->save();
     }

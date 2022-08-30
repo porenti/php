@@ -6,6 +6,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\Shop\CatalogController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Shop\CartController;
 
 /*
 VIEWS.PY
@@ -30,6 +31,12 @@ Route::middleware('auth')->group(function () {
 
     Route::middleware('role:admin|moder')->group(function () {
 
+        Route::post('users/{user}/roles-update', [UsersController::class, 'rolesUpdate'])->name('users.roles-update');
+
+        Route::get('users/{user}/roles-edit', [UsersController::class, 'rolesEdit'])->name('users.roles-edit');
+
+        Route::post('/hide/{user}', [UsersController::class, 'hide'])->name('users.hide');
+
         Route::get('users/{user}/swap-password', [UsersController::class, 'swapPasswordPage'])->name('users.swapPasswordPage');
 
         Route::post('users/{user}/updatePassword', [UsersController::class, 'updatePassword'])->name('users.updatePassword');
@@ -50,15 +57,15 @@ Route::middleware('auth')->group(function () {
 
 });
 
+Route::middleware('cart')->group(function () {
 
-Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
-Route::resource('cart', \App\Http\Controllers\Shop\CartController::Class);
+    Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
 
-Route::post('users/{user}/roles-update', [UsersController::class, 'rolesUpdate'])->name('users.roles-update');
 
-Route::get('users/{user}/roles-edit', [UsersController::class, 'rolesEdit'])->name('users.roles-edit');
+    Route::get('cart', [CartController::class, 'index'])->name('shop.cart.index');
+    Route::get('update', [CartController::class, 'update'])->name('shop.cart.update');
+});
 
-Route::post('/hide/{user}', [UsersController::class, 'hide'])->name('users.hide');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
