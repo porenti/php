@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('cart_id')->references('id')->on('carts');
             $table->foreignId('purchase_item_detail_id')->references('id')->on('purchase_item_details');
-            $table->timestamp('created_at')->nullable();
+            $table->timestamp('created_at');
             $table->timestamp('deleted_at')->nullable();
         });
         Schema::create('order_items', function (Blueprint $table) {
@@ -25,7 +25,7 @@ return new class extends Migration
             $table->foreignId('order_id')->references('id')->on('orders');
             $table->foreignId('cart_item_id')->references('id')->on('cart_items');
             $table->foreignId('purchase_item_detail_id')->references('id')->on('purchase_item_details');
-            $table->timestamp('created_at')->nullable();
+            $table->timestamp('created_at');
             $table->timestamp('deleted_at')->nullable();
         });
     }

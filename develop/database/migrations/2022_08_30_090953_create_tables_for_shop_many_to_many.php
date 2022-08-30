@@ -14,7 +14,6 @@ return new class extends Migration
     public function up()
     {
         Schema::create('deliveries_payment_methods', function (Blueprint $table) {
-
             $table->foreignId('delivery_id')->references('id')->on('deliveries');
             $table->foreignId('payment_method_id')->references('id')->on('payment_methods');
         });
@@ -27,6 +26,7 @@ return new class extends Migration
      */
     public function down()
     {
+
         Schema::dropIfExists('deliveries_payment_methods');
     }
 };

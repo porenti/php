@@ -30,7 +30,6 @@ class UsersController extends Controller
      */
     public function index(Request $request)
     {
-
         SEOMeta::setTitle('Пользователи');
 
         $frd = $request->all();

@@ -2,6 +2,7 @@
 
 namespace App\Models\Shop;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -29,16 +30,30 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Cart extends Model
 {
     use HasFactory;
+
+    public const UPDATED_AT = null;
+
     protected $fillable = [
         'session_id',
         'purchase_detail_id',
         'canceled_at',
     ];
 
+
+    /**
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeFilterNotCanceled(Builder $query): Builder
+    {
+        return $query->whereNull('canceled_at');
+    }
+
     public function session(): BelongsTo
     {
         return $this->belongsTo(Session::class);
     }
+
     public function getSession(): Session
     {
         return $this->session;
@@ -48,6 +63,7 @@ class Cart extends Model
     {
         return $this->belongsTo(PurchaseDetail::class);
     }
+
     public function getPurchaseDetail(): PurchaseDetail
     {
         return $this->purchaseDetail;

@@ -40,7 +40,7 @@ return new class extends Migration
             $table->foreignId('city_id')->references('id')->on('address_cities');
             $table->foreignId('street_id')->references('id')->on('address_streets');
             $table->foreignId('house_id')->references('id')->on('address_houses');
-            $table->string('room');
+            $table->string('room')->nullable();
         });
     }
 

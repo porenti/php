@@ -23,6 +23,11 @@ class PaymentMethod extends Model
 {
     use HasFactory;
 
+    public const LIST_PICKUP = 1;
+    public const LIST_CASH = 2;
+    public const LIST_CARD_PAYMENT = 3;
+    public const LIST_ONLINE = 4;
+
     protected $fillable = [
         'name',
     ];
