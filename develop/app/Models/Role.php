@@ -8,9 +8,8 @@ use Illuminate\Support\Collection;
 use Laratrust\Models\LaratrustRole;
 
 /**
- * Class Role
+ * App\Models\Role
  *
- * @package App\Models
  * @property int $id
  * @property string $name
  * @property string|null $display_name
@@ -19,6 +18,8 @@ use Laratrust\Models\LaratrustRole;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Permission[] $permissions
  * @property-read int|null $permissions_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Role filter(array $frd)
+ * @method static \Illuminate\Database\Eloquent\Builder|Role filterSearch(string $value)
  * @method static \Illuminate\Database\Eloquent\Builder|Role newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Role newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Role query()
@@ -29,8 +30,6 @@ use Laratrust\Models\LaratrustRole;
  * @method static \Illuminate\Database\Eloquent\Builder|Role whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Role whereUpdatedAt($value)
  * @mixin \Eloquent
- * @method static \Illuminate\Database\Eloquent\Builder|Role filter(array $frd)
- * @method static \Illuminate\Database\Eloquent\Builder|Role filterSearch(string $value)
  */
 class Role extends LaratrustRole
 {

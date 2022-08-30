@@ -29,7 +29,7 @@ use Laratrust\Traits\LaratrustUserTrait;
  * @property string $description
  * @property int $age
  * @property bool $hide
- * @property string $hide_time
+ * @property string|null $hide_time
  * @property string $email
  * @property \Illuminate\Support\Carbon|null $email_verified_at
  * @property string $password
@@ -37,6 +37,8 @@ use Laratrust\Traits\LaratrustUserTrait;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Gender $gender
+ * @property-read \Illuminate\Database\Eloquent\Collection|Image[] $images
+ * @property-read int|null $images_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Permission[] $permissions
