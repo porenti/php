@@ -52,6 +52,7 @@ Route::middleware('auth')->group(function () {
 
 
 Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
+Route::resource('cart', \App\Http\Controllers\Shop\CartController::Class);
 
 Route::post('users/{user}/roles-update', [UsersController::class, 'rolesUpdate'])->name('users.roles-update');
 

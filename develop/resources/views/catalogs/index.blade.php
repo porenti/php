@@ -38,8 +38,11 @@
                             <h5 class="card-title">{{ $product->getName() }}</h5>
                             <p class="card-text">{{ $product->getDescription() }}</p>
                             <div class="row">
-                                <div class="col-lg-1">
-                                    <a href="{{ route('products.show', $product) }}" class="btn btn-success">+</a>
+                                <div class="col-lg-2">
+                                    {{ Form::model($product,['url' => route('cart.update', $product), 'method' => 'PATCH']) }}
+
+                                    <button class="btn btn-success">+</button>
+                                    {{ Form::close() }}
                                 </div>
                                 <div class="col-lg-3">
                                     <a href="{{ route('products.show', $product) }}" class="btn btn-primary">show</a>

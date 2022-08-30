@@ -13,6 +13,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property int $id
  * @property string $imagable_type
  * @property int $imagable_id
+ * @property string $local_path
  * @property string $public_path
  * @property string $name
  * @property string $mime_type
@@ -22,6 +23,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property int $height
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read Model|\Eloquent $imagable
  * @method static \Illuminate\Database\Eloquent\Builder|Image newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Image newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Image query()
@@ -31,9 +33,10 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Image whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Image whereImagableId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Image whereImagableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Image whereLocalPath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Image whereMimeType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Image whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image wherePublicPatch($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Image wherePublicPath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Image whereSize($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Image whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Image whereWidth($value)
