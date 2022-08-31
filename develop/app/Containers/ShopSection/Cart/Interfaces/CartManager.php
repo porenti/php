@@ -5,6 +5,7 @@ namespace App\Containers\ShopSection\Cart\Interfaces;
 
 use App\Models\Shop\Cart;
 
+//объявляем интерфейс который деклалирует методы которые мы можем использовать в дальнейшем
 interface CartManager
 {
 

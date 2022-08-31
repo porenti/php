@@ -8,10 +8,9 @@ use App\Models\Shop\PurchaseDetail;
 class GenerateCommonPurchaseDetailAction
 {
 
-
+    //действие которое создает запись в бд
     public function run(?int $userId): PurchaseDetail
     {
-
         return PurchaseDetail::create([
             'user_id' => $userId,
             'delivery_id' => null,

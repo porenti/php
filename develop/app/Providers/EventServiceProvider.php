@@ -36,7 +36,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        // добавили наблюдатель за класс для отловки ивентов
         Cart::observe(CartObserver::class);
     }
 

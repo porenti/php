@@ -58,7 +58,7 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::middleware('cart')->group(function () {
-
+// middleware - группировка рутов и выдача им стартового функционала по имени 'cart'
     Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
 
 

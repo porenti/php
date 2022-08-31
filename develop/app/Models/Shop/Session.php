@@ -15,11 +15,17 @@ use Illuminate\Support\Collection;
  *
  * @property int $id
  * @property string $name
- * @property int $user_id
+ * @property int|null $user_id
  * @property string|null $expired_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\Cart[] $carts
+ * @property-read int|null $carts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\Cart[] $notCanceledCarts
+ * @property-read int|null $not_canceled_carts_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\Cart[] $notCanceledLastCart
+ * @property-read int|null $not_canceled_last_cart_count
+ * @property-read User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|Session newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Session newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Session query()
@@ -45,7 +51,7 @@ class Session extends Model
 
     public function notCanceledCarts(): HasMany
     {
-        return $this->carts()->filterNotCanceled();
+        return $this->carts()->filterNotCanceled(); //обращаемся к фильтру из модели Cart
     }
 
     /**
@@ -69,7 +75,7 @@ class Session extends Model
      */
     public function carts(): HasMany
     {
-        return $this->hasMany(Cart::class);
+        return $this->hasMany(Cart::class); //связь обратная BelongsTo
     }
 
     /**

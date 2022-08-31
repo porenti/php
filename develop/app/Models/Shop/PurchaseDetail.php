@@ -11,18 +11,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * App\Models\Shop\PurchaseDetail
  *
  * @property int $id
- * @property int $user_id
- * @property int $delivery_id
- * @property int $address_id
+ * @property int|null $user_id
+ * @property int|null $delivery_id
+ * @property int|null $address_id
  * @property int $payment_method_id
  * @property int $subtotal_amount
  * @property int $total_amount
  * @property int $total_sale
  * @property int $delivery_price
- * @property-read \App\Models\Shop\Address $address
- * @property-read \App\Models\Shop\Delivery $delivery
+ * @property-read \App\Models\Shop\Address|null $address
+ * @property-read \App\Models\Shop\Delivery|null $delivery
  * @property-read \App\Models\Shop\PaymentMethod $paymentMethod
- * @property-read User $user
+ * @property-read User|null $user
  * @method static \Illuminate\Database\Eloquent\Builder|PurchaseDetail newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PurchaseDetail newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PurchaseDetail query()

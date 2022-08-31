@@ -17,14 +17,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property-read \App\Models\Shop\PurchaseDetail $purchaseDetail
  * @property-read \App\Models\Shop\Session $session
- * @method static \Illuminate\Database\Eloquent\Builder|Cart newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Cart newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Cart query()
- * @method static \Illuminate\Database\Eloquent\Builder|Cart whereCanceledAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Cart whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Cart whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Cart wherePurchaseDetailId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Cart whereSessionId($value)
+ * @method static Builder|Cart filterNotCanceled()
+ * @method static Builder|Cart newModelQuery()
+ * @method static Builder|Cart newQuery()
+ * @method static Builder|Cart query()
+ * @method static Builder|Cart whereCanceledAt($value)
+ * @method static Builder|Cart whereCreatedAt($value)
+ * @method static Builder|Cart whereId($value)
+ * @method static Builder|Cart wherePurchaseDetailId($value)
+ * @method static Builder|Cart whereSessionId($value)
  * @mixin \Eloquent
  */
 class Cart extends Model

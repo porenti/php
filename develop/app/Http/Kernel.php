@@ -64,6 +64,7 @@ class Kernel extends HttpKernel
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'cart' => DefineCartMiddleware::class
+        'cart' => DefineCartMiddleware::class // объявление мидлвейра и присвоение ему класса
+        //путь не указываем потому что объявили в 5 строчке
     ];
 }
