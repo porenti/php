@@ -36,20 +36,13 @@ class Manager implements CartManager
 //        $cart->loadCount('cartItems.purchaseItemDetail', function (Builder $query) use ($productId) {
 //            return $query->where('product_id', $productId);
 //        });
-
         $result = $cart
-                ->cartItems()
-                ->whereHas('purchaseItemDetail', function (Builder $query) use ($productId) {
+                ->whereHas('cartItems', function (Builder $query) use ($productId) {
                     return $query->where('product_id', $productId);
                 })
                 ->count() > 0;
 
         return $result;
     }
-    public function getItemsPurchase()
-    {
-        $cart = app()['cart']->getCart()->purchaseItemDetails()->get();
 
-        dd($cart);
-    }
 }

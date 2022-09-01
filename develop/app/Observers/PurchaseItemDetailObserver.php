@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Containers\ShopSection\CartItem\Actions\GenerateCartItemAction;
+use App\Containers\ShopSection\CartItem\Actions\GenerateNewCartItemAction;
 use App\Models\Shop\PurchaseItemDetail;
 
 class PurchaseItemDetailObserver
@@ -12,6 +12,6 @@ class PurchaseItemDetailObserver
         $purchaseItemDetailId = $purchaseItemDetail->getKey();
         //мы на это закроем глаза.........
 
-        app(GenerateCartItemAction::class)->run(app()['cart']->getCart()->getKey(), $purchaseItemDetailId);
+        app(GenerateNewCartItemAction::class)->run(app()['cart']->getCart()->getKey(), $purchaseItemDetailId);
     }
 }

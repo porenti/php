@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Shop\CartItem;
 use App\Traits\Relations\Images\HasImages;
 use App\Interfaces\Images\Imagable;
 use App\Models\Images\Image;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -60,6 +62,16 @@ class Product extends Model implements Imagable
         'deleted_at',
         'priceWithDiscount',
     ];
+    protected $casts = [
+        'price' => 'int',
+        'priceWithDiscount' => 'int'
+    ];
+
+    public function cartItems(): HasMany
+    {
+        return $this->HasMany(CartItem::class);
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
@@ -74,7 +86,8 @@ class Product extends Model implements Imagable
     {
         $this->category_id = $category_id;
     }
-    public function getPrice(): float
+
+    public function getPrice(): int
     {
         return $this->price;
     }
@@ -104,7 +117,7 @@ class Product extends Model implements Imagable
         $this->description = $description;
     }
 
-    public function getPriceWithDiscount(): float
+    public function getPriceWithDiscount(): ?int
     {
         return $this->priceWithDiscount;
     }
@@ -121,8 +134,8 @@ class Product extends Model implements Imagable
 
     public function scopeFilterProduct(Builder $query, string $value): Builder
     {
-        $query->where('name', 'like', '%'.$value.'%')
-            ->orWhere('description', 'like', '%'.$value.'%');
+        $query->where('name', 'like', '%' . $value . '%')
+            ->orWhere('description', 'like', '%' . $value . '%');
         return $query;
     }
 
@@ -158,5 +171,15 @@ class Product extends Model implements Imagable
     public function getPathForImages(): string
     {
         return 'catalog' . '/images';
+    }
+
+    public function getSale(): int {
+        if ($this->getPriceWithDiscount()!==null)
+        {
+            return $this->getPrice()-$this->getPriceWithDiscount();
+        }
+        else {
+            return 0;
+        }
     }
 }

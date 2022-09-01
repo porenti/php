@@ -18,16 +18,13 @@ class CatalogController extends Controller
         SEOMeta::setTitle('Каталог');
         $frd = $request->all();
         $categories = Category::pluck('name', 'id');
-        $products = Product::query()->paginate(12);
-        /*$products = Product::query()
-            ->withCount(['purchaseItemDetails as count_in_cart' => function (Builder $query){
-                $query->whereHas('cartItem', function ($query){
+        $products = Product::query()
+            ->withCount(['cartItems as count_in_cart' => function (Builder $query){
                     $query->where('cart_id', app()['cart']->getCart()->getKey());
-                });
             }])
             ->with(['category'])
             ->filter($frd)
-            ->paginate(12);*/
+            ->paginate(12);
         return view('catalogs.index', compact('products', 'categories', 'frd'));
     }
 }
