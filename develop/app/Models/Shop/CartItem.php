@@ -2,37 +2,68 @@
 
 namespace App\Models\Shop;
 
+
+use App\Models\Product;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Shop\CartItem
  *
  * @property int $id
  * @property int $cart_id
- * @property int $purchase_item_detail_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property string|null $deleted_at
+ * @property int $product_id
+ * @property int $quantity
+ * @property int $sale
+ * @property int $subtotal_amount
+ * @property int $amount
+ * @property string $created_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \App\Models\Shop\Cart $cart
- * @property-read \App\Models\Shop\PurchaseItemDetail $purchaseItemDetail
+ * @property-read Product $product
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem newQuery()
+ * @method static \Illuminate\Database\Query\Builder|CartItem onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereAmount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereCartId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CartItem wherePurchaseItemDetailId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereProductId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereSale($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereSubtotalAmount($value)
+ * @method static \Illuminate\Database\Query\Builder|CartItem withTrashed()
+ * @method static \Illuminate\Database\Query\Builder|CartItem withoutTrashed()
  * @mixin \Eloquent
  */
 class CartItem extends Model
 {
     use HasFactory;
 
+    use SoftDeletes;
+    protected $table = 'cart_items';
+    public $timestamps = false;
+
+    protected $casts = [
+        'cart_id' => 'int',
+        'product_id' => 'int',
+        'quantity' => 'int',
+        'sale' => 'int',
+        'subtotal_amount' => 'int',
+        'amount' => 'int'
+    ];
+
     protected $fillable = [
         'cart_id',
-        'purchase_item_detail_id',
+        'product_id',
+        'quantity',
+        'sale',
+        'subtotal_amount',
+        'amount'
     ];
 
     public function cart(): BelongsTo
@@ -45,14 +76,12 @@ class CartItem extends Model
         return $this->cart;
     }
 
-    public function purchaseItemDetail(): BelongsTo
+    public function product()
     {
-        return $this->belongsTo(PurchaseItemDetail::class);
+        return $this->belongsTo(Product::class);
     }
-
-    public function getPurchaseItemDetail(): PurchaseItemDetail
-    {
-        return $this->purchaseItemDetail;
+    public function getProduct(){
+        return $this->product;
     }
 
     /**
@@ -74,17 +103,82 @@ class CartItem extends Model
     /**
      * @return int
      */
-    public function getPurchaseItemDetailId(): int
+    public function getProductId(): int
     {
-        return $this->purchase_item_detail_id;
+        return $this->product_id;
     }
 
     /**
-     * @param int $purchase_item_detail_id
+     * @param int $product_id
      */
-    public function setPurchaseItemDetailId(int $purchase_item_detail_id): void
+    public function setProductId(int $product_id): void
     {
-        $this->purchase_item_detail_id = $purchase_item_detail_id;
+        $this->product_id = $product_id;
     }
+
+    /**
+     * @return int
+     */
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @param int $quantity
+     */
+    public function setQuantity(int $quantity): void
+    {
+        $this->quantity = $quantity;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSale(): int
+    {
+        return $this->sale;
+    }
+
+    /**
+     * @param int $sale
+     */
+    public function setSale(int $sale): void
+    {
+        $this->sale = $sale;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSubtotalAmount(): int
+    {
+        return $this->subtotal_amount;
+    }
+
+    /**
+     * @param int $subtotal_amount
+     */
+    public function setSubtotalAmount(int $subtotal_amount): void
+    {
+        $this->subtotal_amount = $subtotal_amount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getAmount(): int
+    {
+        return $this->amount;
+    }
+
+    /**
+     * @param int $amount
+     */
+    public function setAmount(int $amount): void
+    {
+        $this->amount = $amount;
+    }
+
 
 }

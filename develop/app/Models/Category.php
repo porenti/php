@@ -32,26 +32,26 @@ class Category extends Model
     use HasFactory;
 
     protected $fillable = [
-            'name',
-            'deleted_at',
-        ];
+        'name',
+        'deleted_at',
+    ];
 
     public function getName(): string
     {
-      return $this->name;
+        return $this->name;
     }
 
     public function setName($name)
     {
-      $this->name = $name;
+        $this->name = $name;
     }
 
     public function softDelete()
     {
-      //на сколько я понял мы просто добавляем время удаления и
-      //не выводим записи где время удаления не равно null
-      $this->deleted_at = now();
-      $this->save();
+        //на сколько я понял мы просто добавляем время удаления и
+        //не выводим записи где время удаления не равно null
+        $this->deleted_at = now();
+        $this->save();
     }
     public function scopeFilterSearch(Builder $query, string $value): Builder
     {
@@ -72,7 +72,7 @@ class Category extends Model
                 case 'search':
                     {
 
-                       $query->filterSearch($value);
+                        $query->filterSearch($value);
                     }
                     break;
             }
@@ -83,6 +83,6 @@ class Category extends Model
     }
     public function scopeFilterDeleted(Builder $query): Builder
     {
-      return $query->where('deleted_at', null);
+        return $query->where('deleted_at', null);
     }
 }

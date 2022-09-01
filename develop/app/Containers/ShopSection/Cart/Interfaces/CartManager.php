@@ -10,4 +10,5 @@ interface CartManager
 {
 
     public function setCart(Cart $cart): self;
+    public function getCart(): Cart;
 }

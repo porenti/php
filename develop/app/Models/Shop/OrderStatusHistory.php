@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $id
  * @property int $order_id
  * @property int $order_status_id
- * @property \Illuminate\Support\Carbon|null $created_at
+ * @property string $created_at
  * @property-read \App\Models\Shop\Order $order
  * @property-read \App\Models\Shop\OrderStatus $orderStatus
  * @method static \Illuminate\Database\Eloquent\Builder|OrderStatusHistory newModelQuery()
@@ -28,9 +28,17 @@ class OrderStatusHistory extends Model
 {
     use HasFactory;
 
+    protected $table = 'order_status_histories';
+    public $timestamps = false;
+
+    protected $casts = [
+        'order_id' => 'int',
+        'order_status_id' => 'int'
+    ];
+
     protected $fillable = [
         'order_id',
-        'cart_item_id',
+        'order_status_id'
     ];
 
     public function order(): BelongsTo
@@ -52,4 +60,21 @@ class OrderStatusHistory extends Model
     {
         return $this->orderStatus;
     }
+
+    /**
+     * @param int $order_id
+     */
+    public function setOrderId(int $order_id): void
+    {
+        $this->order_id = $order_id;
+    }
+
+    /**
+     * @param int $order_status_id
+     */
+    public function setOrderStatusId(int $order_status_id): void
+    {
+        $this->order_status_id = $order_status_id;
+    }
+
 }

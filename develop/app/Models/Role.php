@@ -117,7 +117,7 @@ class Role extends LaratrustRole
                 case 'search':
                     {
 
-                       $query->filterSearch($value);
+                        $query->filterSearch($value);
                     }
                     break;
             }

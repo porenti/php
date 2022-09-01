@@ -2,6 +2,7 @@
 
 namespace App\Models\Shop;
 
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,8 +12,11 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property string $name
  * @property int $price
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\PaymentMethod[] $paymentMethod
- * @property-read int|null $payment_method_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\Cart[] $carts
+ * @property-read int|null $carts_count
+ * @property-read \App\Models\Shop\DeliveriesPaymentMethod|null $deliveries_payment_method
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\Order[] $orders
+ * @property-read int|null $orders_count
  * @method static \Illuminate\Database\Eloquent\Builder|Delivery newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Delivery newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Delivery query()
@@ -30,9 +34,19 @@ class Delivery extends Model
         'price',
     ];
 
-    public function paymentMethod(): \Illuminate\Database\Eloquent\Relations\MorphToMany
+    public function carts()
     {
-        return $this->morphToMany(PaymentMethod::class, 'deliveries_payment_methods');
+        return $this->hasMany(Cart::class);
+    }
+
+    public function deliveries_payment_method()
+    {
+        return $this->hasOne(DeliveriesPaymentMethod::class);
+    }
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 
     /**

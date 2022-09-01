@@ -1,4 +1,4 @@
-@extends('layouts.maintemple')
+@extends('layouts.app')
 @section('content')
     <div class="container">
         {{ Form::open(['url' => route('products.index'), 'method' => 'GET']) }}
@@ -32,16 +32,22 @@
                     <div class="card">
 
 
-                        <img src="{{ $product->getImages()->last()->getPublicPath() }}" width="{{ $product->getImages()->last()->getWidth() }}" class="card-img-top" alt="{{ $product->getImages()->last()->getAlt() }}">
+                        <img src="{{ $product->getImages()->last()->getPublicPath() }}"
+                             width="{{ $product->getImages()->last()->getWidth() }}" class="card-img-top"
+                             alt="{{ $product->getImages()->last()->getAlt() }}">
 
                         <div class="card-body">
                             <h5 class="card-title">{{ $product->getName() }}</h5>
                             <p class="card-text">{{ $product->getDescription() }}</p>
                             <div class="row">
                                 <div class="col-lg-2">
-                                    {{ Form::model($product,['url' => route('cart.update', $product), 'method' => 'PATCH']) }}
-
-                                    <button class="btn btn-success">+</button>
+                                    {{ Form::open(['url' => route('shop.cart.update'), 'method' => 'PATCH']) }}
+                                    {{ Form::hidden('product_id',$product->getKey()) }}
+                                    @if($product->count_in_cart > 0)
+                                        <button class="btn btn-success" disabled>Товар уже в корзине</button>
+                                    @else
+                                        <button class="btn btn-success">+</button>
+                                    @endif
                                     {{ Form::close() }}
                                 </div>
                                 <div class="col-lg-3">

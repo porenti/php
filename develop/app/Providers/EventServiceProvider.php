@@ -5,8 +5,10 @@ namespace App\Providers;
 use App\Events\ImageUploaded;
 use App\Listeners\CreateImage;
 use App\Models\Shop\Cart;
+use App\Models\Shop\PurchaseItemDetail;
 use App\Models\User;
 use App\Observers\CartObserver;
+use App\Observers\PurchaseItemDetailObserver;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -37,7 +39,8 @@ class EventServiceProvider extends ServiceProvider
     public function boot()
     {
         // добавили наблюдатель за класс для отловки ивентов
-        Cart::observe(CartObserver::class);
+        //Cart::observe(CartObserver::class);
+        //PurchaseItemDetail::observe(PurchaseItemDetailObserver::class);
     }
 
     /**

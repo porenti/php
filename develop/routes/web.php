@@ -63,7 +63,7 @@ Route::middleware('cart')->group(function () {
 
 
     Route::get('cart', [CartController::class, 'index'])->name('shop.cart.index');
-    Route::get('update', [CartController::class, 'update'])->name('shop.cart.update');
+    Route::patch('update/', [CartController::class, 'addNewItem'])->name('shop.cart.update');
 });
 
 

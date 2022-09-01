@@ -60,39 +60,39 @@ class Product extends Model implements Imagable
         'deleted_at',
         'priceWithDiscount',
     ];
-   public function category(): BelongsTo
-   {
-       return $this->belongsTo(Category::class);
-   }
-
-  public function getCategory(): Category
-  {
-      return $this->category;
-  }
-
-  public function setCategoryId(int $category_id): void
-  {
-    $this->category_id = $category_id;
-  }
-  public function getPrice(): float
+    public function category(): BelongsTo
     {
-      return $this->price;
+        return $this->belongsTo(Category::class);
     }
 
-  public function setPrice($price)
+    public function getCategory(): Category
     {
-      $this->price = $price;
+        return $this->category;
+    }
+
+    public function setCategoryId(int $category_id): void
+    {
+        $this->category_id = $category_id;
+    }
+    public function getPrice(): float
+    {
+        return $this->price;
+    }
+
+    public function setPrice($price)
+    {
+        $this->price = $price;
     }
 
     public function getName(): string
-      {
+    {
         return $this->name;
-      }
+    }
 
     public function setName($name)
-      {
+    {
         $this->name = $name;
-      }
+    }
 
     public function getDescription(): string
     {
@@ -115,15 +115,15 @@ class Product extends Model implements Imagable
     }
 
     public function softDelete()
-      {
+    {
         $this->destroy();
-      }
+    }
 
     public function scopeFilterProduct(Builder $query, string $value): Builder
     {
-      $query->where('name', 'like', '%'.$value.'%')
+        $query->where('name', 'like', '%'.$value.'%')
             ->orWhere('description', 'like', '%'.$value.'%');
-      return $query;
+        return $query;
     }
 
     public function scopeFilter(Builder $query, array $frd): Builder
@@ -137,22 +137,22 @@ class Product extends Model implements Imagable
                 case 'search':
                     {
 
-                       $query->FilterProduct($value);
+                        $query->FilterProduct($value);
                     }
                     break;
                 case 'category':
-                    {
-                      $query->where('category_id', $value);
-                    }
+                {
+                    $query->where('category_id', $value);
+                }
             }
 
         }
-                return $query;
+        return $query;
     }
 
     public function scopeFilterDeleted(Builder $query): Builder
     {
-      return $query->where('deleted_at', null);
+        return $query->where('deleted_at', null);
     }
 
     public function getPathForImages(): string
