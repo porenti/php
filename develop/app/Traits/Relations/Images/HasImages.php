@@ -6,6 +6,7 @@ use App\Events\ImageUploaded;
 use App\Interfaces\Images\Imagable;
 use App\Models\Images\Image;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Collection;
 use Intervention\Image\ImageManager;
@@ -24,6 +25,32 @@ trait HasImages
     public function getImages(): Collection
     {
         return $this->images;
+    }
+
+    public function image(): MorphMany
+    {
+        return $this->images()->latest('id')->take(1);
+    }
+
+    public function getImage(): ?Image
+    {
+        return $this->image->first();
+    }
+
+    public function getImagePublicPath(): string
+    {
+        return $this->getImage()?->getPublicPath() ?? '/images/products/avatar.webp';
+    }
+
+    public function getImageWidth(): int
+    {
+        return $this->getImage()?->getWidth() ?? 100;
+    }
+
+    public function getImageAlt(): string
+    {
+        return $this->getImage()?->getAlt()
+            ?? $this->getName();
     }
 
     public function putImage(UploadedFile $image, Imagable $imagable): Image
@@ -47,7 +74,7 @@ trait HasImages
 
         \Storage::put($pathForImage . '/' . $filename . '.' . $mime, $processedImage);
 
-        event(new ImageUploaded($imagable, $imageForProcessed, $pathForImage,$filename));
+        event(new ImageUploaded($imagable, $imageForProcessed, $pathForImage, $filename));
 
 
         $imagable->load('images');

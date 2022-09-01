@@ -120,15 +120,6 @@ class Cart extends Model
         return $this->hasManyThrough(PurchaseItemDetail::class,CartItem::class,'purchase_item_detail_id','id','id',);
     }
 
-    public function purchaseDetail(): BelongsTo
-    {
-        return $this->belongsTo(PurchaseDetail::class);
-    }
-
-    public function getPurchaseDetail(): PurchaseDetail
-    {
-        return $this->purchaseDetail;
-    }
 
     /**
      * @return int
@@ -146,21 +137,6 @@ class Cart extends Model
         $this->session_id = $session_id;
     }
 
-    /**
-     * @return int
-     */
-    public function getPurchaseDetailId(): int
-    {
-        return $this->purchase_detail_id;
-    }
-
-    /**
-     * @param int $purchase_detail_id
-     */
-    public function setPurchaseDetailId(int $purchase_detail_id): void
-    {
-        $this->purchase_detail_id = $purchase_detail_id;
-    }
 
     /**
      * @return string|null
@@ -177,5 +153,135 @@ class Cart extends Model
     {
         $this->canceled_at = $canceled_at;
     }
+
+    /**
+     * @return int|null
+     */
+    public function getUserId(): ?int
+    {
+        return $this->user_id;
+    }
+
+    /**
+     * @param int|null $user_id
+     */
+    public function setUserId(?int $user_id): void
+    {
+        $this->user_id = $user_id;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getDeliveryId(): ?int
+    {
+        return $this->delivery_id;
+    }
+
+    /**
+     * @param int|null $delivery_id
+     */
+    public function setDeliveryId(?int $delivery_id): void
+    {
+        $this->delivery_id = $delivery_id;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getAddressId(): ?int
+    {
+        return $this->address_id;
+    }
+
+    /**
+     * @param int|null $address_id
+     */
+    public function setAddressId(?int $address_id): void
+    {
+        $this->address_id = $address_id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getPaymentMethodId(): int
+    {
+        return $this->payment_method_id;
+    }
+
+    /**
+     * @param int $payment_method_id
+     */
+    public function setPaymentMethodId(int $payment_method_id): void
+    {
+        $this->payment_method_id = $payment_method_id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getSubtotalAmount(): int
+    {
+        return $this->subtotal_amount;
+    }
+
+    /**
+     * @param int $subtotal_amount
+     */
+    public function setSubtotalAmount(int $subtotal_amount): void
+    {
+        $this->subtotal_amount = $subtotal_amount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalAmount(): int
+    {
+        return $this->total_amount;
+    }
+
+    /**
+     * @param int $total_amount
+     */
+    public function setTotalAmount(int $total_amount): void
+    {
+        $this->total_amount = $total_amount;
+    }
+
+    /**
+     * @return int
+     */
+    public function getTotalSale(): int
+    {
+        return $this->total_sale;
+    }
+
+    /**
+     * @param int $total_sale
+     */
+    public function setTotalSale(int $total_sale): void
+    {
+        $this->total_sale = $total_sale;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDeliveryPrice(): int
+    {
+        return $this->delivery_price;
+    }
+
+    /**
+     * @param int $delivery_price
+     */
+    public function setDeliveryPrice(int $delivery_price): void
+    {
+        $this->delivery_price = $delivery_price;
+    }
+
+
 
 }
