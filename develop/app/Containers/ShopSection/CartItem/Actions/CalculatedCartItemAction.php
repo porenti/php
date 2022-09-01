@@ -8,9 +8,11 @@ Class CalculatedCartItemAction
 {
     public function run(CartItem $cartItem): int
     {
+        $quantity = $cartItem->getQuantity();
         $price = $cartItem->getSubtotalAmount()-$cartItem->getSale();
-        $sum = $price*$cartItem->getQuantity();
+        $sum = $price*$quantity;
         $cartItem->setAmount($sum);
+        $cartItem->save();
         return $sum;
 
     }

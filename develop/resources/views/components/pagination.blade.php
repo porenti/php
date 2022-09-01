@@ -8,6 +8,7 @@
     <nav aria-label="Page navigation example">
         <ul class="pagination">
             @if ($paginator->total() > $paginatorValue)
+
                 @for ($i = 1; $i <= ceil($paginator->total()/$paginatorValue); $i++)
 
                     <li class="page-item"><a class="page-link"
