@@ -1,13 +1,16 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models\Shop;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\Shop\Address
+ * Class Address
  *
  * @property int $id
  * @property int $country_id
@@ -15,12 +18,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $city_id
  * @property int $street_id
  * @property int $house_id
- * @property string $room
- * @property-read \App\Models\Shop\AddressCity|null $addressCity
- * @property-read \App\Models\Shop\AddressCountry|null $addressCountry
- * @property-read \App\Models\Shop\AddressHouse|null $addressHouse
- * @property-read \App\Models\Shop\AddressRegion|null $addressRegion
- * @property-read \App\Models\Shop\AddressStreet|null $addressStreet
+ * @property string|null $room
+ * @property-read \App\Models\Shop\AddressCity $address_city
+ * @property-read \App\Models\Shop\AddressCountry $address_country
+ * @property-read \App\Models\Shop\AddressHouse $address_house
+ * @property-read \App\Models\Shop\AddressRegion $address_region
+ * @property-read \App\Models\Shop\AddressStreet $address_street
+ * @property-read Collection|\App\Models\Shop\Cart[] $carts
+ * @property-read int|null $carts_count
+ * @property-read Collection|\App\Models\Shop\Order[] $orders
+ * @property-read int|null $orders_count
  * @method static \Illuminate\Database\Eloquent\Builder|Address newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Address newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Address query()
@@ -35,154 +42,58 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Address extends Model
 {
-    use HasFactory;
-    protected $fillable = [
-        'country_id',
-        'region_id',
-        'city_id',
-        'street_id',
-        'house_id',
-        'room',
-    ];
+	protected $table = 'addresses';
+	public $timestamps = false;
 
-    public function addressCountry(): BelongsTo
-    {
-        return $this->belongsTo(AddressCountry::class);
-    }
-    public function getAddressCountry(): AddressCountry
-    {
-        return $this->addressCountry;
-    }
+	protected $casts = [
+		'country_id' => 'int',
+		'region_id' => 'int',
+		'city_id' => 'int',
+		'street_id' => 'int',
+		'house_id' => 'int'
+	];
 
-    public function addressRegion(): BelongsTo
-    {
-        return $this->belongsTo(AddressRegion::class);
-    }
-    public function getAddressRegion(): AddressRegion
-    {
-        return $this->addressRegion;
-    }
+	protected $fillable = [
+		'country_id',
+		'region_id',
+		'city_id',
+		'street_id',
+		'house_id',
+		'room'
+	];
 
-    public function addressCity(): BelongsTo
-    {
-        return $this->belongsTo(AddressCity::class);
-    }
-    public function getAddressCity(): AddressCity
-    {
-        return $this->addressCity;
-    }
+	public function address_city()
+	{
+		return $this->belongsTo(AddressCity::class, 'city_id');
+	}
 
-    public function addressHouse(): BelongsTo
-    {
-        return $this->belongsTo(AddressHouse::class);
-    }
-    public function getAddressHouse(): AddressHouse
-    {
-        return $this->addressHouse;
-    }
+	public function address_country()
+	{
+		return $this->belongsTo(AddressCountry::class, 'country_id');
+	}
 
-    public function addressStreet(): BelongsTo
-    {
-        return $this->belongsTo(AddressStreet::class);
-    }
-    public function getAddressStreet(): AddressStreet
-    {
-        return $this->addressStreet;
-    }
-    /**
-     * @return int
-     */
-    public function getCountryId(): int
-    {
-        return $this->country_id;
-    }
+	public function address_house()
+	{
+		return $this->belongsTo(AddressHouse::class, 'house_id');
+	}
 
-    /**
-     * @param int $country_id
-     */
-    public function setCountryId(int $country_id): void
-    {
-        $this->country_id = $country_id;
-    }
+	public function address_region()
+	{
+		return $this->belongsTo(AddressRegion::class, 'region_id');
+	}
 
-    /**
-     * @return int
-     */
-    public function getRegionId(): int
-    {
-        return $this->region_id;
-    }
+	public function address_street()
+	{
+		return $this->belongsTo(AddressStreet::class, 'street_id');
+	}
 
-    /**
-     * @param int $region_id
-     */
-    public function setRegionId(int $region_id): void
-    {
-        $this->region_id = $region_id;
-    }
+	public function carts()
+	{
+		return $this->hasMany(Cart::class);
+	}
 
-    /**
-     * @return int
-     */
-    public function getCityId(): int
-    {
-        return $this->city_id;
-    }
-
-    /**
-     * @param int $city_id
-     */
-    public function setCityId(int $city_id): void
-    {
-        $this->city_id = $city_id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getStreetId(): int
-    {
-        return $this->street_id;
-    }
-
-    /**
-     * @param int $street_id
-     */
-    public function setStreetId(int $street_id): void
-    {
-        $this->street_id = $street_id;
-    }
-
-    /**
-     * @return int
-     */
-    public function getHouseId(): int
-    {
-        return $this->house_id;
-    }
-
-    /**
-     * @param int $house_id
-     */
-    public function setHouseId(int $house_id): void
-    {
-        $this->house_id = $house_id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getRoom(): string
-    {
-        return $this->room;
-    }
-
-    /**
-     * @param string $room
-     */
-    public function setRoom(string $room): void
-    {
-        $this->room = $room;
-    }
-
+	public function orders()
+	{
+		return $this->hasMany(Order::class);
+	}
 }

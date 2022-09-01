@@ -1,15 +1,21 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models\Shop;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\Shop\AddressStreet
+ * Class AddressStreet
  *
  * @property int $id
  * @property string $name
+ * @property-read Collection|\App\Models\Shop\Address[] $addresses
+ * @property-read int|null $addresses_count
  * @method static \Illuminate\Database\Eloquent\Builder|AddressStreet newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AddressStreet newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AddressStreet query()
@@ -19,25 +25,15 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AddressStreet extends Model
 {
-    use HasFactory;
+	protected $table = 'address_streets';
+	public $timestamps = false;
 
-    protected $fillable = [
-        'name',
-    ];
+	protected $fillable = [
+		'name'
+	];
 
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
+	public function addresses()
+	{
+		return $this->hasMany(Address::class, 'street_id');
+	}
 }

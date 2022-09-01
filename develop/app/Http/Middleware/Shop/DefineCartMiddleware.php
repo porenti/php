@@ -29,12 +29,12 @@ class DefineCartMiddleware
         //если не нашли, создаем
         if (null === $cart) {
             $cart = Cart::query()->create([
+                'payment_method_id' => 1,
                 'session_id' => $session->getKey()
             ]);
         }
 
         app()['cart']->setCart($cart);
-dd(app()['cart']);
         return $next($request);
     }
 

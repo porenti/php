@@ -1,15 +1,21 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models\Shop;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\Shop\AddressCountry
+ * Class AddressCountry
  *
  * @property int $id
  * @property string $name
+ * @property-read Collection|\App\Models\Shop\Address[] $addresses
+ * @property-read int|null $addresses_count
  * @method static \Illuminate\Database\Eloquent\Builder|AddressCountry newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AddressCountry newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AddressCountry query()
@@ -19,25 +25,15 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AddressCountry extends Model
 {
-    use HasFactory;
+	protected $table = 'address_countries';
+	public $timestamps = false;
 
-    protected $fillable = [
-        'name',
-    ];
+	protected $fillable = [
+		'name'
+	];
 
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
+	public function addresses()
+	{
+		return $this->hasMany(Address::class, 'country_id');
+	}
 }

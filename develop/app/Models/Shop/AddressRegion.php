@@ -1,15 +1,21 @@
 <?php
 
+/**
+ * Created by Reliese Model.
+ */
+
 namespace App\Models\Shop;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * App\Models\Shop\AddressRegion
+ * Class AddressRegion
  *
  * @property int $id
  * @property string $name
+ * @property-read Collection|\App\Models\Shop\Address[] $addresses
+ * @property-read int|null $addresses_count
  * @method static \Illuminate\Database\Eloquent\Builder|AddressRegion newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AddressRegion newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AddressRegion query()
@@ -19,25 +25,15 @@ use Illuminate\Database\Eloquent\Model;
  */
 class AddressRegion extends Model
 {
-    use HasFactory;
+	protected $table = 'address_regions';
+	public $timestamps = false;
 
-    protected $fillable = [
-        'name',
-    ];
+	protected $fillable = [
+		'name'
+	];
 
-    /**
-     * @return string
-     */
-    public function getName(): string
-    {
-        return $this->name;
-    }
-
-    /**
-     * @param string $name
-     */
-    public function setName(string $name): void
-    {
-        $this->name = $name;
-    }
+	public function addresses()
+	{
+		return $this->hasMany(Address::class, 'region_id');
+	}
 }

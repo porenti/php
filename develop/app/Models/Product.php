@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Shop\CartItem;
 use App\Traits\Relations\Images\HasImages;
 use App\Interfaces\Images\Imagable;
 use App\Models\Images\Image;
@@ -9,6 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
@@ -60,39 +62,50 @@ class Product extends Model implements Imagable
         'deleted_at',
         'priceWithDiscount',
     ];
-   public function category(): BelongsTo
-   {
-       return $this->belongsTo(Category::class);
-   }
+    protected $casts = [
+        'price' => 'int',
+        'priceWithDiscount' => 'int'
+    ];
 
-  public function getCategory(): Category
-  {
-      return $this->category;
-  }
-
-  public function setCategoryId(int $category_id): void
-  {
-    $this->category_id = $category_id;
-  }
-  public function getPrice(): float
+    public function cartItems(): HasMany
     {
-      return $this->price;
+        return $this->HasMany(CartItem::class);
     }
 
-  public function setPrice($price)
+    public function category(): BelongsTo
     {
-      $this->price = $price;
+        return $this->belongsTo(Category::class);
+    }
+
+    public function getCategory(): Category
+    {
+        return $this->category;
+    }
+
+    public function setCategoryId(int $category_id): void
+    {
+        $this->category_id = $category_id;
+    }
+
+    public function getPrice(): int
+    {
+        return $this->price;
+    }
+
+    public function setPrice($price)
+    {
+        $this->price = $price;
     }
 
     public function getName(): string
-      {
+    {
         return $this->name;
-      }
+    }
 
     public function setName($name)
-      {
+    {
         $this->name = $name;
-      }
+    }
 
     public function getDescription(): string
     {
@@ -104,7 +117,7 @@ class Product extends Model implements Imagable
         $this->description = $description;
     }
 
-    public function getPriceWithDiscount(): float
+    public function getPriceWithDiscount(): ?int
     {
         return $this->priceWithDiscount;
     }
@@ -115,15 +128,15 @@ class Product extends Model implements Imagable
     }
 
     public function softDelete()
-      {
+    {
         $this->destroy();
-      }
+    }
 
     public function scopeFilterProduct(Builder $query, string $value): Builder
     {
-      $query->where('name', 'like', '%'.$value.'%')
-            ->orWhere('description', 'like', '%'.$value.'%');
-      return $query;
+        $query->where('name', 'like', '%' . $value . '%')
+            ->orWhere('description', 'like', '%' . $value . '%');
+        return $query;
     }
 
     public function scopeFilter(Builder $query, array $frd): Builder
@@ -137,26 +150,36 @@ class Product extends Model implements Imagable
                 case 'search':
                     {
 
-                       $query->FilterProduct($value);
+                        $query->FilterProduct($value);
                     }
                     break;
                 case 'category':
-                    {
-                      $query->where('category_id', $value);
-                    }
+                {
+                    $query->where('category_id', $value);
+                }
             }
 
         }
-                return $query;
+        return $query;
     }
 
     public function scopeFilterDeleted(Builder $query): Builder
     {
-      return $query->where('deleted_at', null);
+        return $query->where('deleted_at', null);
     }
 
     public function getPathForImages(): string
     {
         return 'catalog' . '/images';
+    }
+
+    public function getSale(): int {
+        if ($this->getPriceWithDiscount()!==null)
+        {
+            return $this->getPrice()-$this->getPriceWithDiscount();
+        }
+        else {
+            return 0;
+        }
     }
 }

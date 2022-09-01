@@ -13,20 +13,19 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('cart_items', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('cart_id')->references('id')->on('carts');
-            $table->foreignId('purchase_item_detail_id')->references('id')->on('purchase_item_details');
-            $table->timestamp('created_at');
-            $table->timestamp('deleted_at')->nullable();
-        });
+
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->references('id')->on('orders');
-            $table->foreignId('cart_item_id')->references('id')->on('cart_items');
-            $table->foreignId('purchase_item_detail_id')->references('id')->on('purchase_item_details');
+            $table->integer('quantity')->default(1);
+            $table->integer('sale')->default(0);
+            $table->integer('subtotal_amount')->default(0);
+            $table->integer('amount')->default(0);
             $table->timestamp('created_at');
             $table->timestamp('deleted_at')->nullable();
+            $table->string('name');
+            $table->string('description');
+            $table->foreignId('product_id')->nullable()->references('id')->on('products');
         });
     }
 
@@ -37,7 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cart_items');
         Schema::dropIfExists('order_items');
     }
 };
