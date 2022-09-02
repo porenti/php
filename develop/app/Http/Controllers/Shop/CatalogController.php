@@ -19,12 +19,18 @@ class CatalogController extends Controller
         $frd = $request->all();
         $categories = Category::pluck('name', 'id');
         $products = Product::query()
-            ->withCount(['cartItems as count_in_cart' => function (Builder $query){
-                    $query->where('cart_id', app()['cart']->getCart()->getKey());
+            ->withCount(['cartItems as count_in_cart' => function (Builder $query) {
+                $query->where('cart_id', app()['cart']->getCart()->getKey());
             }])
             ->with(['category'])
             ->filter($frd)
             ->paginate(12);
         return view('catalogs.index', compact('products', 'categories', 'frd'));
     }
+
+    public function show(Request $request, Product $product)
+    {
+        $availability = app()['cart']->checkInCart($product->getKey());
+        return view('catalogs.show', compact('product','availability'));
+        }
 }

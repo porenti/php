@@ -14,9 +14,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-
+        $this->call(CouponSeeder::class);
         $this->call(GenderSeeder::class);
-        $this->call(LaratrustSeeder::class); //заполнить роли
-        \App\Models\User::factory(100)->create(); //заполнить пользователей
+        //$this->call(LaratrustSeeder::class); //заполнить роли
+        //\App\Models\User::factory(100)->create(); //заполнить пользователей
     }
 }

@@ -30,6 +30,7 @@
 
 
 
+        <label>Категория</label>
         <select name="category_id" class="form-control mb-3 mt-3">
             @foreach($categories as $category)
                 <option value="{{ $category->getKey() }}">{{ $category->getName() }}</option>

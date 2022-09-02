@@ -77,6 +77,8 @@ use Laratrust\Traits\LaratrustUserTrait;
  * @method static Builder|User whereRoleIs($role = '', $team = null, $boolean = 'and')
  * @method static Builder|User whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|Image[] $image
+ * @property-read int|null $image_count
  */
 class User extends Authenticatable implements Imagable
 {

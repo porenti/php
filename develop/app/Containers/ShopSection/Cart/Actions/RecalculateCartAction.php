@@ -12,17 +12,20 @@ class RecalculateCartAction
     {
         $sale = 0;
         $subtotal = 0;
+        $amount = 0;
         $items= $cart->cartItems()->toBase()->get();
         foreach ($items as $item){
-            $sale += $item->quantity*$item->sale;
-            $subtotal += $item->quantity*$item->subtotal_amount;
+            $sale += $item->quantity * $item->sale;
+            $subtotal += $item->quantity * $item->subtotal_amount;
+            $amount += $item->quantity * $item->amount;
         }
 
-        $sum = $cart->cartItems()->sum('amount');
 
 
-        $cart->setTotalAmount($sum); //общая цена корзины
+        $cart->setTotalAmount($amount); //общая цена корзины
         $cart->setSubtotalAmount($subtotal); //нормальная цена товаров
         $cart->setTotalSale($sale); //сумма скидки
+
+        $cart->save();
     }
 }

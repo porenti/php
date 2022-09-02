@@ -45,4 +45,8 @@ class Manager implements CartManager
         return $result;
     }
 
+    public function getCartId(): int
+    {
+        return $this->getCart()->getKey();
+    }
 }
