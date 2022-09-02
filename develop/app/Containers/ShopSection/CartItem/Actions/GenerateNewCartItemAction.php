@@ -18,7 +18,7 @@ class GenerateNewCartItemAction
         $cartItem->setSubtotalAmount($product->getPrice()); //цена без скидки
         //итоговая цена
         $cartItem->setAmount($product->getSale()!==0 ? $product->getPriceWithDiscount() : $product->getPrice());
-        $cartItem->setCartId(app()['cart']->getCart()->getKey());
+        $cartItem->setCartId(app()['cart']->getCartId());
         $cartItem->save();
 
 

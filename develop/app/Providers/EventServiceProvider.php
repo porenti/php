@@ -2,18 +2,15 @@
 
 namespace App\Providers;
 
+use App\Events\CartItemAddedEvent;
+use App\Events\CartItemQuantityChangedEvent;
+use App\Events\CartItemRemovedEvent;
 use App\Events\ImageUploaded;
 use App\Listeners\CreateImage;
-use App\Models\Shop\Cart;
-use App\Models\Shop\PurchaseItemDetail;
-use App\Models\User;
-use App\Observers\CartObserver;
-use App\Observers\PurchaseItemDetailObserver;
-use Illuminate\Auth\Events\Login;
+use App\Listeners\RecalculateCartListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -28,7 +25,16 @@ class EventServiceProvider extends ServiceProvider
         ],
         ImageUploaded::class => [
             CreateImage::class,
-        ]
+        ],
+        CartItemQuantityChangedEvent::class => [
+            RecalculateCartListener::class,
+        ],
+        CartItemRemovedEvent::class => [
+            RecalculateCartListener::class,
+        ],
+        CartItemAddedEvent::class => [
+            RecalculateCartListener::class,
+        ],
     ];
 
     /**
@@ -38,8 +44,9 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->belongsToMany()->withPivot()->using();
         // добавили наблюдатель за класс для отловки ивентов
-        //Cart::observe(CartObserver::class);
+//        Cart::observe(CartObserver::class);
         //PurchaseItemDetail::observe(PurchaseItemDetailObserver::class);
     }
 

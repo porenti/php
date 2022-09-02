@@ -10,7 +10,7 @@ class EditQuantityCartItemRequest extends FormRequest
     {
         return [
             'quantity' => 'required|integer|min:1',
-            'CartItemKey' => 'required|exists:cart_items,id'
+            'cart_item_id' => 'required|exists:cart_items,id'
         ];
     }
 }

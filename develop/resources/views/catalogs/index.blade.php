@@ -32,9 +32,9 @@
                     <div class="card">
 
 
-                        <img src="{{ $product->getImages()->last()->getPublicPath() }}"
-                             width="{{ $product->getImages()->last()->getWidth() }}" class="card-img-top"
-                             alt="{{ $product->getImages()->last()->getAlt() }}">
+                        <img src="{{ $product->getImagePublicPath() }}"
+                             width="{{ $product->getImageWidth() }}" class="card-img-top"
+                             alt="{{ $product->getImageAlt() }}">
 
                         <div class="card-body">
                             <h5 class="card-title">{{ $product->getName() }}</h5>
