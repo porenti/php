@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\Shop;
 
+use App\Containers\ShopSection\Cart\Actions\EditQuantityCartItemAction;
+use App\Containers\ShopSection\Cart\Actions\RemoveCartItemAction;
 use App\Containers\ShopSection\CartItem\Actions\GenerateNewCartItemAction;
 use App\Events\CartItemAddedEvent;
 use App\Events\CartItemQuantityChangedEvent;
 use App\Events\CartItemRemovedEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shop\AddToCartRequest;
+use App\Http\Requests\Shop\CouponRequest;
 use App\Http\Requests\Shop\EditQuantityCartItemRequest;
 use App\Models\Product;
 use App\Models\Shop\CartItem;
+use App\Models\Shop\Coupon;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Illuminate\Http\Request;
 
@@ -40,7 +44,6 @@ class CartController extends Controller
 
         if (!app()['cart']->checkInCart($product->getKey())) {
             $cartItem = app(GenerateNewCartItemAction::class)->run($product);
-            event(new CartItemAddedEvent($cartItem));
         }
 
 
@@ -52,11 +55,7 @@ class CartController extends Controller
         $cartItemKey = $request->input('cart_item_id');
         $quantity = $request->input('quantity');
 
-        $cartItem = CartItem::where('id', $cartItemKey)->first();
-        $cartItem->setQuantity($quantity);
-        $cartItem->save();
-
-        event(new CartItemQuantityChangedEvent($cartItem));
+        app(EditQuantityCartItemAction::class)->run($cartItemKey, $quantity);
 
         return redirect()->route('shop.cart.index');
     }
@@ -66,16 +65,16 @@ class CartController extends Controller
         $cart = app()['cart']->getCart();
         $productKey = $request->input('cart_item_id');
 
-        $cartItem = $cart
-            ->cartItems()
-            ->where('id', $productKey)
-            ->first();
+        app(RemoveCartItemAction::class)->run($productKey, $cart);
 
-
-        $cartItem->delete();
-
-        event(new CartItemRemovedEvent($cart));
 
         return redirect()->route('shop.cart.index');
+    }
+
+    public function addCoupon(CouponRequest $request) //CouponRequest
+    {
+        $couponName = $request->input('coupon_name');
+        $coupon = Coupon::where('name',$couponName)->first();
+        dd($coupon);
     }
 }

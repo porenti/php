@@ -2,6 +2,7 @@
 
 namespace App\Containers\ShopSection\CartItem\Actions;
 
+use App\Events\CartItemAddedEvent;
 use App\Models\Product;
 use App\Models\Shop\CartItem;
 use Illuminate\Database\Eloquent\Model;
@@ -23,6 +24,7 @@ class GenerateNewCartItemAction
         $cartItem->setCartId(app()['cart']->getCartId());
         $cartItem->save();
 
+        event(new CartItemAddedEvent($cartItem));
 
         return $cartItem;
 

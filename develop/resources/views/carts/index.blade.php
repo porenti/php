@@ -53,14 +53,15 @@
                                         {{ Form::close() }}
                                     </div>
                                     <div class="col-lg-4">
-                                        {{ Form::open(['url' => route('shop.cart.edit'), 'id' => 'form_id']) }}
+                                        {{ Form::open(['url' => route('shop.cart.edit'), 'id' => 'form_id'.$cartItem->getKey()]) }}
                                         <input type="number"
                                                name="quantity"
-                                               onchange="document.getElementById('form_id').submit()"
+                                               onchange="document.getElementById('form_id{{ $cartItem->getKey() }}').submit()"
                                                class="form-control"
                                                value="{{ $cartItem->getQuantity() }}"
                                                placeholder="Кол-во"
                                                min="1"
+                                               max="{{ $cartItem->getProduct()->getQuantity() }}"
                                                aria-describedby="button-addon2">
                                         {{ Form::hidden('cart_item_id',$cartItem->getKey()) }}
                                         {{ Form::close() }}
@@ -68,7 +69,7 @@
                                     <div class="col-lg-4">
                                         {{ Form::open(['url' => route('shop.cart.edit')]) }}
                                         {{ Form::hidden('cart_item_id',$cartItem->getKey()) }}
-                                        {{ Form::hidden('quantity', $cartItem->getQuantity()+1) }}
+                                        {{ Form::hidden('quantity', $cartItem->checkQuantityInStorage())}}
                                         <button class="btn btn-success" type="submit" id="button-addon2">+</button>
                                         {{ Form::close() }}
                                         {{ Form::close() }}
@@ -98,19 +99,31 @@
                             </div>
                         </div>
                     @endforeach
-                    <h5>Сумма: {{ $cart->getTotalAmount() }} ₽</h5>
-                    <h6>Сумма без скидки: {{ $cart->getSubtotalAmount() }} ₽</h6>
-                    <h7>Скидка составила: {{ $cart->getTotalSale() }} ₽</h7>
                     <div>
-                        <button>Перейти к оформлению</button>
+                        <h5>Сумма: {{ $cart->getTotalAmount() }} ₽</h5>
+                        <h6>Сумма без скидки: {{ $cart->getSubtotalAmount() }} ₽</h6>
+                        <h7>Скидка составила: {{ $cart->getTotalSale() }} ₽</h7>
                     </div>
+                        {{ Form::open(['method'=>'POST', 'url' => route('shop.cart.addcoupon'), 'id' => 'form_id'.$cartItem->getKey()]) }}
+                        <div class="mt-4">
+                    @include('components.inputs.input',[
+                             'name' => 'coupon_name',
+                             'label' => 'Промокод',
+                            ])
+                    <button type="submit" class="btn btn-secondary">Ввести промокод</button>
+                            {{ Form::close() }}
                 </div>
 
-
-            </div>
+                </div>
+                        <div class="mt-4 border">
+                            Информация о промокоде {{ $cart->getCoupons() }}
+                        </div>
 
 
         </div>
+
+
+    </div>
     </div>
 
 @endsection

@@ -39,11 +39,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('coupon_id')->references('id')->on('coupons');
             $table->foreignId('cart_id')->references('id')->on('carts');
+            $table->integer('value');
         });
         Schema::create('coupons_orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('coupon_id')->references('id')->on('coupons');
             $table->foreignId('order_id')->references('id')->on('orders');
+            $table->integer('value');
         });
     }
 

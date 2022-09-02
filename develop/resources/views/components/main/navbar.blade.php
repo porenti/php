@@ -20,6 +20,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('products.index')}}">Товары</a>
                 </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('coupons.index')}}">Промокоды</a>
+                    </li>
 
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('categories.index')}}">Категории</a>

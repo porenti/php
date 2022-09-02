@@ -117,7 +117,7 @@ class Cart extends Model
 
     public function purchaseItemDetails(): HasManyThrough
     {
-        return $this->hasManyThrough(PurchaseItemDetail::class,CartItem::class,'purchase_item_detail_id','id','id',);
+        return $this->hasManyThrough(PurchaseItemDetail::class, CartItem::class, 'purchase_item_detail_id', 'id', 'id',);
     }
 
 
@@ -250,6 +250,17 @@ class Cart extends Model
         $this->total_amount = $total_amount;
     }
 
+    public function coupons()
+    {
+        return $this->belongsToMany(Coupon::class, 'coupons_carts')
+            ->withPivot('id', 'value');
+    }
+
+    public function getCoupons(): ?Collection
+    {
+        return $this->coupons;
+    }
+
     /**
      * @return int
      */
@@ -281,7 +292,6 @@ class Cart extends Model
     {
         $this->delivery_price = $delivery_price;
     }
-
 
 
 }

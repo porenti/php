@@ -164,6 +164,12 @@ class CartItem extends Model
         return $this->quantity;
     }
 
+
+    public function checkQuantityInStorage(): int {
+        return $this->getQuantity() < $this->getProduct()->getQuantity() ? $this->getQuantity()+1 : $this->getQuantity();
+
+    }
+
     /**
      * @param int $quantity
      */
@@ -179,9 +185,13 @@ class CartItem extends Model
     /**
      * @return int
      */
-    public function getSale(): int
+    public function getSale(): ?int
     {
-        return $this->sale;
+        if ($this->sale !== 0) {
+            return $this->sale;
+        } else {
+            return null;
+        }
     }
 
     /**

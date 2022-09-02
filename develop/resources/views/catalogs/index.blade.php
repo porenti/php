@@ -51,7 +51,7 @@
                                     {{ Form::close() }}
                                 </div>
                                 <div class="col-lg-3">
-                                    <a href="{{ route('products.show', $product) }}" class="btn btn-primary">show</a>
+                                    <a href="{{ route('catalog.show', $product) }}" class="btn btn-primary">show</a>
                                 </div>
                                 <div class="col-lg-4">
                                     {{ $product->getPrice() }}
