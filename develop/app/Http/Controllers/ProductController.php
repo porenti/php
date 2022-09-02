@@ -55,6 +55,7 @@ class ProductController extends Controller
             'price' => 'required',
             'category_id' => 'required',
             'priceWithDiscount' => 'required',
+            'quantity' => 'required',
         ]);
         $product = new Product();
         $product->setName($frd['name']);
@@ -62,6 +63,7 @@ class ProductController extends Controller
         $product->setPrice((float)$frd['price']);
         $product->setCategoryId($frd['category_id']);
         $product->setPriceWithDiscount($frd['priceWithDiscount']);
+        $product->setQuantity($frd['quantity']);
         $product->save();
         if ($request->hasFile('avatar')) {
             $avatar = $request->file('avatar');
@@ -114,14 +116,15 @@ class ProductController extends Controller
             'price' => 'required',
             'category_id' => 'required',
             'priceWithDiscount' => 'required',
+            'quantity' => 'required',
         ]);
         $product->setName($frd['name']);
         $product->setDescription($frd['description']);
         $product->setPrice((float)$frd['price']);
         $product->setCategoryId($frd['category_id']);
+        $product->setQuantity($frd['quantity']);
         $product->setPriceWithDiscount($frd['priceWithDiscount']);
         $product->save();
-
         if ($request->hasFile('avatar')) {
             $avatar = $request->file('avatar');
             $product->putImage($avatar, $product);

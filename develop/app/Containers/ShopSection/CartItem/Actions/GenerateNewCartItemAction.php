@@ -14,6 +14,8 @@ class GenerateNewCartItemAction
         $cartItem = new CartItem();
         $cartItem->setProductId($product->getKey());
         $cartItem->setQuantity(1);
+        $cartItem->setCategoryName($product->getCategory()->getName());
+        $cartItem->setProductName($product->getName());
         $cartItem->setSale($product->getSale()); // скидка (-100 рублей)
         $cartItem->setSubtotalAmount($product->getPrice()); //цена без скидки
         //итоговая цена

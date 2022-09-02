@@ -17,8 +17,9 @@ class RecalculateCartAction
         foreach ($items as $item){
             $sale += $item->quantity * $item->sale;
             $subtotal += $item->quantity * $item->subtotal_amount;
-            $amount += $item->amount;
+            $amount += $item->quantity * $item->amount;
         }
+
 
 
         $cart->setTotalAmount($amount); //общая цена корзины

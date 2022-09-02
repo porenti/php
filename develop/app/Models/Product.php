@@ -47,6 +47,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|Product withTrashed()
  * @method static \Illuminate\Database\Query\Builder|Product withoutTrashed()
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|CartItem[] $cartItems
+ * @property-read int|null $cart_items_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|Image[] $image
+ * @property-read int|null $image_count
+ * @property int $quantity
+ * @method static Builder|Product whereQuantity($value)
  */
 class Product extends Model implements Imagable
 {
@@ -61,6 +67,7 @@ class Product extends Model implements Imagable
         'category_id',
         'deleted_at',
         'priceWithDiscount',
+        'quantity',
     ];
     protected $casts = [
         'price' => 'int',
@@ -129,7 +136,7 @@ class Product extends Model implements Imagable
 
     public function softDelete()
     {
-        $this->destroy();
+        $this->delete();
     }
 
     public function scopeFilterProduct(Builder $query, string $value): Builder
@@ -182,4 +189,21 @@ class Product extends Model implements Imagable
             return 0;
         }
     }
+
+    /**
+     * @return int
+     */
+    public function getQuantity(): int
+    {
+        return $this->quantity;
+    }
+
+    /**
+     * @param int $quantity
+     */
+    public function setQuantity(int $quantity): void
+    {
+        $this->quantity = $quantity;
+    }
+
 }

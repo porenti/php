@@ -39,6 +39,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Query\Builder|CartItem withTrashed()
  * @method static \Illuminate\Database\Query\Builder|CartItem withoutTrashed()
  * @mixin \Eloquent
+ * @property float $category_name
+ * @property float $product_name
+ * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereCategoryName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereProductName($value)
  */
 class CartItem extends Model
 {
@@ -63,7 +67,9 @@ class CartItem extends Model
         'quantity',
         'sale',
         'subtotal_amount',
-        'amount'
+        'amount',
+        'category_name',
+        'product_name'
     ];
 
     public function cart(): BelongsTo
@@ -91,6 +97,40 @@ class CartItem extends Model
     {
         return $this->cart_id;
     }
+
+    /**
+     * @return float
+     */
+    public function getCategoryName(): string
+    {
+        return $this->category_name;
+    }
+
+    /**
+     * @param float $category_name
+     */
+    public function setCategoryName(string $category_name): void
+    {
+        $this->category_name = $category_name;
+    }
+
+    /**
+     * @return float
+     */
+    public function getProductName(): string
+    {
+        return $this->product_name;
+    }
+
+    /**
+     * @param float $product_name
+     */
+    public function setProductName(string $product_name): void
+    {
+        $this->product_name = $product_name;
+    }
+
+
 
     /**
      * @param int $cart_id
@@ -130,6 +170,10 @@ class CartItem extends Model
     public function setQuantity(int $quantity): void
     {
         $this->quantity = $quantity;
+    }
+
+    public function getTotalAmount(): int {
+        return $this->quantity * $this->amount;
     }
 
     /**

@@ -20,18 +20,23 @@
                         <div class="col-lg-4 ">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <h5 class="card-title">{{ $cartItem->getProduct()->getName() }}</h5>
+                                    <h5 class="card-title">{{ $cartItem->getProductName() }}</h5>
+                                </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-lg-12">
+                                    <p class="card-text">{{ $cartItem->getProduct()->getDescription() }}</p>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <p class="card-text">{{ $cartItem->getProduct()->getDescription() }}</p>
+                                    <p class="card-text .text-muted">Категория: {{ $cartItem->getCategoryName() }}</p>
                                 </div>
                             </div>
                         </div>
                         <div class="col-lg-2">
                             <div class="row">
-                                <del>{{ $cartItem->getSubtotalAmount() * $cartItem->getQuantity() }}&nbsp;₽</del>
+                                <del>{{ $cartItem->getSubtotalAmount() }}&nbsp;₽</del>
                             </div>
                             <div class="row">
                                 {{ $cartItem->getAmount() }} ₽
@@ -88,7 +93,7 @@
                             <div class="col-lg-4">х{{ $cartItem->getQuantity() }}</div>
                             <div class="col-lg-4">{{ $cartItem->getProduct()->getName() }}</div>
                             <div
-                                class="col-lg-4 {{ $cartItem->getProduct()->getSale()===0 ? '' : 'text-danger' }}">{{ $cartItem->getAmount() }}
+                                class="col-lg-4 {{ $cartItem->getProduct()->getSale()===0 ? '' : 'text-danger' }}">{{ $cartItem->getTotalAmount() }}
                                 ₽
                             </div>
                         </div>

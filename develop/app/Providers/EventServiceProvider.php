@@ -44,7 +44,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->belongsToMany()->withPivot()->using();
+        //$this->belongsToMany()->withPivot()->using();
         // добавили наблюдатель за класс для отловки ивентов
 //        Cart::observe(CartObserver::class);
         //PurchaseItemDetail::observe(PurchaseItemDetailObserver::class);
