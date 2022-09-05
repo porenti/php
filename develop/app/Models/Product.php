@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Shop\CartItem;
+use App\Ship\Casts\Penny;
 use App\Traits\Relations\Images\HasImages;
 use App\Interfaces\Images\Imagable;
 use App\Models\Images\Image;
@@ -70,8 +71,8 @@ class Product extends Model implements Imagable
         'quantity',
     ];
     protected $casts = [
-        'price' => 'int',
-        'priceWithDiscount' => 'int'
+        'price' => Penny::class,
+        'priceWithDiscount' => Penny::class
     ];
 
     public function cartItems(): HasMany
@@ -180,12 +181,11 @@ class Product extends Model implements Imagable
         return 'catalog' . '/images';
     }
 
-    public function getSale(): int {
-        if ($this->getPriceWithDiscount()!==null)
-        {
-            return $this->getPrice()-$this->getPriceWithDiscount();
-        }
-        else {
+    public function getSale(): int
+    {
+        if ($this->getPriceWithDiscount() !== null) {
+            return $this->getPrice() - $this->getPriceWithDiscount();
+        } else {
             return 0;
         }
     }

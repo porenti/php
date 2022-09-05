@@ -9,15 +9,16 @@ use App\Models\Shop\Cart;
 
 class RemoveCartItemAction
 {
- public function run(int $productKey, Cart $cart){
-     $cartItem = $cart
-         ->cartItems()
-         ->where('id', $productKey)
-         ->first();
+    public function run(int $cartItemId, Cart $cart)
+    {
+        $cartItem = $cart
+            ->cartItems()
+            ->where('id', $cartItemId)
+            ->first();
 
 
-     $cartItem->delete();
+        $cartItem->delete();
 
-     event(new CartItemRemovedEvent($cart));
- }
+        event(new CartItemRemovedEvent($cart));
+    }
 }

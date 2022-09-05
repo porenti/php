@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Shop;
 use App\Containers\ShopSection\Cart\Actions\EditQuantityCartItemAction;
 use App\Containers\ShopSection\Cart\Actions\RemoveCartItemAction;
 use App\Containers\ShopSection\CartItem\Actions\GenerateNewCartItemAction;
+use App\Containers\ShopSection\CartItem\Actions\GetCartItemsListByCartAction;
+use App\Containers\ShopSection\CartItem\Data\Repositories\CartItemRepository;
 use App\Events\CartItemAddedEvent;
 use App\Events\CartItemQuantityChangedEvent;
 use App\Events\CartItemRemovedEvent;
@@ -20,17 +22,20 @@ use Illuminate\Http\Request;
 
 class CartController extends Controller
 {
+
+    public function __construct()
+    {
+
+    }
+
     public function index(Request $request)
     {
         SEOMeta::setTitle('Корзина');
 
         $cart = app()['cart']->getCart();
 
-        $cartItems = $cart
-            ->cartItems()
-            ->with(['product'])
-            ->get();
-
+        $cartItems = app(GetCartItemsListByCartAction::class)
+            ->run($cart, ['*'], ['product']);
 
         return view('carts.index', compact('cartItems', 'cart'));
     }
@@ -39,7 +44,7 @@ class CartController extends Controller
     {
 
         $productId = $request->input('product_id');
-
+//action - repository
         $product = Product::find($productId);
 
         if (!app()['cart']->checkInCart($product->getKey())) {
@@ -60,12 +65,22 @@ class CartController extends Controller
         return redirect()->route('shop.cart.index');
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     *
+     *
+     *
+     *
+     * @TODO в реквесте сделать валидацию на наличие cart_items-а (также как с продуктах)
+     */
     public function removeItem(Request $request)
     {
         $cart = app()['cart']->getCart();
-        $productKey = $request->input('cart_item_id');
 
-        app(RemoveCartItemAction::class)->run($productKey, $cart);
+        $cartItemId = $request->input('cart_item_id');
+
+        app(RemoveCartItemAction::class)->run($cartItemId, $cart);
 
 
         return redirect()->route('shop.cart.index');
@@ -74,7 +89,7 @@ class CartController extends Controller
     public function addCoupon(CouponRequest $request) //CouponRequest
     {
         $couponName = $request->input('coupon_name');
-        $coupon = Coupon::where('name',$couponName)->first();
+        $coupon = Coupon::where('name', $couponName)->first();
         dd($coupon);
     }
 }

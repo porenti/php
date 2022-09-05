@@ -11,7 +11,6 @@
         </option>
       </LaravelCodeGeneration>
     </option>
-    <option name="frameworkFound" value="true" />
     <option name="laravelBasePath" value="www/develop" />
     <option name="userClassName" value="App\Models\User" />
   </component>
