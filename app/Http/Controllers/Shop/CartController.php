@@ -57,7 +57,6 @@ class CartController extends Controller
 
     public function editQuantityCartItem(EditQuantityCartItemRequest $request)//EditQuantityCartItemRequest
     {
-        dd('reqest', $request);
         $cartItemKey = $request->input('cart_item_id');
         $quantity = $request->input('quantity');
 

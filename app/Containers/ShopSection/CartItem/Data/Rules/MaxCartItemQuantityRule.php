@@ -9,7 +9,7 @@ class MaxCartItemQuantityRule implements Rule
 {
     private int $quantity;
 
-   public function __construct(int $quantity)
+   public function __construct(int $quantity = 1)
    {
        $this->quantity = $quantity;
    }
@@ -17,7 +17,13 @@ class MaxCartItemQuantityRule implements Rule
     public function passes($attribute, $value): bool
     {
         $quantity = app(GetProductQuantityByCartItemIdAction::class)->run($value);
-        dd($attribute, $value, $this->quantity, $quantity);
+        if ($quantity >= $this->quantity)
+        {
+            return true;
+        } else {
+            return false;
+        }
+        //dd($attribute, $value, $this->quantity, $quantity);
 
     }
 
