@@ -15,7 +15,6 @@
                                 <p>{{$product->getDescription()}}</p>
                                 <footer style="color:gray">Категория: "{{$product->getCategory()->getName()}}"</footer>
                                 <footer class="blockquote-footer mt-2">Цена: {{$product->getPrice()}}</footer>
-                                <footer class="blockquote-footer mt-2">Цена: {{$product->getPrice()}}</footer>
                                 <footer class="blockquote-footer mt-2">Остаток на
                                     складе: {{$product->getQuantity()}}</footer>
                             </div>
