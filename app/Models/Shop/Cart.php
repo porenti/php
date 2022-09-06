@@ -49,6 +49,10 @@ use Illuminate\Support\Collection;
  * @method static Builder|Cart whereTotalSale($value)
  * @method static Builder|Cart whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\CartItem[] $cartItemsWhereProductWithoutSale
+ * @property-read int|null $cart_items_where_product_without_sale_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\Coupon[] $coupons
+ * @property-read int|null $coupons_count
  */
 class Cart extends Model
 {

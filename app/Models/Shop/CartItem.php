@@ -45,6 +45,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property float $product_name
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereCategoryName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CartItem whereProductName($value)
+ * @method static Builder|CartItem filterProductWithoutSale()
  */
 class CartItem extends Model
 {

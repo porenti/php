@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Delivery extends Model
 {
+    public $timestamps = false;
     use HasFactory;
 
     protected $fillable = [

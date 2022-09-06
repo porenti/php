@@ -12,11 +12,16 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $coupon_id
  * @property int $cart_id
  * @property int $value
- *
  * @property Cart $cart
  * @property Coupon $coupon
- *
  * @package App\Models
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsCart newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsCart newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsCart query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsCart whereCartId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsCart whereCouponId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsCart whereValue($value)
+ * @mixin \Eloquent
  */
 class CouponsCart extends Pivot
 {

@@ -54,6 +54,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $image_count
  * @property int $quantity
  * @method static Builder|Product whereQuantity($value)
+ * @property mixed|null $price_with_discount
  */
 class Product extends Model implements Imagable
 {

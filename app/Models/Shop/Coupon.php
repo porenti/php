@@ -24,14 +24,28 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $coupon_type_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property CouponsType $coupons_type
  * @property CouponsValueType $coupons_value_type
  * @property User|null $user
  * @property Collection|Cart[] $carts
  * @property Collection|Order[] $orders
- *
  * @package App\Models
+ * @property-read int|null $carts_count
+ * @property-read int|null $orders_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon filter(array $frd)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon filterSearch(string $value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCouponTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCouponValueTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereValue($value)
+ * @mixin \Eloquent
  */
 class Coupon extends Model
 {
