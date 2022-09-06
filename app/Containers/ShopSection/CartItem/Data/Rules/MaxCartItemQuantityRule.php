@@ -16,14 +16,16 @@ class MaxCartItemQuantityRule implements Rule
 
     public function passes($attribute, $value): bool
     {
-        $quantity = app(GetProductQuantityByCartItemIdAction::class)->run($value);
-        if ($quantity >= $this->quantity)
-        {
-            return true;
+        $result = false;
+        if ($this->quantity === 1){
+            $result = true;
         } else {
-            return false;
+            $quantity = app(GetProductQuantityByCartItemIdAction::class)->run($value);
+            if ($quantity >= $this->quantity) {
+                return true;
+            }
         }
-        //dd($attribute, $value, $this->quantity, $quantity);
+        return $result;
 
     }
 
