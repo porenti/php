@@ -32,15 +32,17 @@ class Manager implements CartManager
     public function checkInCart(int $productId): bool
     { //если есть - тру, нету - фолс
         $cart = $this->getCart();
+        $cartId = $cart->getKey();
 
 //        $cart->loadCount('cartItems.purchaseItemDetail', function (Builder $query) use ($productId) {
 //            return $query->where('product_id', $productId);
 //        });
         $result = $cart
-                ->whereHas('cartItems', function (Builder $query) use ($productId) {
-                    return $query->where('product_id', $productId);
+                ->whereHas('cartItems', function (Builder $query) use ($productId, $cartId) {
+                    return $query->where('product_id', $productId)->where('cart_id', $cartId);
                 })
                 ->count() > 0;
+
 
         return $result;
     }

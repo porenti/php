@@ -126,12 +126,6 @@ class Cart extends Model
         return $this->cartItems;
     }
 
-    public function purchaseItemDetails(): HasManyThrough
-    {
-        return $this->hasManyThrough(PurchaseItemDetail::class, CartItem::class, 'purchase_item_detail_id', 'id', 'id',);
-    }
-
-
     /**
      * @return int
      */
@@ -264,6 +258,7 @@ class Cart extends Model
     public function coupons()
     {
         return $this->belongsToMany(Coupon::class, 'coupons_carts')
+            ->using(CouponsCart::class)
             ->withPivot('value');
     }
 
@@ -309,13 +304,18 @@ class Cart extends Model
         $this->delivery_price = $delivery_price;
     }
 
-    public function getDecoratedTotalAmount(): float|string{
+    public function getDecoratedTotalAmount(): float|string
+    {
         return $this->total_amount;
     }
-    public function getDecoratedSubTotalAmount(): float|string{
+
+    public function getDecoratedSubTotalAmount(): float|string
+    {
         return $this->subtotal_amount;
     }
-    public function getDecoratedTotalSale(): float|string{
+
+    public function getDecoratedTotalSale(): float|string
+    {
         return $this->total_sale;
     }
 }
