@@ -1,0 +1,21 @@
+{
+    "name": "mmerian/doctrine-timestamp",
+    "type": "library",
+    "description": "A library adding the timestamp type to Doctrine ORM",
+    "keywords": ["Doctrine", "ORM", "timestamp", "DateTime"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Maxime Mérian",
+            "email": "maxime.merian@gmail.com"
+        }
+    ],
+    "require" : {
+        "doctrine/dbal": "2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "DoctrineTimestamp": "lib"
+        }
+    }
+}
