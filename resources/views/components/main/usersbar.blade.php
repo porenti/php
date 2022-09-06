@@ -7,10 +7,10 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
-                <a class="nav-link active" aria-current="page" href="{{ route('catalog.index') }}">Каталог</a>
+                <a class="nav-link " aria-current="page" href="{{ route('catalog.index') }}">Каталог</a>
                 </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('shop.cart.index')}}">Корзина</a>
+                        <a class="nav-link" href="{{route('shop.cart.index')}}">Корзина X{{ app()['cart']->getQuantity() }}</a>
                     </li>
             </ul>
         </div>

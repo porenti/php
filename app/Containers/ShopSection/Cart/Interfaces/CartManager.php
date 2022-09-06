@@ -14,4 +14,6 @@ interface CartManager
     public function getCart(): Cart;
 
     public function getCartId(): int;
+
+    public function getQuantity(): int;
 }

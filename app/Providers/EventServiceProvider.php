@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Containers\ShopSection\Coupon\Events\AddedCouponEvent;
+use App\Containers\ShopSection\Coupon\Events\RemovedCouponEvent;
 use App\Events\CartItemAddedEvent;
 use App\Events\CartItemQuantityChangedEvent;
 use App\Events\CartItemRemovedEvent;
@@ -33,6 +35,12 @@ class EventServiceProvider extends ServiceProvider
             RecalculateCartListener::class,
         ],
         CartItemAddedEvent::class => [
+            RecalculateCartListener::class,
+        ],
+        AddedCouponEvent::class => [
+            RecalculateCartListener::class,
+        ],
+        RemovedCouponEvent::class => [
             RecalculateCartListener::class,
         ],
     ];

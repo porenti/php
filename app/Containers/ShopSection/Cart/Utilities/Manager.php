@@ -49,4 +49,9 @@ class Manager implements CartManager
     {
         return $this->getCart()->getKey();
     }
+
+    public function getQuantity(): int
+    {
+        return $this->getCart()->cartItems()->sum('quantity');
+    }
 }

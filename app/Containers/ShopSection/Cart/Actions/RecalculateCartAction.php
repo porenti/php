@@ -10,22 +10,70 @@ class RecalculateCartAction
 {
     public function run(Cart $cart): void
     {
+
+        //dd($cart = app()['cart']->getCart()->getCoupons,$cart->getCoupons());
         $sale = 0;
         $subtotal = 0;
-        $amount = 0;
-        $items= $cart->cartItems()->toBase()->get();
-        foreach ($items as $item){
-            $sale += $item->quantity * $item->sale;
-            $subtotal += $item->quantity * $item->subtotal_amount;
-            $amount += $item->quantity * $item->amount;
+
+        $items = $cart->getCartItems();
+
+        $coupons = $cart->getCoupons();
+
+
+        foreach ($coupons as $coupon) {
+
+            $pivot = $coupon->pivot;
+            $pivot->value = 0;
+//            $pivot->save();
+        } /*
+            // что то делаем
+
+            $pivot = $coupon->pivot;
+//pivot model, remove coupon, rashet, view(vuvod)
+            $pivot->value = 123;
+            $pivot->save();
+
         }
 
+        //dd($coupons);
 
+        //  получить значение скидки в корзине
+        // записать скидки карт айтемам
+*/
 
-        $cart->setTotalAmount($amount); //общая цена корзины
+        foreach ($items as $item) {
+            $quantity = $item->getQuantity();
+            if ($item->getSubtotalAmount() === $item->getAmount()) {
+                $saleForItem = 0;
+                foreach ($coupons as $coupon) {
+                    if ($coupon->getCouponsValueType()->getName() === "Абсолютное") {
+                        $value = $coupon->getValue(); //сумма скидки в рублях
+                        $subSale = $quantity * $value;
+                        $saleForItem += $value;
+                        $pivot = $coupon->pivot;
+                        $pivot->value += $subSale;
+                        $pivot->save();
+                    } else {
+                        $value = $item->getSubtotalAmount() / 100 * $coupon->getValue(); //сумма скидки в процентах
+                        $subSale = $quantity * $value;
+                        $saleForItem += $value;
+                        $pivot = $coupon->pivot;
+                        $pivot->value += $subSale;
+                        $pivot->save();
+
+                    }
+                }
+                $item->setSale($saleForItem);
+            }
+            $sale += $quantity * $item->getSale();
+            $subtotal += $quantity * $item->getSubtotalAmount();
+            $item->save();
+        }
         $cart->setSubtotalAmount($subtotal); //нормальная цена товаров
         $cart->setTotalSale($sale); //сумма скидки
-
+        $cart->setTotalAmount($subtotal - $sale); //общая цена корзины
+//        dd($subtotal,$sale, $subtotal - $sale);
         $cart->save();
+
     }
 }

@@ -4,6 +4,8 @@ namespace App\Models\Shop;
 
 
 use App\Models\Product;
+use App\Ship\Casts\Penny;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -56,9 +58,9 @@ class CartItem extends Model
         'cart_id' => 'int',
         'product_id' => 'int',
         'quantity' => 'int',
-        'sale' => 'int',
-        'subtotal_amount' => 'int',
-        'amount' => 'int'
+        'sale' => Penny::class,
+        'subtotal_amount' => Penny::class,
+        'amount' => Penny::class
     ];
 
     protected $fillable = [
@@ -187,11 +189,11 @@ class CartItem extends Model
      */
     public function getSale(): ?int
     {
+        $result = null;
         if ($this->sale !== 0) {
-            return $this->sale;
-        } else {
-            return null;
+            $result = $this->sale;
         }
+        return $result;
     }
 
     /**
@@ -218,6 +220,20 @@ class CartItem extends Model
         $this->subtotal_amount = $subtotal_amount;
     }
 
+    public function getSubtotalAmountDecorated(): string | float
+    {
+        return $this->subtotal_amount;
+    }
+    public function getAmountDecorated(): string | float
+    {
+        return $this->amount;
+    }
+    public function getTotalAmountDecorated(): string | float
+    {
+        return $this->quantity * $this->amount;
+    }
+
+
     /**
      * @return int
      */
@@ -234,5 +250,11 @@ class CartItem extends Model
         $this->amount = $amount;
     }
 
-
+    public function scopeFilterProductWithoutSale(Builder $query): Builder
+    {
+        $query->whereHas('product', function (Builder $query): Builder {
+            return $query->where('price_with_discount', 0);
+        });
+        return $query;
+    }
 }

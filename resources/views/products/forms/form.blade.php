@@ -17,7 +17,8 @@
 
     @include('components.inputs.input',[
         'name' => 'priceWithDiscount',
-        'label' => 'Цена со скидкой'
+        'label' => 'Цена со скидкой',
+        'placeholder' => 'Оставьте пустым если скидки нет'
     ])
 
     @include('components.inputs.input',[

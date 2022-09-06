@@ -21,9 +21,10 @@ class DatabaseSeeder extends Seeder
         $this->call(CouponSeeder::class);
         $this->call(GenderSeeder::class);
         $this->call(LaratrustSeeder::class); //заполнить роли
-        //\App\Models\User::factory(100)->create(); //заполнить пользователей
+        \App\Models\User::factory(100)->create(); //заполнить пользователей
         $this->call(PaymentMethodSeeder::class);
         $this->call(CategorySeeders::class);
         $this->call(ProductSeeder::class);
+        $this->call(AdminSeeder::class);
     }
 }

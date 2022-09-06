@@ -18,9 +18,11 @@ class GenerateNewCartItemAction
         $cartItem->setCategoryName($product->getCategory()->getName());
         $cartItem->setProductName($product->getName());
         $cartItem->setSale($product->getSale()); // скидка (-100 рублей)
+
         $cartItem->setSubtotalAmount($product->getPrice()); //цена без скидки
+        //dd($product->getSale(), $product->getPriceWithDiscount(), $product->getPrice());
         //итоговая цена
-        $cartItem->setAmount($product->getSale()!==0 ? $product->getPriceWithDiscount() : $product->getPrice());
+        $cartItem->setAmount($product->getSale() === null ? $product->getPrice() : $product->getPrice() - $product->getSale());
         $cartItem->setCartId(app()['cart']->getCartId());
         $cartItem->save();
 

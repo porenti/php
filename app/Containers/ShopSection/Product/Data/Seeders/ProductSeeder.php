@@ -13,27 +13,27 @@ class ProductSeeder extends Seeder
         {
             Product::create([
                 'name' => 'Кукуруза',
-                'price' => 10050,
+                'price' => 100,
                 'description' => 'бурум пум пум',
                 'category_id' => 1,
                 'quantity' => 200,
-                'priceWithDiscount' => 9999
+                'price_with_discount' => 50
             ]);
             Product::create([
                 'name' => 'Лада седан',
-                'price' => 1000050,
+                'price' => 150,
                 'description' => 'бип бип',
                 'category_id' => 2,
                 'quantity' => 7,
-                'priceWithDiscount' => 0
+                'price_with_discount' => null
             ]);
             Product::create([
                 'name' => 'Куваджа',
-                'price' => 200050,
+                'price' => 175,
                 'description' => 'быдыщ',
                 'category_id' => 3,
                 'quantity' => 2,
-                'priceWithDiscount' => 175000
+                'price_with_discount' => 150
             ]);
         }
     }

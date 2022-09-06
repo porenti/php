@@ -67,12 +67,12 @@ class Product extends Model implements Imagable
         'description',
         'category_id',
         'deleted_at',
-        'priceWithDiscount',
+        'price_with_discount',
         'quantity',
     ];
     protected $casts = [
         'price' => Penny::class,
-        'priceWithDiscount' => Penny::class
+        'price_with_discount' => Penny::class
     ];
 
     public function cartItems(): HasMany
@@ -100,7 +100,7 @@ class Product extends Model implements Imagable
      */
     public function getPrice(): int
     {
-        return (int)($this->price * 100);
+        return $this->price ;
     }
 
     public function getPriceFormatted(): string
@@ -135,12 +135,12 @@ class Product extends Model implements Imagable
 
     public function getPriceWithDiscount(): ?int
     {
-        return $this->priceWithDiscount;
+        return $this->price_with_discount;
     }
 
     public function setPriceWithDiscount($priceWithDiscount)
     {
-        $this->priceWithDiscount = $priceWithDiscount;
+        $this->price_with_discount = $priceWithDiscount;
     }
 
     public function softDelete()
@@ -189,13 +189,13 @@ class Product extends Model implements Imagable
         return 'catalog' . '/images';
     }
 
-    public function getSale(): int
+    public function getSale(): ?int
     {
-        if ($this->getPriceWithDiscount() !== null) {
-            return $this->getPrice() - $this->getPriceWithDiscount();
-        } else {
-            return 0;
+        $result = 0;
+        if ($this->getPriceWithDiscount() !== null and $this->getPriceWithDiscount() !== 0) {
+            $result = $this->getPrice() - $this->getPriceWithDiscount();
         }
+        return $result;
     }
 
     /**

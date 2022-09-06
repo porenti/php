@@ -64,8 +64,8 @@ Route::middleware('cart')->group(function () {
 // middleware - группировка рутов и выдача им стартового функционала по имени 'cart'
     Route::get('/catalog', [CatalogController::class, 'index'])->name('catalog.index');
     Route::get('/catalog/{product}', [CatalogController::class, 'show'])->name('catalog.show');
-
-    Route::post('cart/coupon/', [CartController::class, 'addCoupon'])->name('shop.cart.addcoupon');
+    Route::post('cart/coupon/remove', [CartController::class, 'removeCoupon'])->name('shop.cart.removecoupon');
+    Route::post('cart/coupon/add', [CartController::class, 'addCoupon'])->name('shop.cart.addcoupon');
     Route::post('edit/', [CartController::class, 'editQuantityCartItem'])->name('shop.cart.edit');
     Route::get('cart/', [CartController::class, 'index'])->name('shop.cart.index');
     Route::patch('update/', [CartController::class, 'addNewItem'])->name('shop.cart.update');

@@ -38,12 +38,12 @@ return new class extends Migration
         Schema::create('coupons_carts', function (Blueprint $table) {
             $table->foreignId('coupon_id')->references('id')->on('coupons');
             $table->foreignId('cart_id')->references('id')->on('carts');
-            $table->integer('value');
+            $table->integer('value')->default(0);
         });
         Schema::create('coupons_orders', function (Blueprint $table) {
             $table->foreignId('coupon_id')->references('id')->on('coupons');
             $table->foreignId('order_id')->references('id')->on('orders');
-            $table->integer('value');
+            $table->integer('value')->default(0);
         });
     }
 

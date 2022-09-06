@@ -2,6 +2,7 @@
 
 namespace App\Models\Shop;
 
+use App\Ship\Casts\Penny;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -62,10 +63,10 @@ class Cart extends Model
         'delivery_id' => 'int',
         'address_id' => 'int',
         'payment_method_id' => 'int',
-        'subtotal_amount' => 'int',
-        'total_amount' => 'int',
-        'total_sale' => 'int',
-        'delivery_price' => 'int'
+        'subtotal_amount' => Penny::class,
+        'total_amount' => Penny::class,
+        'total_sale' => Penny::class,
+        'delivery_price' => Penny ::class
     ];
 
     protected $dates = [
@@ -108,6 +109,16 @@ class Cart extends Model
     public function cartItems(): HasMany
     {
         return $this->hasMany(CartItem::class);
+    }
+
+    public function cartItemsWhereProductWithoutSale(): HasMany
+    {
+        return $this->cartItems()->filterProductWithoutSale();
+    }
+
+    public function getCartItemsWhereProductWithoutSale(): Collection
+    {
+        return $this->cartItemsWhereProductWithoutSale;
     }
 
     public function getCartItems(): Collection
@@ -256,9 +267,14 @@ class Cart extends Model
             ->withPivot('value');
     }
 
-    public function getCoupons(): ?Collection
+    public function getCoupons(): Coupon|Collection|null
     {
         return $this->coupons;
+    }
+
+    public function setCoupons(Coupon $coupon)
+    {
+        $this->coupons = $coupon;
     }
 
     /**
@@ -293,5 +309,13 @@ class Cart extends Model
         $this->delivery_price = $delivery_price;
     }
 
-
+    public function getDecoratedTotalAmount(): float|string{
+        return $this->total_amount;
+    }
+    public function getDecoratedSubTotalAmount(): float|string{
+        return $this->subtotal_amount;
+    }
+    public function getDecoratedTotalSale(): float|string{
+        return $this->total_sale;
+    }
 }

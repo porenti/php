@@ -1,6 +1,8 @@
 <?php
 /**
  * @var \App\Models\Shop\CartItem $cartItem
+ * @var \App\Models\Shop\Coupon $coupon
+ * @var \App\Models\Shop\Cart $cart
  */
 ?>
 
@@ -37,12 +39,19 @@
                                 </div>
                             </div>
                             <div class="col-lg-2">
-                                <div class="row">
-                                    <del>{{ $cartItem->getSubtotalAmount() }}&nbsp;₽</del>
-                                </div>
-                                <div class="row">
-                                    {{ $cartItem->getAmount() }} ₽
-                                </div>
+                                @if ($cartItem->getSubtotalAmount() !== $cartItem->getAmount())
+                                    <div class="row">
+                                        <del>{{ $cartItem->getSubtotalAmountDecorated() }}&nbsp;₽</del>
+                                    </div>
+                                    <div class="row">
+                                        {{ $cartItem->getAmount() }} ₽
+                                    </div>
+                                @endif
+                                @if ($cartItem->getSubtotalAmount() === $cartItem->getAmount())
+                                    <div class="row">
+                                        {{ $cartItem->getAmountDecorated() }} ₽
+                                    </div>
+                                @endif
                             </div>
                             <div class="col-lg-3">
                                 <div class="row">
@@ -93,49 +102,83 @@
                 @endempty
             </div>
             <div class="col-lg-3 border ml-12">
-                <h4>Итог</h4>
-                <div class="p-2">
+                <div class="row">
+                    <h4>Итог</h4>
+                    <div class="p-2">
 
-                    @isset($cartItems)
-                        @foreach($cartItems as $cartItem)
-                            <div class="row mb-3">
-                                <div class="col-lg-4">х{{ $cartItem->getQuantity() }}</div>
-                                <div class="col-lg-4">{{ $cartItem->getProduct()->getName() }}</div>
-                                <div
-                                        class="col-lg-4 {{ $cartItem->getProduct()->getSale()===0 ? '' : 'text-danger' }}">{{ $cartItem->getTotalAmount() }}
-                                    ₽
+                        @isset($cartItems)
+                            @foreach($cartItems as $cartItem)
+                                <div class="row mb-3">
+                                    <div class="col-lg-4">х{{ $cartItem->getQuantity() }}</div>
+                                    <div class="col-lg-4">{{ $cartItem->getProduct()->getName() }}</div>
+                                    <div
+                                            class="col-lg-4 {{ $cartItem->getProduct()->getSale()===0 ? '' : 'text-danger' }}">
+                                        {{ $cartItem->getProduct()->getSale()===0 ? $cartItem->getTotalAmountDecorated() : $cartItem->getTotalAmount() }}
+                                        ₽
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endisset
+                        @empty($cartItems)
+                            Корзина пуста
+                        @endempty
+                        <div>
+                            <h5>Сумма: {{ $cart->getDecoratedTotalAmount() }} ₽</h5>
+                            <h6>Сумма без скидки: {{ $cart->getDecoratedSubTotalAmount() }} ₽</h6>
+                            <h7>Скидка составила: {{ $cart->getDecoratedTotalSale() }} ₽</h7>
+                        </div>
+                        {{ Form::open(['method'=>'POST', 'url' => route('shop.cart.addcoupon'), 'id' => 'form_id']) }}
+                        <div class="mt-4">
+                            @include('components.inputs.input',[
+                                     'name' => 'coupon_name',
+                                     'label' => 'Промокод',
+                                    ])
+                            <button type="submit" class="btn btn-secondary">Ввести промокод</button>
+                            {{ Form::close() }}
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row mt-4 border">
+                    @isset($coupons)
+                        <div class="row">
+                            <div class="col-4">
+                                Купон
+                            </div>
+                            <div class="col-3">
+                                Cкидка
+                            </div>
+                            <div class="col-2">
+
+                            </div>
+                        </div>
+                        @foreach($coupons as $coupon)
+                            <hr>
+                            <div class="row">
+                                <div class="col-4">
+                                    {{ $coupon->getName() }}
+                                </div>
+                                <div class="col-3">
+                                    {{ $coupon->pivot->value }}₽
+                                </div>
+                                <div class="col-2">
+
+
+                                    {{ Form::open(['url' => route('shop.cart.removecoupon'), 'id' => 'form_id'.$coupon->getKey()]) }}
+
+                                    <button type="submit" class="btn btn-secondary mb-3">Отменить</button>
+                                    {{ Form::hidden('coupon_name',$coupon->getName()) }}
+                                    {{ Form::close() }}
                                 </div>
                             </div>
-                        @endforeach
-                    @endisset
-                    @empty($cartItems)
-                        Корзина пуста
-                    @endempty
-                    <div>
-                        <h5>Сумма: {{ $cart->getTotalAmount() }} ₽</h5>
-                        <h6>Сумма без скидки: {{ $cart->getSubtotalAmount() }} ₽</h6>
-                        <h7>Скидка составила: {{ $cart->getTotalSale() }} ₽</h7>
-                    </div>
-                    {{ Form::open(['method'=>'POST', 'url' => route('shop.cart.addcoupon'), 'id' => 'form_id']) }}
-                    <div class="mt-4">
-                        @include('components.inputs.input',[
-                                 'name' => 'coupon_name',
-                                 'label' => 'Промокод',
-                                ])
-                        <button type="submit" class="btn btn-secondary">Ввести промокод</button>
-                        {{ Form::close() }}
-                    </div>
-
+                @endforeach
+                @endisset
                 </div>
-                <div class="mt-4 border">
-                    Информация о промокоде {{ $cart->getCoupons() }}
-                </div>
-
-
             </div>
-
-
         </div>
+
+
+    </div>
     </div>
 
 @endsection

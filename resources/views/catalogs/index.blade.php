@@ -56,9 +56,12 @@
                                 <div class="col-lg-4">
                                     {{ $product->getPriceFormatted() }}
                                 </div>
+                                @if ($product->getPriceWithDiscount() !== 0)
                                 <div class="col-lg-3" style="color:red;background: blueviolet">
+
                                     {{ $product->getPriceWithDiscount() }}
                                 </div>
+                                @endif
                             </div>
                         </div>
                     </div>

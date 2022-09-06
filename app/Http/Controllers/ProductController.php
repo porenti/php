@@ -54,7 +54,6 @@ class ProductController extends Controller
             'description' => 'required',
             'price' => 'required',
             'category_id' => 'required',
-            'priceWithDiscount' => 'required',
             'quantity' => 'required',
         ]);
         $product = new Product();
@@ -62,7 +61,11 @@ class ProductController extends Controller
         $product->setDescription($frd['description']);
         $product->setPrice((float)$frd['price']);
         $product->setCategoryId($frd['category_id']);
-        $product->setPriceWithDiscount($frd['priceWithDiscount']);
+        if (isset($frd['priceWithDiscount'])) {
+            $product->setPriceWithDiscount($frd['price_with_discount']);
+        } else {
+            $product->setPriceWithDiscount(null);
+        }
         $product->setQuantity($frd['quantity']);
         $product->save();
         if ($request->hasFile('avatar')) {
@@ -97,7 +100,7 @@ class ProductController extends Controller
         SEOMeta::setTitle('Редактирование - ' . $product->getName());
         $categories = Category::select('name', 'id')->get();
         $image = $product->getImages()->last();
-        return view('products.edit', compact('image','product', 'categories'));
+        return view('products.edit', compact('image', 'product', 'categories'));
     }
 
     /**

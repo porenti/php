@@ -149,7 +149,6 @@ class UsersController extends Controller
 
     public function rolesUpdate(Request $request, User $user)
     {
-
         $roles = $request->input('roles');
 
         $user->roles()->sync($roles);
