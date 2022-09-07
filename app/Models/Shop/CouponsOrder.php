@@ -15,11 +15,16 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $coupon_id
  * @property int $order_id
  * @property int $value
- *
  * @property Coupon $coupon
  * @property Order $order
- *
  * @package App\Models
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsOrder newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsOrder newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsOrder query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsOrder whereCouponId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsOrder whereOrderId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsOrder whereValue($value)
+ * @mixin \Eloquent
  */
 class CouponsOrder extends Model
 {

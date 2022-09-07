@@ -40,28 +40,25 @@
                             <h5 class="card-title">{{ $product->getName() }}</h5>
                             <p class="card-text">{{ $product->getDescription() }}</p>
                             <div class="row">
-                                <div class="col-lg-2">
+                                <div class="col-lg-5">
                                     {{ Form::open(['url' => route('shop.cart.update'), 'method' => 'PATCH']) }}
                                     {{ Form::hidden('product_id',$product->getKey()) }}
                                     @if($product->count_in_cart > 0)
-                                        <button class="btn btn-success" disabled>Товар уже в корзине</button>
+                                        <button class="btn btn-success" disabled>Добавлен</button>
                                     @else
                                         <button class="btn btn-success">+</button>
                                     @endif
                                     {{ Form::close() }}
                                 </div>
-                                <div class="col-lg-3">
+                                <div class="col-lg-4">
                                     <a href="{{ route('catalog.show', $product) }}" class="btn btn-primary">show</a>
                                 </div>
-                                <div class="col-lg-4">
-                                    {{ $product->getPriceFormatted() }}
+                                <div class="col-lg-3" >
+                                    <del>{{ $product->getPriceWithDiscount() !== 0 ? $product->getPriceFormatted() : '' }}</del>
+                                    <label style="{{ $product->getPriceWithDiscount() !== 0 ? 'color:red' : '' }}">
+                                        {{ $product->getPriceWithDiscount() !== 0 ? $product->getPriceWithDiscount() : $product->getPriceFormatted() }}
+                                    </label>
                                 </div>
-                                @if ($product->getPriceWithDiscount() !== 0)
-                                <div class="col-lg-3" style="color:red;background: blueviolet">
-
-                                    {{ $product->getPriceWithDiscount() }}
-                                </div>
-                                @endif
                             </div>
                         </div>
                     </div>

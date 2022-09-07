@@ -91,7 +91,7 @@
                         @endforeach
                     @endisset
                     @empty($users)
-                        Привязанные пользователи не найдены
+                        -
                     @endempty
                 </div>
                 <div class="col lg-1">

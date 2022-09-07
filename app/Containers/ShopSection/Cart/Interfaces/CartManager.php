@@ -11,7 +11,7 @@ interface CartManager
 
     public function setCart(Cart $cart): self;
 
-    public function getCart(): Cart;
+    public function getCart(): ?Cart;
 
     public function getCartId(): int;
 

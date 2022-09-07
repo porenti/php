@@ -49,7 +49,6 @@ class CartController extends Controller
 
     public function addNewItem(AddToCartRequest $request)
     {
-
         $productId = $request->input('product_id');
 //action - repository
         $product = app(GetProductsListByIdAction::class)

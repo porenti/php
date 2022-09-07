@@ -25,7 +25,6 @@ class GenerateNewCartItemAction
         $cartItem->setAmount($product->getSale() === null ? $product->getPrice() : $product->getPrice() - $product->getSale());
         $cartItem->setCartId(app()['cart']->getCartId());
         $cartItem->save();
-
         event(new CartItemAddedEvent($cartItem));
 
         return $cartItem;

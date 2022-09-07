@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Shop\Coupon;
 use App\Models\Shop\CouponsType;
 use App\Models\Shop\CouponsValueType;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class CouponSeeder extends Seeder

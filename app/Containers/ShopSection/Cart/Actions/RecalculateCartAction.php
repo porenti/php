@@ -24,22 +24,7 @@ class RecalculateCartAction
 
             $pivot = $coupon->pivot;
             $pivot->value = 0;
-//            $pivot->save();
-        } /*
-            // что то делаем
-
-            $pivot = $coupon->pivot;
-//pivot model, remove coupon, rashet, view(vuvod)
-            $pivot->value = 123;
-            $pivot->save();
-
         }
-
-        //dd($coupons);
-
-        //  получить значение скидки в корзине
-        // записать скидки карт айтемам
-*/
 
         foreach ($items as $item) {
             $quantity = $item->getQuantity();

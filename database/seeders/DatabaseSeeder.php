@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use App\Containers\ShopSection\Category\Data\Seeders\CategorySeeders;
 use App\Containers\ShopSection\PaymentMethod\Data\Seeders\PaymentMethodSeeder;
-
+use App\Containers\ShopSection\Delivery\Data\Seeders\DeliverySeeder;
 
 use App\Containers\ShopSection\Product\Data\Seeders\ProductSeeder;
 use Illuminate\Database\Seeder;
@@ -26,5 +26,6 @@ class DatabaseSeeder extends Seeder
         $this->call(CategorySeeders::class);
         $this->call(ProductSeeder::class);
         $this->call(AdminSeeder::class);
+        $this->call(DeliverySeeder::class);
     }
 }

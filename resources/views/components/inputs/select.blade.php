@@ -24,6 +24,8 @@ $multiple = $multiple ?? false;
                 @selected(in_array($itemValue, $items))>
                 {{ $itemLabel }}
             </option>
+
         @endforeach
+
     </select>
 </div>

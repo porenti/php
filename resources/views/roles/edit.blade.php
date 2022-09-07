@@ -1,19 +1,17 @@
-@extends('layouts.maintemple')
 
+@extends('layouts.maintemple')
 @section('content')
 
-    <div class="container">
-        {{ Form::model($role,['url' => route('roles.update', $role), 'method' => 'PATCH']) }}
-        @include('roles.forms.role_form')
+    @include('coupons.forms.form')
+    {{ Form::open(['url' => route('coupons.update')]) }}
 
-        <div class="row my-3">
-            <div class="col-12">
-                <button class="btn btn-success" >
-                    Сохранить
-                </button>
-            </div>
+    <div class="row my-1 mt-3">
+        <div class="col-12">
+            <button class="btn btn-success">
+                Создать
+            </button>
         </div>
-        {{ Form::close() }}
     </div>
 
+    {{ Form::close() }}
 @endsection

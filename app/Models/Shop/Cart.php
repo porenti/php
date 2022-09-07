@@ -49,6 +49,10 @@ use Illuminate\Support\Collection;
  * @method static Builder|Cart whereTotalSale($value)
  * @method static Builder|Cart whereUserId($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\CartItem[] $cartItemsWhereProductWithoutSale
+ * @property-read int|null $cart_items_where_product_without_sale_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\Coupon[] $coupons
+ * @property-read int|null $coupons_count
  */
 class Cart extends Model
 {
@@ -125,12 +129,6 @@ class Cart extends Model
     {
         return $this->cartItems;
     }
-
-    public function purchaseItemDetails(): HasManyThrough
-    {
-        return $this->hasManyThrough(PurchaseItemDetail::class, CartItem::class, 'purchase_item_detail_id', 'id', 'id',);
-    }
-
 
     /**
      * @return int
@@ -264,6 +262,7 @@ class Cart extends Model
     public function coupons()
     {
         return $this->belongsToMany(Coupon::class, 'coupons_carts')
+            ->using(CouponsCart::class)
             ->withPivot('value');
     }
 
@@ -309,13 +308,18 @@ class Cart extends Model
         $this->delivery_price = $delivery_price;
     }
 
-    public function getDecoratedTotalAmount(): float|string{
+    public function getDecoratedTotalAmount(): float|string
+    {
         return $this->total_amount;
     }
-    public function getDecoratedSubTotalAmount(): float|string{
+
+    public function getDecoratedSubTotalAmount(): float|string
+    {
         return $this->subtotal_amount;
     }
-    public function getDecoratedTotalSale(): float|string{
+
+    public function getDecoratedTotalSale(): float|string
+    {
         return $this->total_sale;
     }
 }

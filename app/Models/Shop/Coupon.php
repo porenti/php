@@ -24,61 +24,76 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $coupon_type_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property CouponsType $coupons_type
  * @property CouponsValueType $coupons_value_type
  * @property User|null $user
  * @property Collection|Cart[] $carts
  * @property Collection|Order[] $orders
- *
  * @package App\Models
+ * @property-read int|null $carts_count
+ * @property-read int|null $orders_count
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon filter(array $frd)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon filterSearch(string $value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCouponTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCouponValueTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Coupon whereValue($value)
+ * @mixin \Eloquent
  */
 class Coupon extends Model
 {
 
-	protected $table = 'coupons';
+    protected $table = 'coupons';
 
-	protected $casts = [
-		'value' => 'int',
-		'user_id' => 'int',
-		'coupon_value_type_id' => 'int',
-		'coupon_type_id' => 'int'
-	];
+    protected $casts = [
+        'value' => 'int',
+        'user_id' => 'int',
+        'coupon_value_type_id' => 'int',
+        'coupon_type_id' => 'int'
+    ];
 
-	protected $fillable = [
-		'name',
-		'value',
-		'user_id',
-		'coupon_value_type_id',
-		'coupon_type_id'
-	];
+    protected $fillable = [
+        'name',
+        'value',
+        'user_id',
+        'coupon_value_type_id',
+        'coupon_type_id'
+    ];
 
-	public function coupons_type()
-	{
-		return $this->belongsTo(CouponsType::class, 'coupon_type_id');
-	}
+    public function coupons_type()
+    {
+        return $this->belongsTo(CouponsType::class, 'coupon_type_id');
+    }
 
-	public function coupons_value_type()
-	{
-		return $this->belongsTo(CouponsValueType::class, 'coupon_value_type_id');
-	}
+    public function coupons_value_type()
+    {
+        return $this->belongsTo(CouponsValueType::class, 'coupon_value_type_id');
+    }
 
-	public function user()
-	{
-		return $this->belongsTo(User::class);
-	}
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
-	public function carts()
-	{
-		return $this->belongsToMany(Cart::class, 'coupons_carts')
-					->withPivot('id', 'value');
-	}
+    public function carts()
+    {
+        return $this->belongsToMany(Cart::class, 'coupons_carts')
+            ->using(CouponsCart::class)
+            ->withPivot('value');
+    }
 
-	public function orders()
-	{
-		return $this->belongsToMany(Order::class, 'coupons_orders')
-					->withPivot('id', 'value');
-	}
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'coupons_orders')
+            ->withPivot('id', 'value');
+    }
 
     /**
      * @return string
@@ -203,23 +218,23 @@ class Coupon extends Model
     public function scopeFilterSearch(Builder $query, string $value): Builder
     {
         $query
-            ->where('name', 'like','%'.$value.'%');
+            ->where('name', 'like', '%' . $value . '%');
 
         return $query;
     }
 
     public function scopeFilter(Builder $query, array $frd): Builder
     {
-        foreach ($frd as $key => $value){
-            if ($value === null){
+        foreach ($frd as $key => $value) {
+            if ($value === null) {
                 continue;
             }
-            switch ($key){
+            switch ($key) {
                 case 'search':
-                {
-                    $query->filterSearch($value);
-                }
-                break;
+                    {
+                        $query->filterSearch($value);
+                    }
+                    break;
             }
         }
         return $query;

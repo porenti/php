@@ -18,10 +18,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $count
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- *
  * @property Collection|Coupon[] $coupons
- *
  * @package App\Models
+ * @property-read int|null $coupons_count
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsType newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsType newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsType query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsType whereCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsType whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsType whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsType whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|CouponsType whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class CouponsType extends Model
 {

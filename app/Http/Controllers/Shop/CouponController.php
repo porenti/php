@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Shop;
 
 use App\Http\Controllers\Controller;
 use App\Models\Shop\Coupon;
+use App\Models\Shop\CouponsType;
+use App\Models\Shop\CouponsValueType;
+use Artesaos\SEOTools\Facades\SEOMeta;
 use Illuminate\Http\Request;
 
 class CouponController extends Controller
@@ -27,7 +30,10 @@ class CouponController extends Controller
      */
     public function create()
     {
-        //
+        $couponTypes = CouponsType::pluck('name','id');
+        $couponValueTypes = CouponsValueType::pluck('name','id');
+        SEOMeta::setTitle('Создание купона');
+        return view('coupons.create', compact("couponTypes","couponValueTypes"));
     }
 
     /**
@@ -38,7 +44,19 @@ class CouponController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $frd = $request->validate([
+            'name' => 'required',
+            'value' => 'required',
+            'couponType' => 'required',
+            'couponValueType' => 'required',
+        ]);
+        $coupon = new Coupon();
+        $coupon->setName($frd['name']);
+        $coupon->setValue($frd['value']);
+        $coupon->setCouponTypeId($frd['couponType']);
+        $coupon->setCouponValueTypeId($frd['couponValueType']);
+        $coupon->save();
+        return redirect()->route('coupons.index');
     }
 
     /**
@@ -60,7 +78,10 @@ class CouponController extends Controller
      */
     public function edit(Coupon $coupon)
     {
-        //
+        $couponTypes = CouponsType::pluck('name','id');
+        $couponValueTypes = CouponsValueType::pluck('name','id');
+        SEOMeta::setTitle('Редактирование купона');
+        return view('coupons.edit', compact("coupon","couponTypes","couponValueTypes"));
     }
 
     /**
@@ -72,7 +93,19 @@ class CouponController extends Controller
      */
     public function update(Request $request, Coupon $coupon)
     {
-        //
+        $frd = $request->validate([
+            'name' => 'required',
+            'value' => 'required',
+            'couponType' => 'required',
+            'couponValueType' => 'required',
+        ]);
+        $coupon;
+        $coupon->setName($frd['name']);
+        $coupon->setValue($frd['value']);
+        $coupon->setCouponTypeId($frd['couponType']);
+        $coupon->setCouponValueTypeId($frd['couponValueType']);
+        $coupon->save();
+        return redirect()->route('coupons.index');
     }
 
     /**
@@ -83,6 +116,7 @@ class CouponController extends Controller
      */
     public function destroy(Coupon $coupon)
     {
-        //
+        $coupon->delete();
+        return redirect()->route('coupons.index');
     }
 }

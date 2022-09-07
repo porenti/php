@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 class Manager implements CartManager
 {
-    private Cart $cart;
+    private ?Cart $cart = null;
 
     public function __construct()
     {
@@ -24,7 +24,7 @@ class Manager implements CartManager
         return $this;
     }
 
-    public function getCart(): Cart
+    public function getCart(): ?Cart
     {
         return $this->cart;
     }
@@ -32,15 +32,17 @@ class Manager implements CartManager
     public function checkInCart(int $productId): bool
     { //если есть - тру, нету - фолс
         $cart = $this->getCart();
+        $cartId = $cart->getKey();
 
 //        $cart->loadCount('cartItems.purchaseItemDetail', function (Builder $query) use ($productId) {
 //            return $query->where('product_id', $productId);
 //        });
         $result = $cart
-                ->whereHas('cartItems', function (Builder $query) use ($productId) {
-                    return $query->where('product_id', $productId);
+                ->whereHas('cartItems', function (Builder $query) use ($productId, $cartId) {
+                    return $query->where('product_id', $productId)->where('cart_id', $cartId);
                 })
                 ->count() > 0;
+
 
         return $result;
     }
@@ -52,6 +54,6 @@ class Manager implements CartManager
 
     public function getQuantity(): int
     {
-        return $this->getCart()->cartItems()->sum('quantity');
+        return $this->getCart()?->cartItems()->sum('quantity') ?? 0;
     }
 }
