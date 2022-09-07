@@ -22,9 +22,7 @@ class CartItemRepository
 
 
     public function getProductQuantyById(int $cartItemId): int {
-        //dd(CartItem::where('id',$cartItemId)->with('product')->first()->pluck('quantity')->first());
         return CartItem::where('id',$cartItemId)->with('product')->first()->getProduct()->getQuantity();
-        //return CartItem::where('id',$cartItemId)->with('product')->first()->pluck('quantity')->first();
     }
 
     public function getListByCart(Cart $cart, array $columns = ['*'], array $with = []): Collection

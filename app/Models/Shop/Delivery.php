@@ -5,6 +5,7 @@ namespace App\Models\Shop;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Shop\Delivery
@@ -24,6 +25,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Delivery whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Delivery wherePrice($value)
  * @mixin \Eloquent
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\PaymentMethod[] $paymentMethod
+ * @property-read int|null $payment_method_count
  */
 class Delivery extends Model
 {
@@ -40,14 +43,19 @@ class Delivery extends Model
         return $this->hasMany(Cart::class);
     }
 
-    public function deliveries_payment_method()
-    {
-        return $this->hasOne(DeliveriesPaymentMethod::class);
-    }
-
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function paymentMethod()
+    {
+        return $this->belongsToMany(PaymentMethod::class,'delivery_payment_method');
+    }
+
+    public function getPaymentMethod()
+    {
+        return $this->paymentMethod;
     }
 
     /**

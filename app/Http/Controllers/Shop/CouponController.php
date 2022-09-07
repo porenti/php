@@ -99,7 +99,6 @@ class CouponController extends Controller
             'couponType' => 'required',
             'couponValueType' => 'required',
         ]);
-        $coupon;
         $coupon->setName($frd['name']);
         $coupon->setValue($frd['value']);
         $coupon->setCouponTypeId($frd['couponType']);

@@ -53,6 +53,8 @@ use Illuminate\Support\Collection;
  * @property-read int|null $cart_items_where_product_without_sale_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\Coupon[] $coupons
  * @property-read int|null $coupons_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\Delivery[] $delivery
+ * @property-read int|null $delivery_count
  */
 class Cart extends Model
 {
@@ -103,6 +105,11 @@ class Cart extends Model
     public function session(): BelongsTo
     {
         return $this->belongsTo(Session::class);
+    }
+
+    public function getCartSum(): string|float|int
+    {
+        return $this->getTotalAmount() + $this->getDeliveryPrice() ?? 0;
     }
 
     public function getSession(): Session
@@ -178,6 +185,21 @@ class Cart extends Model
     {
         $this->user_id = $user_id;
     }
+
+    public function delivery(): HasMany
+    {
+        return $this->hasMany(Delivery::class);
+    }
+
+    public function setDelivery(Delivery $delivery)
+    {
+        $this->delivery = $delivery;
+    }
+
+    public function getDelivery(): Delivery
+{
+    return $this->delivery;
+}
 
     /**
      * @return int|null
