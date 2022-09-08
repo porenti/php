@@ -23,6 +23,7 @@ class HandleLoginAction
         $cartForCancel = $cartAuth;
         $cartForNextWork = $cartUnAuth;
         // если в текущей коризне есть товары
+        if ($cartUnAuth!==null) {
             if ($cartUnAuth->cart_items_count === 0) {
                 // если нашли ранее оформляемую корзину
                 if (null !== $cartAuth && $cartAuth->cart_items_count > 0) {
@@ -35,7 +36,15 @@ class HandleLoginAction
             //В НЕЙ(ФУНКЦИИ), МЫ УКАЗЫВАЕМ НОВУЮ СЕССИЮ ДЛЯ КОРЗИНЫ
 
             app(CancelCartTask::class)->run($cartForCancel);
-            app(UpdateCartSessionTask::class)->run($cartForNextWork, $user);
+        } else {
+
+            $cartForNextWork = $cartAuth;
+        }
+
+        app(UpdateCartSessionTask::class)->run($cartForNextWork, $user);
+
+
+        //dd($cartForCancel,$cartForNextWork, $cartUnAuth, $cartAuth);
         }
 
 
