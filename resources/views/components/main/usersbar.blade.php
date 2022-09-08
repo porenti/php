@@ -10,7 +10,7 @@
                 <a class="nav-link " aria-current="page" href="{{ route('catalog.index') }}">Каталог</a>
                 </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{route('shop.cart.index')}}">Корзина X{{ app()['cart']->getQuantity() }}</a>
+                        <a class="nav-link" id="cart" href="{{route('shop.cart.index')}}">Корзина X{{ app()['cart']->getQuantity() }}</a>
                     </li>
             </ul>
         </div>

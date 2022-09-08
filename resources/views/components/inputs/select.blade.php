@@ -21,7 +21,12 @@ $multiple = $multiple ?? false;
         @foreach($list as $itemValue => $itemLabel)
             <option
                 value="{{ $itemValue }}"
+                @isset($items)
                 @selected(in_array($itemValue, $items))>
+                @endisset
+                @empty($items)
+                    >
+                @endempty
                 {{ $itemLabel }}
             </option>
 

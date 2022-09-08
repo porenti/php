@@ -2,12 +2,14 @@
 
 namespace App\Models\Shop;
 
+use App\Models\User;
 use App\Ship\Casts\Penny;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Support\Collection;
 
@@ -53,6 +55,20 @@ use Illuminate\Support\Collection;
  * @property-read int|null $cart_items_where_product_without_sale_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\Coupon[] $coupons
  * @property-read int|null $coupons_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\Delivery[] $delivery
+ * @property-read int|null $delivery_count
+ * @property string|null $first_name
+ * @property string|null $last_name
+ * @property string|null $middle_name
+ * @property string|null $phone
+ * @property string|null $email
+ * @method static Builder|Cart whereEmail($value)
+ * @method static Builder|Cart whereFirstName($value)
+ * @method static Builder|Cart whereLastName($value)
+ * @method static Builder|Cart whereMiddleName($value)
+ * @method static Builder|Cart wherePhone($value)
+ * @property-read \App\Models\Shop\Address|null $addresses
+ * @property-read User|null $users
  */
 class Cart extends Model
 {
@@ -83,11 +99,16 @@ class Cart extends Model
         'delivery_id',
         'address_id',
         'payment_method_id',
-        'subtotal_amount',
-        'total_amount',
-        'total_sale',
+        'subtotal_amount', //сколько стоит без скидок
+        'total_amount', //Сколько стоит корзина (с учетом скидок)
+        'total_sale',  //Сколько срезали скидкой
         'delivery_price',
-        'canceled_at'
+        'canceled_at',
+        'first_name',
+        'last_name',
+        'middle_name',
+        'phone',
+        'email'
     ];
 
 
@@ -103,6 +124,11 @@ class Cart extends Model
     public function session(): BelongsTo
     {
         return $this->belongsTo(Session::class);
+    }
+
+    public function getCartSum(): string|float|int
+    {
+        return $this->getTotalAmount() + $this->getDeliveryPrice() ?? 0;
     }
 
     public function getSession(): Session
@@ -177,6 +203,21 @@ class Cart extends Model
     public function setUserId(?int $user_id): void
     {
         $this->user_id = $user_id;
+    }
+
+    public function delivery(): HasMany
+    {
+        return $this->hasMany(Delivery::class);
+    }
+
+    public function setDelivery(Delivery $delivery)
+    {
+        $this->delivery = $delivery;
+    }
+
+    public function getDelivery(): Delivery
+    {
+        return $this->delivery;
     }
 
     /**
@@ -321,5 +362,105 @@ class Cart extends Model
     public function getDecoratedTotalSale(): float|string
     {
         return $this->total_sale;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getFirstName(): ?string
+    {
+        return $this->first_name;
+    }
+
+    /**
+     * @param string|null $first_name
+     */
+    public function setFirstName(?string $first_name): void
+    {
+        $this->first_name = $first_name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getLastName(): ?string
+    {
+        return $this->last_name;
+    }
+
+    /**
+     * @param string|null $last_name
+     */
+    public function setLastName(?string $last_name): void
+    {
+        $this->last_name = $last_name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getMiddleName(): ?string
+    {
+        return $this->middle_name;
+    }
+
+    /**
+     * @param string|null $middle_name
+     */
+    public function setMiddleName(?string $middle_name): void
+    {
+        $this->middle_name = $middle_name;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string|null $phone
+     */
+    public function setPhone(?string $phone): void
+    {
+        $this->phone = $phone;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string|null $email
+     */
+    public function setEmail(?string $email): void
+    {
+        $this->email = $email;
+    }
+
+    public function users(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->users;
+    }
+
+    public function addresses(): BelongsTo
+    {
+        return $this->belongsTo(Address::class,'address_id');
+    }
+
+    public function getAddresses(): ?Address
+    {
+        return $this->addresses;
     }
 }

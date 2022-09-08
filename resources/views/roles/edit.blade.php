@@ -2,8 +2,8 @@
 @extends('layouts.maintemple')
 @section('content')
 
-    @include('coupons.forms.form')
-    {{ Form::open(['url' => route('coupons.update')]) }}
+    {{ Form::open(['url' => route('roles.update')]) }}
+    @include('roles.forms.form')
 
     <div class="row my-1 mt-3">
         <div class="col-12">

@@ -36,4 +36,22 @@ class AddressHouse extends Model
 	{
 		return $this->hasMany(Address::class, 'house_id');
 	}
+
+    /**
+     * @return string
+     */
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    /**
+     * @param string $name
+     */
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
+
 }

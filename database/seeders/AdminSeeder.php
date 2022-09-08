@@ -21,6 +21,7 @@ class AdminSeeder extends Seeder
         $user->setEmail('admin@gmail.com');
         $user->setPassword(Hash::make('admin'));
         $user->setHide(false);
+        $user->setPhone('88008003535');
         $user->save();
         $user->roles()->sync(1);
     }

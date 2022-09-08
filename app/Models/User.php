@@ -5,18 +5,16 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Interfaces\Images\Imagable;
 use App\Models\Images\Image;
+use App\Models\Shop\Cart;
 use App\Traits\Relations\Images\HasImages;
-use Illuminate\Auth\Events\Login;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Collection;
 use Laravel\Sanctum\HasApiTokens;
 use Laratrust\Traits\LaratrustUserTrait;
-
+use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * App\Models\User
  *
@@ -79,6 +77,12 @@ use Laratrust\Traits\LaratrustUserTrait;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|Image[] $image
  * @property-read int|null $image_count
+ * @property string $phone
+ * @property int|null $address_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|Cart[] $carts
+ * @property-read int|null $carts_count
+ * @method static Builder|User whereAddressId($value)
+ * @method static Builder|User wherePhone($value)
  */
 class User extends Authenticatable implements Imagable
 {
@@ -102,9 +106,11 @@ class User extends Authenticatable implements Imagable
         'description',
         'email',
         'hide',
+        'phone',
         'hide_time',
         'password',
         'age',
+        'address_id'
     ];
 
     /**
@@ -142,12 +148,38 @@ class User extends Authenticatable implements Imagable
         return $this->belongsTo(Gender::class);
     }
 
+
+    public function carts(): HasMany
+    {
+        return $this->hasMany(Cart::class);
+    }
+
+    public function getCart(): Cart {
+        return $this->carts;
+    }
+
     /**
      * @return Gender
      */
     public function getGender(): Gender
     {
         return $this->gender;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getAddressId(): ?int
+    {
+        return $this->address_id;
+    }
+
+    /**
+     * @param int|null $address_id
+     */
+    public function setAddressId(?int $address_id): void
+    {
+        $this->address_id = $address_id;
     }
 
     /**
@@ -167,6 +199,16 @@ class User extends Authenticatable implements Imagable
     {
         $this->nickname = $nickname;
     }
+
+    public function setPhone(string $phone)
+    {
+        $this->phone = $phone;
+    }
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
 
     public function getNickname(): string
     {

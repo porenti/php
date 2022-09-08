@@ -101,8 +101,13 @@
                     Корзина пуста
                 @endempty
             </div>
-            <div class="col-lg-3 border ml-12">
+            <div class="col-lg-3 mb-3">
+                {{ Form::open(['method'=>'POST', 'url' => route('shop.order.create')]) }}
                 <div class="row">
+                    <button type="submit" class="btn btn-info btn-lg">Оформить</button>
+                </div>
+                {{ Form::close() }}
+                <div class="row border mt-3">
                     <h4>Итог</h4>
                     <div class="p-2">
 
@@ -123,11 +128,15 @@
                             Корзина пуста
                         @endempty
                         <div>
-                            <h5>Сумма: {{ $cart->getDecoratedTotalAmount() }} ₽</h5>
-                            <h6>Сумма без скидки: {{ $cart->getDecoratedSubTotalAmount() }} ₽</h6>
-                            <h7>Скидка составила: {{ $cart->getDecoratedTotalSale() }} ₽</h7>
+                            <h5>Сумма: {{ $cart->getDecoratedSubTotalAmount() }} ₽</h5>
+                            <h5>Скидка: {{ $cart->getDecoratedTotalSale() }} ₽</h5>
+                            @if ($cart->getDeliveryId()!==null)
+                                <h5>Доставка: {{ $cart->getDeliveryPrice() }} ₽</h5>
+                            @endif
+                            <h4>Итого: {{ $cart->getCartSum() }} ₽</h4>
                         </div>
                         {{ Form::open(['method'=>'POST', 'url' => route('shop.cart.addcoupon'), 'id' => 'form_id']) }}
+                        @csrf
                         <div class="mt-4">
                             @include('components.inputs.input',[
                                      'name' => 'coupon_name',
@@ -139,46 +148,136 @@
 
                     </div>
                 </div>
-                <div class="row mt-4 border">
-                    @isset($coupons)
-                        <div class="row">
-                            <div class="col-4">
-                                Купон
-                            </div>
-                            <div class="col-3">
-                                Cкидка
-                            </div>
-                            <div class="col-2">
-
-                            </div>
-                        </div>
-                        @foreach($coupons as $coupon)
-                            <hr>
+                @if ($coupons->count() !== 0)
+                    <div class="row mt-4 border">
+                        @isset($coupons)
                             <div class="row">
                                 <div class="col-4">
-                                    {{ $coupon->getName() }}
+                                    Купон
                                 </div>
                                 <div class="col-3">
-                                    {{ $coupon->pivot->value }}₽
+                                    Cкидка
                                 </div>
                                 <div class="col-2">
 
-
-                                    {{ Form::open(['url' => route('shop.cart.removecoupon'), 'id' => 'form_id'.$coupon->getKey()]) }}
-
-                                    <button type="submit" class="btn btn-secondary mb-3">Отменить</button>
-                                    {{ Form::hidden('coupon_name',$coupon->getName()) }}
-                                    {{ Form::close() }}
                                 </div>
                             </div>
-                @endforeach
-                @endisset
-                </div>
+                            @foreach($coupons as $coupon)
+                                <hr>
+                                <div class="row">
+                                    <div class="col-4">
+                                        {{ $coupon->getName() }}
+                                    </div>
+                                    <div class="col-3">
+                                        {{ $coupon->pivot->value }}₽
+                                    </div>
+                                    <div class="col-2">
+
+
+                                        {{ Form::open(['url' => route('shop.cart.removecoupon'), 'id' => 'form_id'.$coupon->getKey()]) }}
+
+                                        <button type="submit" class="btn btn-secondary mb-3">Отменить</button>
+                                        {{ Form::hidden('coupon_name',$coupon->getName()) }}
+                                        {{ Form::close() }}
+                                    </div>
+                                </div>
+                            @endforeach
+                        @endisset
+                    </div>
+                @endif
             </div>
         </div>
 
+        <div class="row mt-5 justify-content-between" style="color:black">
+            <div class="col-lg-6 border p-2">
+                <div class="row justify-content-center">
+                    <div class="col-lg-6 text-center">
+                        <h3>Личные данные</h3>
+                    </div>
+                    <div class="col-lg-6 text-center">
+                        @if (!auth()->check())
+                            <a class="btn btn-secondary btn-lg" href="{{ route('login') }}">Войти</a>
+                        @endif
+                    </div>
+                </div>
 
+                <div class="row">
+                    
+                </div>
+
+
+                {{ Form::open(['url' => route('shop.cart.userdata')]) }}
+                <div class="row">
+                    <div class="col-lg-4">
+                        @include('components.inputs.input', [
+    'label' => 'Фамилия',
+    'name' => 'lName',
+    'value' => $cart->getLastName() ??  auth()->user()->getLastName() ?? null,
+])
+                    </div>
+                    <div class="col-lg-4">
+                        @include('components.inputs.input', [
+    'label' => 'Имя',
+    'name' => 'fName',
+    'value' => $cart->getFirstName() ?? auth()->user()->getFirstName() ?? null,
+])
+                    </div>
+                    <div class="col-lg-4">
+                        @include('components.inputs.input', [
+    'label' => 'Отчество',
+    'name' => 'mName',
+    'value' => $cart->getMiddleName() ?? auth()->user()->getMiddleName() ?? null,
+])
+                    </div>
+                    <div class="col-lg-6">
+                        @include('components.inputs.input', [
+    'label' => 'Телефон',
+    'name' => 'phone',
+    'value' => $cart->getPhone() ?? auth()->user()->getPhone() ?? null,
+])
+                    </div>
+                    <div class="col-lg-6">
+                        @include('components.inputs.input', [
+    'label' => 'Почта',
+    'name' => 'email',
+    'value' => $cart->getEmail() ?? auth()->user()->getEmail() ?? null,
+])
+                    </div>
+                    <div class="col-lg-12">
+                        @include('components.inputs.DadataInput')
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary mt-3">Сохранить данные</button>
+                </div>
+                {{ Form::close() }}
+            </div>
+            <div class="col-lg-5 border p-2">
+                <h3 style="text-align: center">Выберите способ доставки</h3>
+                <div class="row">
+                    @foreach($deliveries as $delivery)
+                        <div class="col-lg-4">
+                            {{ Form::open(['url' => route('shop.cart.editdelivery'), 'id' => 'form_id'.$delivery->getKey()]) }}
+                            {{ Form::hidden('delivery_id',$delivery->getKey()) }}
+                            <div class="btn-group-vertical" role="group">
+                                <button type="submit"
+                                        class="btn btn-lg {{ $delivery->getKey() === $cart->getDeliveryId() ? 'active btn-success' : 'btn-secondary' }}">
+                                    {{$delivery->getName()}}</button>
+
+                                <button type="submit"
+                                        class="btn {{ $delivery->getKey() === $cart->getDeliveryId() ? 'active btn-outline-success' : 'btn-outline-secondary' }}">{{ $delivery->getPrice() }}
+                                    ₽
+                                </button>
+                            </div>
+                            {{ Form::close() }}
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
     </div>
     </div>
+
+
+
 
 @endsection
