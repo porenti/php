@@ -72,6 +72,7 @@ Route::middleware('cart')->group(function () {
     Route::post('cart/userdata', [CartController::class, 'editUserData'])->name('shop.cart.userdata');
     Route::patch('update/', [CartController::class, 'addNewItem'])->name('shop.cart.update');
     Route::post('delete/', [CartController::class, 'removeItem'])->name('shop.cart.remove');
+    Route::post('creatorder', [CartController::class, 'createOrder'])->name('shop.order.create');
 });
 
 

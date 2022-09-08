@@ -67,6 +67,8 @@ use Illuminate\Support\Collection;
  * @method static Builder|Cart whereLastName($value)
  * @method static Builder|Cart whereMiddleName($value)
  * @method static Builder|Cart wherePhone($value)
+ * @property-read \App\Models\Shop\Address|null $addresses
+ * @property-read User|null $users
  */
 class Cart extends Model
 {
@@ -97,9 +99,9 @@ class Cart extends Model
         'delivery_id',
         'address_id',
         'payment_method_id',
-        'subtotal_amount',
-        'total_amount',
-        'total_sale',
+        'subtotal_amount', //сколько стоит без скидок
+        'total_amount', //Сколько стоит корзина (с учетом скидок)
+        'total_sale',  //Сколько срезали скидкой
         'delivery_price',
         'canceled_at',
         'first_name',

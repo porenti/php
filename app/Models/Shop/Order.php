@@ -75,7 +75,12 @@ class Order extends Model
         'subtotal_amount',
         'total_amount',
         'total_sale',
-        'delivery_price'
+        'delivery_price',
+        'first_name',
+        'last_name',
+        'middle_name',
+        'phone',
+        'email'
     ];
 
     public function cart(): BelongsTo
@@ -102,6 +107,88 @@ class Order extends Model
     {
         $this->cart_id = $cart_id;
     }
+
+    /**
+     * @return string
+     */
+    public function getFirstName(): string
+    {
+        return $this->first_name;
+    }
+
+    /**
+     * @param string $first_name
+     */
+    public function setFirstName(string $first_name): void
+    {
+        $this->first_name = $first_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLastName(): string
+    {
+        return $this->last_name;
+    }
+
+    /**
+     * @param string $last_name
+     */
+    public function setLastName(string $last_name): void
+    {
+        $this->last_name = $last_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMiddleName(): string
+    {
+        return $this->middle_name;
+    }
+
+    /**
+     * @param string $middle_name
+     */
+    public function setMiddleName(string $middle_name): void
+    {
+        $this->middle_name = $middle_name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPhone(): string
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     */
+    public function setPhone(string $phone): void
+    {
+        $this->phone = $phone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param string $email
+     */
+    public function setEmail(string $email): void
+    {
+        $this->email = $email;
+    }
+
+
 
     /**
      * @return int|null

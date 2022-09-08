@@ -101,8 +101,13 @@
                     Корзина пуста
                 @endempty
             </div>
-            <div class="col-lg-3 border">
+            <div class="col-lg-3 mb-3">
+                {{ Form::open(['method'=>'POST', 'url' => route('shop.order.create')]) }}
                 <div class="row">
+                    <button type="submit" class="btn btn-info btn-lg">Оформить</button>
+                </div>
+                {{ Form::close() }}
+                <div class="row border mt-3">
                     <h4>Итог</h4>
                     <div class="p-2">
 
@@ -195,6 +200,11 @@
                         @endif
                     </div>
                 </div>
+
+                <div class="row">
+                    
+                </div>
+
 
                 {{ Form::open(['url' => route('shop.cart.userdata')]) }}
                 <div class="row">
