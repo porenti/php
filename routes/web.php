@@ -69,6 +69,7 @@ Route::middleware('cart')->group(function () {
     Route::post('cart/delivery', [CartController::class, 'editDelivery'])->name('shop.cart.editdelivery');
     Route::post('edit/', [CartController::class, 'editQuantityCartItem'])->name('shop.cart.edit');
     Route::get('cart/', [CartController::class, 'index'])->name('shop.cart.index');
+    Route::post('cart/userdata', [CartController::class, 'editUserData'])->name('shop.cart.userdata');
     Route::patch('update/', [CartController::class, 'addNewItem'])->name('shop.cart.update');
     Route::post('delete/', [CartController::class, 'removeItem'])->name('shop.cart.remove');
 });

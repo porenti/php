@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '835964999c16fff58e0c58246e86dc538a2212df',
+        'reference' => '45e27eb9ff34ccc9562fc831ab2b46a52da5da46',
         'name' => 'laravel/laravel',
         'dev' => true,
     ),
@@ -487,7 +487,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '835964999c16fff58e0c58246e86dc538a2212df',
+            'reference' => '45e27eb9ff34ccc9562fc831ab2b46a52da5da46',
             'dev_requirement' => false,
         ),
         'laravel/pint' => array(
@@ -623,6 +623,15 @@
             'install_path' => __DIR__ . '/../monolog/monolog',
             'aliases' => array(),
             'reference' => '720488632c590286b88b80e62aa3d3d551ad4a50',
+            'dev_requirement' => false,
+        ),
+        'movemoveapp/laravel-dadata' => array(
+            'pretty_version' => '1.0.10',
+            'version' => '1.0.10.0',
+            'type' => 'laravel-package',
+            'install_path' => __DIR__ . '/../movemoveapp/laravel-dadata',
+            'aliases' => array(),
+            'reference' => '090e5d9d6561d75fe605a183e3801df77b8b83eb',
             'dev_requirement' => false,
         ),
         'mtdowling/cron-expression' => array(
@@ -898,8 +907,8 @@
         'psr/log-implementation' => array(
             'dev_requirement' => false,
             'provided' => array(
-                0 => '1.0|2.0|3.0',
-                1 => '1.0.0 || 2.0.0 || 3.0.0',
+                0 => '1.0.0 || 2.0.0 || 3.0.0',
+                1 => '1.0|2.0|3.0',
             ),
         ),
         'psr/simple-cache' => array(

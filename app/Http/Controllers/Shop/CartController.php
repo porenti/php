@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\Shop;
 
+use App\Containers\ShopSection\Address\Actions\SaveAddressAction;
+use App\Containers\ShopSection\Cart\Actions\EditUserDataAction;
+use App\Ship\DaData\DaData;
 use App\Containers\ShopSection\Cart\Actions\AddCouponAction;
 use App\Containers\ShopSection\Cart\Actions\AddDeliveryAction;
 use App\Containers\ShopSection\Cart\Actions\EditQuantityCartItemAction;
@@ -47,22 +50,20 @@ class CartController extends Controller
             ->run($cart, ['*'], ['product']);
 
         $coupons = $cart->getCoupons();
-
         return view('carts.index', compact('cartItems', 'coupons', 'cart', 'deliveries'));
     }
 
     public function addNewItem(AddToCartRequest $request)
     {
         $productId = $request->input('product_id');
-//action - repository
         $product = app(GetProductsListByIdAction::class)
             ->run($productId);
-        if (!app()['cart']->checkInCart($product->getKey())) {
+        /*if (!app()['cart']->checkInCart($product->getKey())) {
             $cartItem = app(GenerateNewCartItemAction::class)->run($product);
-        }
+        }*/
 
 
-        return redirect()->route('catalog.index');
+        return response('ok');
     }
 
     public function editQuantityCartItem(EditQuantityCartItemRequest $request)//EditQuantityCartItemRequest
@@ -116,6 +117,13 @@ class CartController extends Controller
         $cart = app()['cart']->getCart();
         $deliveryId = $request->input('delivery_id');
         app(AddDeliveryAction::class)->run($cart,$deliveryId);
+        return redirect()->route('shop.cart.index');
+    }
+
+    public function editUserData(Request $request)
+    { //Сделать новый реквест
+        $frd = $request->input();
+        app(EditUserDataAction::class)->run($frd);
         return redirect()->route('shop.cart.index');
     }
 }

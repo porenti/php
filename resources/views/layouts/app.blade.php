@@ -9,7 +9,10 @@
     <title>{{ \Artesaos\SEOTools\Facades\SEOMeta::getTitle() }}</title>
 
     <script type="text/javascript" src="selectize.js"></script>
+    <script type="text/javascript" src="main.js"></script>
     <link rel="stylesheet" type="text/css" href="selectize.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/2.1.0/css/toastr.css" rel="stylesheet" />
+
 
 
 </head>

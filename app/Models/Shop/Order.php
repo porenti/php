@@ -36,6 +36,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereTotalSale($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereUserId($value)
  * @mixin \Eloquent
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $middle_name
+ * @property string $phone
+ * @property string $email
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereFirstName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order whereMiddleName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Order wherePhone($value)
  */
 class Order extends Model
 {

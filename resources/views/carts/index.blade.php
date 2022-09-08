@@ -183,7 +183,6 @@
             </div>
         </div>
 
-
         <div class="row mt-5 justify-content-between" style="color:black">
             <div class="col-lg-6 border p-2">
                 <div class="row justify-content-center">
@@ -197,52 +196,50 @@
                     </div>
                 </div>
 
-                {{ auth()->user() ? 1 : 0}}
-                fio adress telephon pochta
+                {{ Form::open(['url' => route('shop.cart.userdata')]) }}
                 <div class="row">
                     <div class="col-lg-4">
                         @include('components.inputs.input', [
     'label' => 'Фамилия',
     'name' => 'lName',
-    'value' => auth()->check() ? auth()->user()->getLastName() : null,
+    'value' => $cart->getLastName() ??  auth()->user()->getLastName() ?? null,
 ])
                     </div>
                     <div class="col-lg-4">
                         @include('components.inputs.input', [
     'label' => 'Имя',
     'name' => 'fName',
-    'value' => auth()->check() ? auth()->user()->getFirstName() : null,
+    'value' => $cart->getFirstName() ?? auth()->user()->getFirstName() ?? null,
 ])
                     </div>
                     <div class="col-lg-4">
                         @include('components.inputs.input', [
     'label' => 'Отчество',
     'name' => 'mName',
-    'value' => auth()->check() ? auth()->user()->getMiddleName() : null,
+    'value' => $cart->getMiddleName() ?? auth()->user()->getMiddleName() ?? null,
 ])
                     </div>
                     <div class="col-lg-6">
                         @include('components.inputs.input', [
     'label' => 'Телефон',
     'name' => 'phone',
-    'value' => auth()->check() ? auth()->user()->getPhone() : null,
+    'value' => $cart->getPhone() ?? auth()->user()->getPhone() ?? null,
 ])
                     </div>
                     <div class="col-lg-6">
                         @include('components.inputs.input', [
     'label' => 'Почта',
     'name' => 'email',
-    'value' => auth()->check() ? auth()->user()->getEmail() : null,
+    'value' => $cart->getEmail() ?? auth()->user()->getEmail() ?? null,
 ])
                     </div>
                     <div class="col-lg-12">
-                        @include('components.inputs.input', [
-    'label' => 'Адресс',
-    'name' => 'adress_id',
-    'value' => auth()->check() ? auth()->user()->getMiddleName() : null,
-])
+                        @include('components.inputs.DadataInput')
                     </div>
+
+                    <button type="submit" class="btn btn-secondary mt-3">Сохранить данные</button>
                 </div>
+                {{ Form::close() }}
             </div>
             <div class="col-lg-5 border p-2">
                 <h3 style="text-align: center">Выберите способ доставки</h3>
@@ -269,5 +266,8 @@
         </div>
     </div>
     </div>
+
+
+
 
 @endsection

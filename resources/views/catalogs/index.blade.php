@@ -43,11 +43,9 @@
                                 <div class="col-lg-5">
                                     {{ Form::open(['url' => route('shop.cart.update'), 'method' => 'PATCH']) }}
                                     {{ Form::hidden('product_id',$product->getKey()) }}
-                                    @if($product->count_in_cart > 0)
-                                        <button class="btn btn-success" disabled>Добавлен</button>
-                                    @else
-                                        <button class="btn btn-success">+</button>
-                                    @endif
+                                        <button type="button"  value="{{ $product->getKey() }}" class="js-add-item-button btn btn-success {{ $product->count_in_cart > 0 ? 'disabled' : '' }}">
+                                            {{ $product->count_in_cart > 0 ? 'Добавлен' : '+' }}
+                                        </button>
                                     {{ Form::close() }}
                                 </div>
                                 <div class="col-lg-4">
@@ -73,5 +71,5 @@
                 'paginatorValue' => 12,
             ])
         @endif
-        @endsection
     </div>
+@endsection

@@ -1,13 +1,14 @@
 import './bootstrap';
+import './shop';
 
+
+import toastr from 'toastr';
+
+window.toastr = toastr;
 
 import $ from 'jquery-ui';
+
 window.$ = window.jQuery = $;
-
-
-// $(".selectize").selectize();
-
-
 
 import Alpine from 'alpinejs';
 

@@ -77,6 +77,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @mixin \Eloquent
  * @property-read \Illuminate\Database\Eloquent\Collection|Image[] $image
  * @property-read int|null $image_count
+ * @property string $phone
+ * @property int|null $address_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|Cart[] $carts
+ * @property-read int|null $carts_count
+ * @method static Builder|User whereAddressId($value)
+ * @method static Builder|User wherePhone($value)
  */
 class User extends Authenticatable implements Imagable
 {
@@ -104,6 +110,7 @@ class User extends Authenticatable implements Imagable
         'hide_time',
         'password',
         'age',
+        'address_id'
     ];
 
     /**
@@ -157,6 +164,22 @@ class User extends Authenticatable implements Imagable
     public function getGender(): Gender
     {
         return $this->gender;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getAddressId(): ?int
+    {
+        return $this->address_id;
+    }
+
+    /**
+     * @param int|null $address_id
+     */
+    public function setAddressId(?int $address_id): void
+    {
+        $this->address_id = $address_id;
     }
 
     /**
