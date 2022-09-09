@@ -5,6 +5,8 @@ namespace App\Models\Shop;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 /**
  * App\Models\Shop\Order
@@ -162,6 +164,55 @@ class Order extends Model
     public function getPhone(): string
     {
         return $this->phone;
+    }
+
+    public function coupons()
+    {
+        return $this->belongsToMany(Coupon::class, 'coupons_orders')
+            ->using(CouponsOrder::class)
+            ->withPivot('value');
+    }
+
+    public function getCoupons(): Coupon|Collection|null
+    {
+        return $this->coupons;
+    }
+
+    public function setCoupons(Coupon $coupon)
+    {
+        $this->coupons = $coupon;
+    }
+
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function getOrderItems(): Collection
+    {
+        return $this->orderItems;
+    }
+
+
+    public function delivery(): BelongsTo
+    {
+        return $this->belongsTo(Delivery::class);
+    }
+
+
+    public function getDelivery(): Delivery
+    {
+        return $this->delivery;
+    }
+
+    public function addresses(): BelongsTo
+    {
+        return $this->belongsTo(Address::class,'address_id');
+    }
+
+    public function getAddresses(): ?Address
+    {
+        return $this->addresses;
     }
 
     /**

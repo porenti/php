@@ -3,6 +3,7 @@
 namespace App\Models\Shop;
 
 
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -41,11 +42,20 @@ class PaymentMethod extends Model
         'name',
     ];
 
-    public function delivery(): \Illuminate\Database\Eloquent\Relations\MorphToMany
+    public function delivery()
     {
-        return $this->morphedByMany(Delivery::class, 'deliveries_payment_methods');
+        return $this->belongsToMany(Delivery::class, 'delivery_payment_methods');
     }
 
+    public function getDelivery(): Delivery|Collection|null
+    {
+        return $this->delivery;
+    }
+
+    public function getDeliveriesKeys(): Array
+    {
+        return $this->delivery->pluck('id')->toArray();
+    }
     /**
      * @return string
      */

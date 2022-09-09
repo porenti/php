@@ -16,7 +16,6 @@ class SaveAddressAction
     {
         $dadata = new DaData();
         $address = $dadata->standardizationExample($fullAdress)[0];
-
         $addressCountry = AddressCountry::query()
             ->firstOrCreate([
                'name' => $address['country']
@@ -39,14 +38,14 @@ class SaveAddressAction
             ]);
         $mainAdress = Address::query()
            ->firstOrCreate([
-               'country_id' => $addressCountry->getKey(),
-               'region_id' => $addressCity->getKey(),
-               'city_id' => $addressHouse->getKey(),
-               'street_id' => $addressRegion->getKey(),
-               'house_id' => $addressStreet->getKey(),
+               'full_address' => $address['result']
            ],[
              'room' =>   $address['flat'] ?? null,
-               'full_address' => $address['result']
+               'country_id' => $addressCountry->getKey(),
+               'city_id' => $addressCity->getKey(),
+               'house_id' => $addressHouse->getKey(),
+               'region_id' => $addressRegion->getKey(),
+               'street_id' => $addressStreet->getKey(),
            ]);
         return $mainAdress->getKey();
     }

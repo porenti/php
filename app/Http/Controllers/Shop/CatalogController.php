@@ -14,7 +14,6 @@ class CatalogController extends Controller
 {
     public function index(Request $request)
     {
-
         SEOMeta::setTitle('Каталог');
         $frd = $request->all();
         $categories = Category::pluck('name', 'id');

@@ -21,6 +21,5 @@ class EditUserDataAction
         $cart->save();
         $user?->setAddressId($addressKey);
         $user?->save();
-        // Люблю Дарину не Анон
     }
 }

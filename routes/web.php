@@ -9,7 +9,7 @@ use App\Http\Controllers\Shop\CatalogController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Shop\CartController;
 use App\Http\Controllers\Shop\CouponController;
-
+use App\Containers\ShopSection\Order\UI\WEB\Controllers\OrderController;
 /*
 VIEWS.PY
 */
@@ -27,11 +27,12 @@ Route::resource('users', UsersController::class);
 
 Route::middleware('auth')->group(function () {
 
-    Route::resource('products', ProductController::class);
-    Route::resource('categories', CategoryController::class);
+    Route::get('orders/index',[OrderController::class, 'index'])->name('shop.order.index');
 
     Route::middleware('role:admin|moder')->group(function () {
 
+        Route::resource('products', ProductController::class);
+        Route::resource('categories', CategoryController::class);
         Route::post('users/{user}/roles-update', [UsersController::class, 'rolesUpdate'])->name('users.roles-update');
 
         Route::get('users/{user}/roles-edit', [UsersController::class, 'rolesEdit'])->name('users.roles-edit');
@@ -67,6 +68,7 @@ Route::middleware('cart')->group(function () {
     Route::post('cart/coupon/remove', [CartController::class, 'removeCoupon'])->name('shop.cart.removecoupon');
     Route::post('cart/coupon/add', [CartController::class, 'addCoupon'])->name('shop.cart.addcoupon');
     Route::post('cart/delivery', [CartController::class, 'editDelivery'])->name('shop.cart.editdelivery');
+    Route::post('cart/payment', [CartController::class, 'editPaymentMethod'])->name('shop.cart.paymentmethod');
     Route::post('edit/', [CartController::class, 'editQuantityCartItem'])->name('shop.cart.edit');
     Route::get('cart/', [CartController::class, 'index'])->name('shop.cart.index');
     Route::post('cart/userdata', [CartController::class, 'editUserData'])->name('shop.cart.userdata');
