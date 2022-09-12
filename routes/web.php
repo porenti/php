@@ -30,7 +30,7 @@ Route::middleware('auth')->group(function () {
     Route::get('orders/index',[OrderController::class, 'index'])->name('shop.order.index');
 
     Route::middleware('role:admin|moder')->group(function () {
-
+        Route::get('orders/adminIndex', [OrderController::class, 'adminIndex'])->name('admin.order.index');
         Route::resource('products', ProductController::class);
         Route::resource('categories', CategoryController::class);
         Route::post('users/{user}/roles-update', [UsersController::class, 'rolesUpdate'])->name('users.roles-update');
@@ -52,6 +52,8 @@ Route::middleware('auth')->group(function () {
         Route::get('roles/{role}/permissions', [RoleController::class, 'permissions'])->name('roles.permissions');
 
         Route::patch('roles/{role}/permissions/update', [RoleController::class, 'permissionsUpdate'])->name('roles.permissions.update');
+        Route::get('orders/edit/{order}', [OrderController::class, 'edit'])->name('order.edit');
+        Route::patch('orders/update', [OrderController::class, 'update'])->name('order.update');
 
         Route::resource('roles', RoleController::class);
         Route::resource('deliveries', DeliveryController::class);

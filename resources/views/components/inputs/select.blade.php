@@ -6,7 +6,6 @@ $multiple = $multiple ?? false;
 
 
 <div class="form-group my-1">
-
     @isset($label)
         <label class="form-control-label" for="{{ $id }}">
             {{ $label }}

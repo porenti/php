@@ -25,6 +25,7 @@ return new class extends Migration
         Schema::create('order_statuses', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('style');
         });
     }
 
@@ -35,8 +36,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('deliveries');
         Schema::dropIfExists('payment_methods');
+        Schema::dropIfExists('deliveries');
         Schema::dropIfExists('order_statuses');
     }
 };

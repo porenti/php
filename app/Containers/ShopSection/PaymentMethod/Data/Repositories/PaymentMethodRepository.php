@@ -15,4 +15,8 @@ class PaymentMethodRepository
     public function getAllPaymentMethod(): Collection {
         return PaymentMethod::all();
     }
+    public function getNameAndKeyPaymentMethod(): \Illuminate\Support\Collection
+    {
+        return PaymentMethod::pluck('name', 'id');
+    }
 }

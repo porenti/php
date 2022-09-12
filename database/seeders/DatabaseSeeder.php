@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Containers\ShopSection\Category\Data\Seeders\CategorySeeders;
+use App\Containers\ShopSection\OrderStatus\Data\Seeders\OrderStatusSeeder;
 use App\Containers\ShopSection\PaymentMethod\Data\Seeders\PaymentMethodSeeder;
 use App\Containers\ShopSection\Delivery\Data\Seeders\DeliverySeeder;
 
@@ -21,11 +22,12 @@ class DatabaseSeeder extends Seeder
         $this->call(CouponSeeder::class);
         $this->call(GenderSeeder::class);
         $this->call(LaratrustSeeder::class); //заполнить роли
+        $this->call(AdminSeeder::class);
         \App\Models\User::factory(100)->create(); //заполнить пользователей
         $this->call(PaymentMethodSeeder::class);
         $this->call(CategorySeeders::class);
         $this->call(ProductSeeder::class);
-        $this->call(AdminSeeder::class);
         $this->call(DeliverySeeder::class);
+        $this->call(OrderStatusSeeder::class);
     }
 }

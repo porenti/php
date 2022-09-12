@@ -5,6 +5,7 @@ namespace App\Models\Shop;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
  * App\Models\Shop\OrderStatusHistory
@@ -24,7 +25,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|OrderStatusHistory whereOrderStatusId($value)
  * @mixin \Eloquent
  */
-class OrderStatusHistory extends Model
+class OrderStatusHistory extends Pivot
 {
     use HasFactory;
 
@@ -38,7 +39,8 @@ class OrderStatusHistory extends Model
 
     protected $fillable = [
         'order_id',
-        'order_status_id'
+        'order_status_id',
+        'manager_id'
     ];
 
     public function order(): BelongsTo
@@ -77,4 +79,14 @@ class OrderStatusHistory extends Model
         $this->order_status_id = $order_status_id;
     }
 
+
+    public function setManagerId(int $id)
+    {
+        $this->managerId = $id;
+    }
+
+    public function getManagerId()
+    {
+        return $this->managerId;
+    }
 }

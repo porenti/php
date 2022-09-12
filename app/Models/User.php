@@ -85,6 +85,8 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read int|null $carts_count
  * @method static Builder|User whereAddressId($value)
  * @method static Builder|User wherePhone($value)
+ * @property-read Collection|Order[] $orders
+ * @property-read int|null $orders_count
  */
 class User extends Authenticatable implements Imagable
 {

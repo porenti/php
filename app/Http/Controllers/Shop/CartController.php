@@ -145,7 +145,7 @@ class CartController extends Controller
     { //TODO Сделать новый реквест
         // TODO и проверку на заполнение тут
 
-        app(CreateOrderAction::class)->run(app()['cart']->getCart());
-        return redirect()->route('shop.orders.index');
+        $order = app(CreateOrderAction::class)->run(app()['cart']->getCart());
+        return redirect()->route('shop.order.index');
     }
 }

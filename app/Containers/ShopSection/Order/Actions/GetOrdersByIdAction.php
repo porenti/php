@@ -2,14 +2,14 @@
 
 namespace App\Containers\ShopSection\Order\Actions;
 
-
 use App\Containers\ShopSection\Order\Data\Repositories\OrderRepository;
+
 use Illuminate\Support\Collection;
 
-class GetOrdersAction
+class GetOrdersByIdAction
 {
-    public function run(): ?Collection
+    public function run(int $userId, array $with = []): ?Collection
     {
-        return app(OrderRepository::class)->getOrders();
+        return app(OrderRepository::class)->getOrdersById($userId, $with);
     }
 }

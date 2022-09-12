@@ -3,11 +3,13 @@
 namespace App\Containers\ShopSection\Order\Actions;
 
 use App\Containers\ShopSection\Cart\Tasks\CancelCartTask;
-use App\Containers\ShopSection\Coupon\Actions\AddOrderCouponAction;
-use App\Containers\ShopSection\OrderItem\Actions\CreateOrderItemAction;
+use App\Containers\ShopSection\Coupon\Tasks\AddOrderCouponTask;
+use App\Containers\ShopSection\Order\Tasks\AddOrderStatusTask;
+use App\Containers\ShopSection\OrderItem\Tasks\CreateOrderItemTask;
 use App\Models\Shop\Cart;
 use App\Models\Shop\CartItem;
 use App\Models\Shop\Order;
+use App\Models\Shop\OrderStatus;
 
 class CreateOrderAction
 {
@@ -16,7 +18,7 @@ class CreateOrderAction
      * @return void
      * @param CartItem $cartItem
      */
-    public function run(Cart $cart)
+    public function run(Cart $cart): Order
     {
         $order = new Order();
         $order->setPaymentMethodId($cart->getPaymentMethodId());
@@ -34,15 +36,14 @@ class CreateOrderAction
         $order->setTotalAmount($cart->getCartSum()); //Итоговая цена
         $order->setTotalSale($cart->getDecoratedTotalSale()); //Итоговая скидка
 
+        $status = OrderStatus::first();
+
         $order->save();
-        foreach ($cart->getCoupons() as $coupon)
-        {
-            app(AddOrderCouponAction::class)->run($order, $coupon);
-        }
-        foreach ($cart->getCartItems() as $cartItem)
-        {
-            app(CreateOrderItemAction::class)->run($cartItem,$order->getKey());
-        }
+        app(AddOrderStatusTask::class)->run($order,$status);
+        app(AddOrderCouponTask::class)->run($order, $cart);
+        app(CreateOrderItemTask::class)->run($cart,$order->getKey());
         app(CancelCartTask::class)->run($cart);
+        //действие на запись пользователю адресса
+        return $order;
     }
 }

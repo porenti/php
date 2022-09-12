@@ -14,8 +14,14 @@ class OrderRepository
         $this->order = $order;
     }
 
-    public function getOrdersById(int $id, Array $with = []): ?Collection
+    public function getOrdersById(int $id, array $with = []): ?Collection
     {
-         return Order::query()->where('user_id',$id)->with([])->get();
+         return Order::query()->where('user_id',$id)->with($with)->get();
     }
+
+    public function getOrders( Array $with = []): ?Collection
+    {
+        return Order::query()->with($with)->get();
+    }
+
 }
