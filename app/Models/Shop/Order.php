@@ -5,6 +5,10 @@ namespace App\Models\Shop;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 /**
  * App\Models\Shop\Order
@@ -46,6 +50,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereLastName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order whereMiddleName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Order wherePhone($value)
+ * @property-read \App\Models\Shop\Address|null $addresses
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\Coupon[] $coupons
+ * @property-read int|null $coupons_count
+ * @property-read \App\Models\Shop\Delivery|null $delivery
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\OrderItem[] $orderItems
+ * @property-read int|null $order_items_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\OrderStatus[] $status
+ * @property-read int|null $status_count
  */
 class Order extends Model
 {
@@ -164,6 +176,70 @@ class Order extends Model
         return $this->phone;
     }
 
+    public function coupons()
+    {
+        return $this->belongsToMany(Coupon::class, 'coupons_orders')
+            ->using(CouponsOrder::class)
+            ->withPivot('value');
+    }
+
+    public function status(): BelongsToMany
+    {
+        return $this->belongsToMany(OrderStatus::class, 'order_status_histories')
+            ->using(OrderStatusHistory::class);
+    }
+
+    public function setStatus(OrderStatus $status): void
+    {
+        $this->status()->attach($status);
+    }
+
+    public function getStatus(): OrderStatus
+    {
+        return $this->status->first();
+    }
+
+    public function getCoupons(): Coupon|Collection|null
+    {
+        return $this->coupons;
+    }
+
+    public function setCoupons(Coupon $coupon)
+    {
+        $this->coupons = $coupon;
+    }
+
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
+    public function getOrderItems(): Collection
+    {
+        return $this->orderItems;
+    }
+
+    public function delivery(): BelongsTo
+    {
+        return $this->belongsTo(Delivery::class);
+    }
+
+
+    public function getDelivery(): Delivery
+    {
+        return $this->delivery;
+    }
+
+    public function addresses(): BelongsTo
+    {
+        return $this->belongsTo(Address::class,'address_id');
+    }
+
+    public function getAddresses(): ?Address
+    {
+        return $this->addresses;
+    }
+
     /**
      * @param string $phone
      */
@@ -236,6 +312,16 @@ class Order extends Model
     public function setAddressId(?int $address_id): void
     {
         $this->address_id = $address_id;
+    }
+
+    public function paymentMethod()
+    {
+        return $this->belongsTo(PaymentMethod::class);
+    }
+
+    public function getPaymentMethod(): ?PaymentMethod
+    {
+        return $this->paymentMethod;
     }
 
     /**
@@ -317,7 +403,6 @@ class Order extends Model
     {
         $this->delivery_price = $delivery_price;
     }
-
 
 
 }

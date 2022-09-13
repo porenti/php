@@ -11,6 +11,11 @@ use App\Events\ImageUploaded;
 use App\Listeners\CreateImage;
 use App\Listeners\RecalculateCartListener;
 use App\Listeners\SetCartAtributes;
+use App\Models\Shop\CartItem;
+use App\Models\Shop\Order;
+use App\Models\Shop\OrderItem;
+use App\Observers\OrderItemObserver;
+use App\Observers\OrderObserver;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -58,6 +63,8 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Order::observe(OrderObserver::class);
+        OrderItem::observe(OrderItemObserver::class);
         //$this->belongsToMany()->withPivot()->using();
         // добавили наблюдатель за класс для отловки ивентов
 //        Cart::observe(CartObserver::class);

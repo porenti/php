@@ -18,6 +18,8 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|OrderStatus whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderStatus whereName($value)
  * @mixin \Eloquent
+ * @property string|null $style
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderStatus whereStyle($value)
  */
 class OrderStatus extends Model
 {
@@ -28,6 +30,7 @@ class OrderStatus extends Model
 
     protected $fillable = [
         'name',
+        'style'
     ];
 
     /**
@@ -50,4 +53,33 @@ class OrderStatus extends Model
     {
         return $this->hasMany(OrderStatusHistory::class);
     }
+
+    public function getStyle(): ?string
+    {
+        return $this->style;
+    }
+
+    public function setStyle(string $style): void
+    {
+        $this->style=$style;
+    }
+
+    /**
+     * @return OrderStatusHistory[]|\Illuminate\Database\Eloquent\Collection
+     */
+    public function getOrderStatusHistories(): \Illuminate\Database\Eloquent\Collection|array
+    {
+        return $this->order_status_histories;
+    }
+
+    /**
+     * @param OrderStatusHistory[]|\Illuminate\Database\Eloquent\Collection $order_status_histories
+     */
+    public function setOrderStatusHistories(\Illuminate\Database\Eloquent\Collection|array $order_status_histories): void
+    {
+        $this->order_status_histories = $order_status_histories;
+    }
+
+
+
 }

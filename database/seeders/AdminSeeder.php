@@ -10,6 +10,22 @@ class AdminSeeder extends Seeder
 {
     public function run()
     {
+
+        $systemUser = new User();
+        $systemUser->setNickname('system');
+        $systemUser->setGenderId(1);
+        $systemUser->setAge(50);
+        $systemUser->setLastName('system');
+        $systemUser->setFirstName('system');
+        $systemUser->setMiddleName('system');
+        $systemUser->setDescription('system');
+        $systemUser->setEmail('system@gmail.com');
+        $systemUser->setPassword(Hash::make('system'));
+        $systemUser->setHide(false);
+        $systemUser->setPhone('88008003535');
+        $systemUser->save();
+        $systemUser->roles()->sync(1);
+
         $user = new User();
         $user->setNickname('admin');
         $user->setGenderId(1);
@@ -24,5 +40,6 @@ class AdminSeeder extends Seeder
         $user->setPhone('88008003535');
         $user->save();
         $user->roles()->sync(1);
+
     }
 }

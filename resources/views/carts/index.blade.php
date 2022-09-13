@@ -101,13 +101,8 @@
                     Корзина пуста
                 @endempty
             </div>
-            <div class="col-lg-3 mb-3">
-                {{ Form::open(['method'=>'POST', 'url' => route('shop.order.create')]) }}
-                <div class="row">
-                    <button type="submit" class="btn btn-info btn-lg">Оформить</button>
-                </div>
-                {{ Form::close() }}
-                <div class="row border mt-3">
+            <div class="col-lg-3">
+                <div class="row border">
                     <h4>Итог</h4>
                     <div class="p-2">
 
@@ -149,7 +144,7 @@
                     </div>
                 </div>
                 @if ($coupons->count() !== 0)
-                    <div class="row mt-4 border">
+                    <div class="row mb-4 border">
                         @isset($coupons)
                             <div class="row">
                                 <div class="col-4">
@@ -185,72 +180,16 @@
                         @endisset
                     </div>
                 @endif
-            </div>
-        </div>
 
-        <div class="row mt-5 justify-content-between" style="color:black">
-            <div class="col-lg-6 border p-2">
-                <div class="row justify-content-center">
-                    <div class="col-lg-6 text-center">
-                        <h3>Личные данные</h3>
-                    </div>
-                    <div class="col-lg-6 text-center">
-                        @if (!auth()->check())
-                            <a class="btn btn-secondary btn-lg" href="{{ route('login') }}">Войти</a>
-                        @endif
-                    </div>
-                </div>
-
+                {{ Form::open(['method'=>'POST', 'url' => route('shop.order.create')]) }}
                 <div class="row">
-                    
-                </div>
-
-
-                {{ Form::open(['url' => route('shop.cart.userdata')]) }}
-                <div class="row">
-                    <div class="col-lg-4">
-                        @include('components.inputs.input', [
-    'label' => 'Фамилия',
-    'name' => 'lName',
-    'value' => $cart->getLastName() ??  auth()->user()->getLastName() ?? null,
-])
-                    </div>
-                    <div class="col-lg-4">
-                        @include('components.inputs.input', [
-    'label' => 'Имя',
-    'name' => 'fName',
-    'value' => $cart->getFirstName() ?? auth()->user()->getFirstName() ?? null,
-])
-                    </div>
-                    <div class="col-lg-4">
-                        @include('components.inputs.input', [
-    'label' => 'Отчество',
-    'name' => 'mName',
-    'value' => $cart->getMiddleName() ?? auth()->user()->getMiddleName() ?? null,
-])
-                    </div>
-                    <div class="col-lg-6">
-                        @include('components.inputs.input', [
-    'label' => 'Телефон',
-    'name' => 'phone',
-    'value' => $cart->getPhone() ?? auth()->user()->getPhone() ?? null,
-])
-                    </div>
-                    <div class="col-lg-6">
-                        @include('components.inputs.input', [
-    'label' => 'Почта',
-    'name' => 'email',
-    'value' => $cart->getEmail() ?? auth()->user()->getEmail() ?? null,
-])
-                    </div>
-                    <div class="col-lg-12">
-                        @include('components.inputs.DadataInput')
-                    </div>
-
-                    <button type="submit" class="btn btn-secondary mt-3">Сохранить данные</button>
+                    <button type="submit" class="btn btn-info btn-lg">Оформить</button>
                 </div>
                 {{ Form::close() }}
             </div>
+        </div>
+
+        <div class="row mt-5 mb-5 justify-content-between text-black">
             <div class="col-lg-5 border p-2">
                 <h3 style="text-align: center">Выберите способ доставки</h3>
                 <div class="row">
@@ -273,6 +212,91 @@
                     @endforeach
                 </div>
             </div>
+            <div class="col-lg-5 border p-2">
+                <h3 style="text-align: center">Выберите способ оплаты</h3>
+                <div class="row">
+                    @foreach($paymentMethods as $paymentMethod)
+                        <div class="col-lg-4">
+                            {{ Form::open(['url' => route('shop.cart.paymentmethod'), 'id' => 'form_id'.$paymentMethod->getKey()]) }}
+                            {{ Form::hidden('payment_method',$paymentMethod->getKey()) }}
+
+                            <button type="submit"
+
+                                    {{ (in_array($cart->getDeliveryId(), $paymentMethod->getDeliveriesKeys())) === true ? '' : 'disabled' }}
+                                    class="btn btn-lg
+{{ $paymentMethod->getKey() === $cart->getPaymentMethodId() ? 'active btn-success' : 'btn-secondary' }}
+
+                                            ">
+
+                                {{$paymentMethod->getName()}}</button>
+                            </button>
+
+                            {{ Form::close() }}
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row mt-5 justify-content-between" style="color:black">
+            <div class="col border p-2">
+                <div class="row justify-content-center">
+                    <div class="col-lg-11 text-center">
+                        <h3>Личные данные</h3>
+                    </div>
+                    <div class="col-lg-1 text-center">
+                        @if (!auth()->check())
+                            <a class="btn btn-secondary btn-lg" href="{{ route('login') }}">Войти</a>
+                        @endif
+                    </div>
+                </div>
+                {{ Form::open(['url' => route('shop.cart.userdata')]) }}
+                <div class="row">
+                    <div class="col-lg-4">
+                        @include('components.inputs.input', [
+    'label' => 'Фамилия',
+    'name' => 'lName',
+    'value' => $cart->getLastName() ??  auth()->check() ? auth()->user()->getLastName() : null,
+])
+                    </div>
+                    <div class="col-lg-4">
+                        @include('components.inputs.input', [
+    'label' => 'Имя',
+    'name' => 'fName',
+    'value' => $cart->getFirstName() ??  auth()->check() ? auth()->user()->getFirstName() : null,
+])
+                    </div>
+                    <div class="col-lg-4">
+                        @include('components.inputs.input', [
+    'label' => 'Отчество',
+    'name' => 'mName',
+        'value' => $cart->getMiddleName() ??  auth()->check() ? auth()->user()->getMiddleName() : null,
+])
+                    </div>
+                    <div class="col-lg-6">
+                        @include('components.inputs.input', [
+    'label' => 'Телефон',
+    'name' => 'phone',
+        'value' => $cart->getPhone() ??  auth()->check() ? auth()->user()->getPhone() : null,
+])
+                    </div>
+                    <div class="col-lg-6">
+                        @include('components.inputs.input', [
+    'label' => 'Почта',
+    'name' => 'email',
+        'value' => $cart->getEmail() ??  auth()->check() ? auth()->user()->getEmail() : null,
+])
+                    </div>
+                    <div class="col-lg-12">
+                        @include('components.inputs.DadataInput')
+                    </div>
+
+                    <button type="submit" class="btn btn-secondary mt-3">Сохранить данные</button>
+                </div>
+                {{ Form::close() }}
+            </div>
+
         </div>
     </div>
     </div>

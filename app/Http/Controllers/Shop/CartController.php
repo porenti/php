@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Shop;
 
-use App\Containers\ShopSection\Cart\Actions\EditDeliveryAction;
+use App\Containers\ShopSection\Cart\Actions\EditPaymentMethodAction;
 use App\Containers\ShopSection\Cart\Actions\EditUserDataAction;
 use App\Containers\ShopSection\Order\Actions\CreateOrderAction;
 use App\Containers\ShopSection\Cart\Actions\AddCouponAction;
@@ -13,12 +13,14 @@ use App\Containers\ShopSection\Cart\Actions\RemoveCouponAction;
 use App\Containers\ShopSection\CartItem\Actions\GenerateNewCartItemAction;
 use App\Containers\ShopSection\CartItem\Actions\GetCartItemsListByCartAction;
 use App\Containers\ShopSection\Delivery\Actions\GetDeliveryDataAction;
+use App\Containers\ShopSection\PaymentMethod\Actions\GetPaymentMethodDataAction;
 use App\Containers\ShopSection\Product\Actions\GetProductsListByIdAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Shop\AddToCartRequest;
 use App\Http\Requests\Shop\CouponRequest;
 use App\Http\Requests\Shop\EditQuantityCartItemRequest;
 use App\Models\Shop\Cart;
+use App\Models\Shop\PaymentMethod;
 use Artesaos\SEOTools\Facades\SEOMeta;
 use Illuminate\Http\Request;
 
@@ -32,17 +34,17 @@ class CartController extends Controller
 
     public function index(Request $request)
     {
+        $cart = app()['cart']->getCart();
         SEOMeta::setTitle('Корзина');
         /** @var Cart $cart */
         $deliveries = app(GetDeliveryDataAction::class)->run();
         //@TODO facade
-        $cart = app()['cart']->getCart();
-        //dd($cart);
+        $paymentMethods = app(GetPaymentMethodDataAction::class)->run();
         $cartItems = app(GetCartItemsListByCartAction::class)
             ->run($cart, ['*'], ['product']);
 
         $coupons = $cart->getCoupons();
-        return view('carts.index', compact('cartItems', 'coupons', 'cart', 'deliveries'));
+        return view('carts.index', compact('paymentMethods','cartItems', 'coupons', 'cart', 'deliveries'));
     }
 
     public function addNewItem(AddToCartRequest $request)
@@ -115,7 +117,8 @@ class CartController extends Controller
     }
 
     public function editDelivery(Request $request)
-    {
+    { //TODO Сделать новый реквест
+        //TODO сделать отмену способа оплаты
         $cart = app()['cart']->getCart();
         $deliveryId = $request->input('delivery_id');
         app(AddDeliveryAction::class)->run($cart, $deliveryId);
@@ -130,17 +133,19 @@ class CartController extends Controller
     }
 
     public function editPaymentMethod(Request $request)
-    {
+    { //TODO Сделать новый реквест
         $cart = app()['cart']->getCart();
-        $paymentMethod = $request->input('payment_method');
-        app(EditDeliveryAction::class)->run($cart, $paymentMethod);
+        $paymentMethodId = $request->input('payment_method');
+        app(EditPaymentMethodAction::class)->run($cart, $paymentMethodId);
         return redirect()->route('shop.cart.index');
 
     }
 
     public function createOrder(Request $request)
-    {
-        app(CreateOrderAction::class)->run(app()['cart']->getCart());
-        return redirect()->route('shop.cart.index');
+    { //TODO Сделать новый реквест
+        // TODO и проверку на заполнение тут
+
+        $order = app(CreateOrderAction::class)->run(app()['cart']->getCart());
+        return redirect()->route('shop.order.index');
     }
 }

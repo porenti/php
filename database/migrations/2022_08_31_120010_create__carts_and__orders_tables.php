@@ -45,6 +45,7 @@ return new class extends Migration
             $table->foreignId('order_id')->references('id')->on('orders');
             $table->foreignId('order_status_id')->references('id')->on('order_statuses');
             $table->timestamp('created_at');
+            $table->foreignId('manager_id')->references('id')->on('users');
         });
 
 
@@ -77,6 +78,7 @@ return new class extends Migration
         Schema::table('order_status_histories', function (Blueprint $table) {
             $table->dropForeign(['order_status_id']);
             $table->dropForeign(['order_id']);
+            $table->dropForeign(['manager_id']);
         });
         Schema::dropIfExists('carts');
         Schema::dropIfExists('orders');

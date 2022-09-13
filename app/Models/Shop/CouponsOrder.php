@@ -7,6 +7,7 @@
 namespace App\Models\Shop;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
  * Class CouponsOrder
@@ -26,7 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|CouponsOrder whereValue($value)
  * @mixin \Eloquent
  */
-class CouponsOrder extends Model
+class CouponsOrder extends Pivot
 {
 	protected $table = 'coupons_orders';
 	public $timestamps = false;
@@ -52,4 +53,24 @@ class CouponsOrder extends Model
 	{
 		return $this->belongsTo(Order::class);
 	}
+
+
+
+    /**
+     * @return int
+     */
+    public function getValue(): int
+    {
+        return $this->value;
+    }
+
+    /**
+     * @param int $value
+     */
+    public function setValue(int $value): void
+    {
+        $this->value = $value;
+    }
+
+
 }

@@ -35,4 +35,10 @@ class CartRepository
             ->filterNotCanceled()
             ->first() ?? 0;
     }
+
+    public function setPaymentMethodId(Cart $cart,int $paymentMethodId): void
+    {
+        $cart->setPaymentMethodId($paymentMethodId);
+        $cart->save();
+    }
 }

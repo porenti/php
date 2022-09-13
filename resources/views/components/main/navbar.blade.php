@@ -7,26 +7,31 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav me-auto mb-2 mb-md-0">
-{{--                <li class="nav-item">--}}
-                    <a class="nav-link active" aria-current="page" href="{{ route('main') }}">Главная</a>
+                {{--                <li class="nav-item">--}}
+                <a class="nav-link active" aria-current="page" href="{{ route('main') }}">Главная</a>
                 </li>
                 @if(auth()->check() ?? auth()->user()->hasRole('admin'))
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('users.create')}}">Создать</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('roles.index')}}">Роли</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('products.index')}}">Товары</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('users.create')}}">Создать</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('roles.index')}}">Роли</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('products.index')}}">Товары</a>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{{route('coupons.index')}}">Промокоды</a>
                     </li>
-
-                <li class="nav-item">
-                    <a class="nav-link" href="{{route('categories.index')}}">Категории</a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('categories.index')}}">Категории</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('admin.order.index')}}">Корзины</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{route('deliveries.index')}}">Доставки</a>
+                    </li>
                 @endif
             </ul>
         </div>

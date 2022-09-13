@@ -6,8 +6,12 @@ namespace App\Models;
 use App\Interfaces\Images\Imagable;
 use App\Models\Images\Image;
 use App\Models\Shop\Cart;
+use App\Models\Shop\Order;
 use App\Traits\Relations\Images\HasImages;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -83,8 +87,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read int|null $carts_count
  * @method static Builder|User whereAddressId($value)
  * @method static Builder|User wherePhone($value)
+ * @property-read Collection|Order[] $orders
+ * @property-read int|null $orders_count
  */
-class User extends Authenticatable implements Imagable
+class User extends Authenticatable implements Imagable, FilamentUser, HasName
 {
     use LaratrustUserTrait;
     use HasApiTokens, HasFactory, Notifiable;
@@ -158,6 +164,15 @@ class User extends Authenticatable implements Imagable
         return $this->carts;
     }
 
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Order::class);
+    }
+    public function getOrders(): Collection|Order
+    {
+        return $this->order;
+    }
+
     /**
      * @return Gender
      */
@@ -180,6 +195,16 @@ class User extends Authenticatable implements Imagable
     public function setAddressId(?int $address_id): void
     {
         $this->address_id = $address_id;
+    }
+
+    public function checkOrder(): bool
+    {
+        $result = false;
+        if ($this->orders()->count() !== 0)
+        {
+            $result = true;
+        }
+        return $result;
     }
 
     /**
@@ -405,5 +430,15 @@ class User extends Authenticatable implements Imagable
     public function getPathForImages(): string
     {
         return 'users/' . $this->getKey() . '/images';
+    }
+
+    public function canAccessFilament(): bool
+    {
+        return true;
+    }
+
+    public function getFilamentName(): string
+    {
+        return $this->getNickname();
     }
 }

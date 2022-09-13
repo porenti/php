@@ -12,6 +12,10 @@
                     <li class="nav-item">
                         <a class="nav-link" id="cart" href="{{route('shop.cart.index')}}">Корзина X{{ app()['cart']->getQuantity() }}</a>
                     </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="cart" href="{{route('shop.order.index')}}">{{ auth()->check() ? auth()->user()->checkOrder() ? 'Заказы' : '' : '' }}</a>
+
+                </li>
             </ul>
         </div>
     </div>
