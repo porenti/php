@@ -13,6 +13,10 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Image\Manipulations;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * App\Models\Product
@@ -55,9 +59,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property int $quantity
  * @method static Builder|Product whereQuantity($value)
  * @property mixed|null $price_with_discount
+ * @property-read \Spatie\MediaLibrary\MediaCollections\Models\Collections\MediaCollection|Media[] $media
+ * @property-read int|null $media_count
  */
-class Product extends Model implements Imagable
+class Product extends Model implements Imagable, HasMedia
 {
+    use InteractsWithMedia;
     use HasFactory;
     use SoftDeletes;
     use HasImages;
@@ -215,4 +222,16 @@ class Product extends Model implements Imagable
         $this->quantity = $quantity;
     }
 
+    /**
+     * @throws \Spatie\Image\Exceptions\InvalidManipulation
+     */
+    public function registerMediaConversions(Media $media = null): void
+    {
+        $this
+            ->addMediaConversion('preview')
+            ->quality(1)
+            ->height(300)
+            ->greyscale()
+            ->width(300);
+    }
 }

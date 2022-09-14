@@ -24,6 +24,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static \Illuminate\Database\Eloquent\Builder|OrderStatusHistory whereOrderId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|OrderStatusHistory whereOrderStatusId($value)
  * @mixin \Eloquent
+ * @property int $manager_id
+ * @method static \Illuminate\Database\Eloquent\Builder|OrderStatusHistory whereManagerId($value)
  */
 class OrderStatusHistory extends Pivot
 {

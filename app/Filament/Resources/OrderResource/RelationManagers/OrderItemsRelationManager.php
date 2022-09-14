@@ -23,13 +23,25 @@ class OrderItemsRelationManager extends RelationManager
                 TextInput::make('quantity')
                     ->required()
                     ->label('Количество')
-                    ->integer(),
+                    ->hint(function (\Closure $get, \Closure $set) {
+                        $text = "Остаток на складе: ";
+                        $productId = $get('product_id');
+                        if ($productId !== null) {
+                            $quantity = Product::find($productId)->getQuantity();
+                            $text = $text.$quantity;
+                        } else {
+                            $text = $text."-";
+                        }
+                        return $text;
+                    })
+                    ->integer()
+                    ->reactive(),
                 TextInput::make('sale')
                     ->required()
                     ->label('Скидка'),
                 TextInput::make('subtotal_amount')
                     ->required()
-                    ->label('Сумма без скидки'),
+                    ->label('Цена товара'),
                 TextInput::make('amount')
                     ->required()
                     ->label('Итоговая сумма'),
@@ -43,7 +55,21 @@ class OrderItemsRelationManager extends RelationManager
                 Select::make('product_id')
                     ->label('Продукт')
                     ->options(Product::pluck('name', 'id'))
-                    ->searchable(),
+                    ->searchable()
+                    ->hint('Цены указываются на единицу товара')
+                    ->reactive()
+                    ->afterStateUpdated(function (\Closure $set, string $state, \Closure $get) {
+                        $product = Product::find($state);
+                        $set('description', $product->getDescription());
+                        $set('name', $product->getName());
+                        $set('sale', $product->getSale());
+                        $amount = $product->getPrice();
+                        $set('subtotal_amount', $amount);
+                        $set('amount', $amount - $product->getSale());
+                        //$set()
+//                        $set('amoun', $product->get);
+                    }),
+
             ]);
     }
 
@@ -67,5 +93,5 @@ class OrderItemsRelationManager extends RelationManager
             ->bulkActions([
                 Tables\Actions\DeleteBulkAction::make(),
             ]);
-    }    
+    }
 }

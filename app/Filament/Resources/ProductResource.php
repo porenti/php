@@ -8,6 +8,7 @@ use App\Models\Category;
 use App\Models\Product;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -26,12 +27,15 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
+                SpatieMediaLibraryFileUpload::make('avatar')
+                    ->label('Картинка')
+                ->conversion('preview'),
                 TextInput::make('name')
                     ->label('Название'),
                 TextInput::make('description')
                     ->label('Описание'),
                 TextInput::make('price')
-                    ->label('Цена в копейках'),
+                    ->label('Цена'),
                 TextInput::make('price_with_discount')
                     ->label('Цена со скидкой')
                     ->nullable(),

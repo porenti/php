@@ -58,6 +58,7 @@ use Illuminate\Support\Collection;
  * @property-read int|null $order_items_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Shop\OrderStatus[] $status
  * @property-read int|null $status_count
+ * @property-read \App\Models\Shop\PaymentMethod $paymentMethod
  */
 class Order extends Model
 {

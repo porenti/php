@@ -29,20 +29,15 @@ class RecalculatedOrderAction
                 foreach ($coupons as $coupon) {
                     if ($coupon->getCouponsValueType()->getName() === "Абсолютное") {
                         $value = $coupon->getValue(); //сумма скидки в рублях
-                        $subSale = $quantity * $value;
-                        $saleForItem += $value;
-                        $pivot = $coupon->pivot;
-                        $pivot->value += $subSale;
-                        $pivot->saveQuietly();
                     } else {
                         $value = $item->getSubtotalAmount() / 100 * $coupon->getValue(); //сумма скидки в процентах
-                        $subSale = $quantity * $value;
-                        $saleForItem += $value;
-                        $pivot = $coupon->pivot;
-                        $pivot->value += $subSale;
-                        $pivot->saveQuietly();
 
                     }
+                    $subSale = $quantity * $value;
+                    $saleForItem += $value;
+                    $pivot = $coupon->pivot;
+                    $pivot->value += $subSale;
+                    $pivot->saveQuietly();
                 }
                 $item->setSale($saleForItem);
             }

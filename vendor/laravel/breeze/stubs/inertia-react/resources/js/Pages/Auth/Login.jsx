@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import Button from '@/Components/Button';
 import Checkbox from '@/Components/Checkbox';
-import Guest from '@/Layouts/Guest';
-import Input from '@/Components/Input';
-import Label from '@/Components/Label';
-import ValidationErrors from '@/Components/ValidationErrors';
+import GuestLayout from '@/Layouts/GuestLayout';
+import InputError from '@/Components/InputError';
+import InputLabel from '@/Components/InputLabel';
+import PrimaryButton from '@/Components/PrimaryButton';
+import TextInput from '@/Components/TextInput';
 import { Head, Link, useForm } from '@inertiajs/inertia-react';
 
 export default function Login({ status, canResetPassword }) {
@@ -31,18 +31,16 @@ export default function Login({ status, canResetPassword }) {
     };
 
     return (
-        <Guest>
+        <GuestLayout>
             <Head title="Log in" />
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
 
-            <ValidationErrors errors={errors} />
-
             <form onSubmit={submit}>
                 <div>
-                    <Label forInput="email" value="Email" />
+                    <InputLabel forInput="email" value="Email" />
 
-                    <Input
+                    <TextInput
                         type="text"
                         name="email"
                         value={data.email}
@@ -51,12 +49,14 @@ export default function Login({ status, canResetPassword }) {
                         isFocused={true}
                         handleChange={onHandleChange}
                     />
+
+                    <InputError message={errors.email} className="mt-2" />
                 </div>
 
                 <div className="mt-4">
-                    <Label forInput="password" value="Password" />
+                    <InputLabel forInput="password" value="Password" />
 
-                    <Input
+                    <TextInput
                         type="password"
                         name="password"
                         value={data.password}
@@ -64,6 +64,8 @@ export default function Login({ status, canResetPassword }) {
                         autoComplete="current-password"
                         handleChange={onHandleChange}
                     />
+
+                    <InputError message={errors.password} className="mt-2" />
                 </div>
 
                 <div className="block mt-4">
@@ -84,11 +86,11 @@ export default function Login({ status, canResetPassword }) {
                         </Link>
                     )}
 
-                    <Button className="ml-4" processing={processing}>
+                    <PrimaryButton className="ml-4" processing={processing}>
                         Log in
-                    </Button>
+                    </PrimaryButton>
                 </div>
             </form>
-        </Guest>
+        </GuestLayout>
     );
 }

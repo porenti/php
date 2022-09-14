@@ -28,13 +28,15 @@
         {{ Form::close() }}
         <div class="row" style="color:black">
             @foreach($products as $product)
-                <div class="col-lg-3 mb-3">
+                <div class="col-lg-3 mt-3">
                     <div class="card">
-
-
-                        <img src="{{ $product->getImagePublicPath() }}"
-                             width="{{ $product->getImageWidth() }}" class="card-img-top"
-                             alt="{{ $product->getImageAlt() }}">
+                        @if ($product->hasMedia())
+                            {{ $product->getFirstMedia()('preview') }}
+                        @else
+                            <img src="{{ $product->getImagePublicPath() }}"
+                                 width="{{ $product->getImageWidth() }}" class="card-img-top"
+                                 alt="{{ $product->getImageAlt() }}">
+                        @endif
 
                         <div class="card-body">
                             <h5 class="card-title">{{ $product->getName() }}</h5>
@@ -43,15 +45,16 @@
                                 <div class="col-lg-5">
                                     {{ Form::open(['url' => route('shop.cart.update'), 'method' => 'PATCH']) }}
                                     {{ Form::hidden('product_id',$product->getKey()) }}
-                                        <button type="button"  value="{{ $product->getKey() }}" class="js-add-item-button btn btn-success {{ $product->count_in_cart > 0 ? 'disabled' : '' }}">
-                                            {{ $product->count_in_cart > 0 ? 'Добавлен' : '+' }}
-                                        </button>
+                                    <button type="button" value="{{ $product->getKey() }}"
+                                            class="js-add-item-button btn btn-success {{ $product->count_in_cart > 0 ? 'disabled' : '' }}">
+                                        {{ $product->count_in_cart > 0 ? 'Добавлен' : '+' }}
+                                    </button>
                                     {{ Form::close() }}
                                 </div>
                                 <div class="col-lg-4">
                                     <a href="{{ route('catalog.show', $product) }}" class="btn btn-primary">show</a>
                                 </div>
-                                <div class="col-lg-3" >
+                                <div class="col-lg-3">
                                     <del>{{ $product->getPriceWithDiscount() !== 0 ? $product->getPriceFormatted() : '' }}</del>
                                     <label style="{{ $product->getPriceWithDiscount() !== 0 ? 'color:red' : '' }}">
                                         {{ $product->getPriceWithDiscount() !== 0 ? $product->getPriceWithDiscount() : $product->getPriceFormatted() }}
